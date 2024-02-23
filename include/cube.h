@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/23 09:20:43 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:25:13 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ typedef struct s_cube
 {
 	mlx_t		*mlx;
 	mlx_image_t	*player;
+	mlx_image_t *map;
 }				t_cube;
 #endif

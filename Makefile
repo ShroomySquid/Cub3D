@@ -6,7 +6,7 @@
 #    By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/30 09:59:24 by fbarrett          #+#    #+#              #
-#    Updated: 2024/02/23 09:32:58 by fbarrett         ###   ########.fr        #
+#    Updated: 2024/02/23 10:28:03 by fbarrett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ MY_LIBRARY	=	./Libft/
 
 MLX_LIBRARY	=	./MLX42/
 
-MY_SOURCES	=	src/main.c
+MY_FILES	=	main.c
+
+MY_SOURCES = $(addprefix $(SRC_DIRECT), $(MY_FILES))
 
 BONUS_SOURCES	=	
 
