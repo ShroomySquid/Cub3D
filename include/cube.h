@@ -26,10 +26,12 @@ typedef struct s_cube
 {
 	mlx_t			*mlx;
 	mlx_image_t		*player;
-	int				map;
+	char			**map;
+	int				mapfd;
 //	mlx_image_t		*map;
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;
+	mlx_image_t		*render;
 	mlx_image_t		*wall_img;
 	mlx_texture_t	*wall_tex;
 }				t_cube;
