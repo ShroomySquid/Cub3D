@@ -45,9 +45,9 @@ char	**render_map(t_cube *c)
 	char		**map;
 	t_list		*lst;
 
-	lst = ft_lstnew(get_next_line(c->map));
+	lst = ft_lstnew(get_next_line(c->mapfd));
 	while (ft_lstlast(lst)->content && i++)
-		ft_lstadd_back(&lst, ft_lstnew(get_next_line(c->map)));
+		ft_lstadd_back(&lst, ft_lstnew(get_next_line(c->mapfd)));
 	map = malloc((i + 1) * 8);
 	i = 0;
 	while (1 && lst->content)
