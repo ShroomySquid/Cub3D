@@ -6,21 +6,34 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/28 11:04:00 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:45:50 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
-int error_msg(char *failed_func)
-{
-	printf("Function %s failed\n", failed_func);
-	return (1);
-}
-
 int get_rgba(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
+}
+
+void	set_player(t_cube *cube)
+{
+	uint32_t x;
+	uint32_t y;
+
+	x = 0;
+	y = 0;
+	while (x < cube->player->width)
+	{
+		while (y < cube->player->height)
+		{
+			mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 255));
+			y++;
+		}
+		y = 0;
+		x++;
+	}
 }
 
 void	ft_player(void *param)
@@ -83,40 +96,57 @@ void	set_map(t_cube *cube, int *map)
 	//set_player(cube, map);
 }
 
+void	force_exit(t_cube *cube, char **map)
+{
+	if (map)
+		free_all(map);
+	if (cube)
+	{
+		free(cube);
+	}
+
+}
+
 int main(int argc, char **argv)
 {
-	t_cube *cube;
+	t_cube	*cube;
+	char	**map;
 
-	(void)argc;
-	(void)argv;
+	if (argc != 2)
+		return (error_argc());
 	cube = ft_calloc(sizeof(t_cube), 1);
 	if (!cube)
-		return (error_msg("ft_calloc"));
+		return (error_func("ft_calloc"));
+	map = render_map(cube, argv);
+	if (!map)
+		return (free(cube), 1);
+	if (check_map(map))
+		return (force_exit(cube, map), 1);
+	printf("salut\n");
 	cube->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
 	if (!cube->mlx)
-		return (error_msg("mlx_init"));
+		return (force_exit(cube, map),error_func("mlx_init"));
 	cube->wall_img = mlx_new_image(cube->mlx, WIDTH, HEIGHT);
 	if (!cube->wall_img)
-		return (error_msg("mlx_new_image"));		
+		return (force_exit(cube, map), error_func("mlx_new_image"));		
 	cube->floor_img = mlx_new_image(cube->mlx, 32, 32);
 	if (!cube->floor_img)
-		return (error_msg("mlx_new_image"));	
+		return (force_exit(cube, map), error_func("mlx_new_image"));	
 	cube->player = mlx_new_image(cube->mlx, 4, 4);
 	if (!cube->player)
-		return (error_msg("mlx_new_image"));	
-	cube->map = open(argv[1], O_RDONLY);
-	ft_memset(cube->player->pixels, 255, cube->player->width * cube->player->height * sizeof(int32_t));
+		return (force_exit(cube, map), error_func("mlx_new_image"));	
+	set_player(cube);
+	printf("salut2\n");
 	cube->wall_tex = mlx_load_png("./png/square-32(1).png");
 	cube->floor_tex = mlx_load_png("./png/square-32.png");
 	cube->wall_img = mlx_texture_to_image(cube->mlx, cube->wall_tex);
 	cube->floor_img = mlx_texture_to_image(cube->mlx, cube->floor_tex);
-	render_map(cube);
-	//mlx_image_to_window(cube->mlx, cube->map, 0, 0);
-	//mlx_image_to_window(cube->mlx, cube->random_img, 32, 32);
-	mlx_image_to_window(cube->mlx, cube->player, 64, 64);
+	renderloop(cube->mlx, map, cube);
+	printf("salut3\n");
 	mlx_loop_hook(cube->mlx, ft_general, cube);
 	mlx_loop_hook(cube->mlx, ft_player, cube);
 	mlx_loop(cube->mlx);
+	printf("salut4\n");
 	mlx_terminate(cube->mlx);
 	return (0);
 }

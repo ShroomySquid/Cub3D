@@ -6,13 +6,14 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2023/12/05 21:33:28 by lcouturi         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:35:54 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
-static char	**mapcopy(char **map)
+/*
+char	**mapcopy(char **map)
 {
 	char	**copy;
 	int		i;
@@ -20,7 +21,9 @@ static char	**mapcopy(char **map)
 	i = 0;
 	while (map[i])
 		i++;
-	copy = malloc((i + 1) * 8);
+	copy = ft_calloc((i + 1), sizeof(char));
+	if (copy)
+		return (NULL);
 	i = 0;
 	while (map[i])
 	{
@@ -30,8 +33,9 @@ static char	**mapcopy(char **map)
 	copy[i] = 0;
 	return (copy);
 }
+*/
 
-static int	*findchar(char **map, char c, char c2)
+static int	*findchar(char **map, char* str)
 {
 	int	mapx;
 	int	mapy;
@@ -44,7 +48,7 @@ static int	*findchar(char **map, char c, char c2)
 	{
 		while (map[mapy][mapx])
 		{
-			if (map[mapy][mapx] == c || map[mapy][mapx] == c2)
+			if (ft_strchr(str, map[mapy][mapx]))
 			{
 				pos[0] = mapx;
 				pos[1] = mapy;
@@ -55,11 +59,11 @@ static int	*findchar(char **map, char c, char c2)
 		mapy++;
 		mapx = 0;
 	}
-	pos[0] = -1;
-	pos[1] = -1;
-	return (pos);
+	free(pos);
+	return (NULL);
 }
 
+/*
 static int	checkpath(char **map)
 {
 	int	*pos;
@@ -77,39 +81,21 @@ static int	checkpath(char **map)
 		return (0);
 	}
 }
+*/
 
-static void	flag(char **map, int x, int y)
+int	check_map(char **map)
 {
-	map[y][x] = '3';
-	if (map[y + 1][x] == '0' || map[y + 1][x] == 'E' || map[y + 1][x] == 'C'
-		|| map[y + 1][x] == 'M')
-		map[y + 1][x] = '2';
-	if (map[y - 1][x] == '0' || map[y - 1][x] == 'E' || map[y - 1][x] == 'C'
-		|| map[y + 1][x] == 'M')
-		map[y - 1][x] = '2';
-	if (map[y][x + 1] == '0' || map[y][x + 1] == 'E' || map[y][x + 1] == 'C'
-		|| map[y + 1][x] == 'M')
-		map[y][x + 1] = '2';
-	if (map[y][x - 1] == '0' || map[y][x - 1] == 'E' || map[y][x - 1] == 'C'
-		|| map[y + 1][x] == 'M')
-		map[y][x - 1] = '2';
-}
-
-int	pathfinder(char **map)
-{
-	char	**copy;
+	//char	**copy;
 	int		*pos;
 
+	/*
 	copy = mapcopy(map);
-	pos = findchar(copy, 'P', 'P');
-	flag(copy, pos[0], pos[1]);
-	while (pos[0] != -1)
-	{
-		free(pos);
-		pos = findchar(copy, '2', '2');
-		if (pos[0] != -1)
-			flag(copy, pos[0], pos[1]);
-	}
+	if (!copy)
+		return (error_func("ft_calloc"));
+	*/
+	pos = findchar(map, "NSWE");
+	if (!pos)
+		return (error_map("Cannot find player character"));	
 	free(pos);
-	return (checkpath(copy));
+	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/30 09:59:24 by fbarrett          #+#    #+#              #
-#    Updated: 2024/02/23 10:28:03 by fbarrett         ###   ########.fr        #
+#    Updated: 2024/02/28 15:03:07 by fbarrett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ MY_LIBRARY	=	./libft/
 
 MLX_LIBRARY	=	./MLX42/
 
-MY_FILES	=	main.c pathfinder.c render_map.c
+MY_FILES	=	main.c check_map.c render_map.c error_msg.c
 
 MY_SOURCES = $(addprefix $(SRC_DIRECT), $(MY_FILES))
 
@@ -39,6 +39,8 @@ MLXLIBFLAGS	=	-L./MLX42/build/ -lmlx42 -lglfw -L"/Users/$(USER)/.brew/opt/glfw/l
 
 CCFLAGS	=	-Wall -Wextra -Werror
 
+DEBUG_FLAGS	=	-fsanitize=address
+
 all:	$(NAME)
 
 $(NAME): $(MLX_LIBRARY) $(O_DIRECT) $(MY_OBJECTS) $(MY_LIBRARY)
@@ -46,6 +48,12 @@ $(NAME): $(MLX_LIBRARY) $(O_DIRECT) $(MY_OBJECTS) $(MY_LIBRARY)
 	@cmake -S ./MLX42 -B ./MLX42/build
 	@make -C ./MLX42/build -j4
 	$(CC) $(CCFLAGS) -o $(NAME) $(MY_OBJECTS) $(LIBFLAGS) $(MLXLIBFLAGS)
+
+debug: $(MLX_LIBRARY) $(O_DIRECT) $(MY_OBJECTS) $(MY_LIBRARY)
+	@make -C $(MY_LIBRARY)
+	@cmake -S ./MLX42 -B ./MLX42/build
+	@make -C ./MLX42/build -j4
+	$(CC) $(CCFLAGS) $(DEBUG_FLAGS) -o $(NAME) $(MY_OBJECTS) $(LIBFLAGS) $(MLXLIBFLAGS)
 
 clean:
 	rm -f *.o
@@ -68,4 +76,4 @@ $(O_DIRECT):
 
 re:	fclean $(NAME)
 
-.PHONY:	all clean fclean re test
+.PHONY:	all clean fclean re test debug
