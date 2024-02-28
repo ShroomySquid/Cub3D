@@ -86,17 +86,6 @@ void	set_map(t_cube *cube, int *map)
 int main(int argc, char **argv)
 {
 	t_cube *cube;
-	int map[] = 
-	{
-		1, 1, 1, 1, 1, 1, 1, 1,
-		1, 2, 2, 2, 2, 2, 2, 1,
-		1, 2, 3, 2, 2, 2, 2, 1,
-		1, 2, 1, 1, 1, 2, 2, 1,
-		1, 2, 2, 2, 2, 2, 2, 1,
-		1, 2, 2, 2, 2, 1, 2, 1,
-		1, 2, 1, 2, 2, 1, 2, 1,
-		1, 1, 1, 1, 1, 1, 1, 1,
-	};
 
 	(void)argc;
 	(void)argv;
@@ -115,12 +104,13 @@ int main(int argc, char **argv)
 	cube->player = mlx_new_image(cube->mlx, 4, 4);
 	if (!cube->player)
 		return (error_msg("mlx_new_image"));	
+	cube->map = open(argv[1], O_RDONLY);
 	ft_memset(cube->player->pixels, 255, cube->player->width * cube->player->height * sizeof(int32_t));
 	cube->wall_tex = mlx_load_png("./png/square-32(1).png");
 	cube->floor_tex = mlx_load_png("./png/square-32.png");
 	cube->wall_img = mlx_texture_to_image(cube->mlx, cube->wall_tex);
 	cube->floor_img = mlx_texture_to_image(cube->mlx, cube->floor_tex);
-	set_map(cube, map);
+	render_map(cube);
 	//mlx_image_to_window(cube->mlx, cube->map, 0, 0);
 	//mlx_image_to_window(cube->mlx, cube->random_img, 32, 32);
 	mlx_image_to_window(cube->mlx, cube->player, 64, 64);

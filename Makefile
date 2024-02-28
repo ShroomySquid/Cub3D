@@ -16,11 +16,11 @@ O_DIRECT	=	./bin/
 
 SRC_DIRECT	=	src/
 
-MY_LIBRARY	=	./Libft/
+MY_LIBRARY	=	./libft/
 
 MLX_LIBRARY	=	./MLX42/
 
-MY_FILES	=	main.c
+MY_FILES	=	main.c pathfinder.c render_map.c
 
 MY_SOURCES = $(addprefix $(SRC_DIRECT), $(MY_FILES))
 
