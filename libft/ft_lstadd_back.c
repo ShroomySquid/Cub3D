@@ -13,17 +13,17 @@
 #include "libft.h"
 
 /* Fonction qui met une nouvelle node à la fin de la liste chainée */
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_list **lst, t_list *newv)
 {
 	t_list	*last_node;
 
-	if (!lst || !new)
+	if (!lst || !newv)
 		return ;
 	last_node = ft_lstlast(*lst);
 	if (!last_node)
 	{
-		*lst = new;
+		*lst = newv;
 		return ;
 	}
-	last_node->next = new;
+	last_node->next = newv;
 }

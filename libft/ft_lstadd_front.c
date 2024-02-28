@@ -16,10 +16,10 @@
  * Fonction qui rajoute une nouvel élément au début de la liste puis
  * met sur next l'ancien premier élément de la liste
 */
-void	ft_lstadd_front(t_list **lst, t_list *new)
+void	ft_lstadd_front(t_list **lst, t_list *newv)
 {
-	if (!lst || !new)
+	if (!lst || !newv)
 		return ;
-	new->next = *lst;
-	*lst = new;
+	newv->next = *lst;
+	*lst = newv;
 }

@@ -25,7 +25,7 @@ int get_rgba(int r, int g, int b, int a)
 
 void	ft_player(void *param)
 {
-	t_cube *cube;
+	t_cube	*cube;
 
 	cube = param;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_W))
@@ -48,7 +48,7 @@ void	ft_player(void *param)
 
 void	ft_general(void *param)
 {
-	t_cube *cube;
+	t_cube	*cube;
 
 	cube = param;	
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_ESCAPE))
@@ -85,7 +85,7 @@ void	set_map(t_cube *cube, int *map)
 
 int main(int argc, char **argv)
 {
-	t_cube *cube;
+	t_cube	*cube;
 
 	(void)argc;
 	(void)argv;
