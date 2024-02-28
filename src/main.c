@@ -55,10 +55,28 @@ void	ft_general(void *param)
 		mlx_close_window(cube->mlx);		
 }
 
-// void	ft_getscale(t_cube *cube)
-// {
-//
-// }
+int	touch_tile(char **map, char c, int x, int y)
+{
+	int	touching;
+
+	touching = 0;
+	if (map[y / 32][x / 32] == c)
+		touching = 1;
+	return (touching);
+}
+
+int	ft_getscale(t_cube *cube, int x, int y)
+{
+	int	xinit;
+	int	yinit;
+
+	yinit = y;
+	xinit = x;
+	while (y--)
+		if (touch_tile(cube->map, '1', x, y))
+			return (yinit - y);
+	return (HEIGHT - (abs(yinit - y)));
+}
 
 void	ft_render(void *param)
 {
@@ -73,9 +91,9 @@ void	ft_render(void *param)
 	while (++x < WIDTH)
 	{
 		y = -1;
+		scale = ft_getscale(cube, cube->player->instances[0].x + x / 32, cube->player->instances[0].y);
 		while (++y < HEIGHT)
 		{
-			scale = 384;
 			if (y < HEIGHT / 2 - scale / 2 || y >= HEIGHT / 2 + scale / 2)
 			{
 				if (y < HEIGHT / 2)
@@ -90,6 +108,7 @@ void	ft_render(void *param)
 	if (!done)
 	{
 		mlx_image_to_window(cube->mlx, cube->render, 0, 0);
+		mlx_set_instance_depth(&cube->render->instances[0], 0);
 		done = true;
 	}
 }
