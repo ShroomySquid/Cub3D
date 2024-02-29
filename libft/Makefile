@@ -6,7 +6,7 @@
 #    By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/30 09:59:24 by fbarrett          #+#    #+#              #
-#    Updated: 2023/12/09 11:04:20 by fbarrett         ###   ########.fr        #
+#    Updated: 2024/02/29 11:14:31 by fbarrett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ CC	=	gcc
 
 LIBFLAGS = -L. -lft -I.
 
-CCFLAGS	=	-Wall -Wextra -Werror
+CCFLAGS	=	-Wall -Wextra -Werror -g
 
 all:	$(NAME)
 

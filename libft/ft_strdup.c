@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 17:35:38 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/07 13:01:17 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/29 11:14:07 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strdup(const char *src)
 		return (NULL);
 	str_length = ft_strlen(src);
 	a = 0;
-	new_str = malloc(str_length + 1);
+	new_str = ft_calloc(str_length + 1, sizeof(char));
 	if (new_str == NULL)
 		return (NULL);
 	while (a < str_length)

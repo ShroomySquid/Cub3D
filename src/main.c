@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/28 15:45:50 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/29 13:38:21 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,8 @@ void	force_exit(t_cube *cube, char **map)
 	if (map)
 		free_all(map);
 	if (cube)
-	{
 		free(cube);
-	}
-
+	mlx_terminate(cube->mlx);
 }
 
 int main(int argc, char **argv)
@@ -122,25 +120,31 @@ int main(int argc, char **argv)
 		return (free(cube), 1);
 	if (check_map(map))
 		return (force_exit(cube, map), 1);
-	printf("salut\n");
-	cube->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
+	printf("salut Width: %d, Height: %d\n", WIDTH, HEIGHT);
+	cube->mlx = mlx_init(WIDTH, HEIGHT, "zzzz", true);
 	if (!cube->mlx)
-		return (force_exit(cube, map),error_func("mlx_init"));
-	cube->wall_img = mlx_new_image(cube->mlx, WIDTH, HEIGHT);
+		return (force_exit(cube, map), error_func("mlx_init"));
+	printf("salut 1.1\n");
+	cube->wall_img = mlx_new_image(cube->mlx, 32, 32);
 	if (!cube->wall_img)
-		return (force_exit(cube, map), error_func("mlx_new_image"));		
+		return (force_exit(cube, map), error_func("mlx_new_image"));
+	printf("salut 1.2\n");
 	cube->floor_img = mlx_new_image(cube->mlx, 32, 32);
 	if (!cube->floor_img)
 		return (force_exit(cube, map), error_func("mlx_new_image"));	
+	printf("salut 1.3\n");
 	cube->player = mlx_new_image(cube->mlx, 4, 4);
 	if (!cube->player)
-		return (force_exit(cube, map), error_func("mlx_new_image"));	
+		return (force_exit(cube, map), error_func("mlx_new_image"));
+	printf("salut 1.5\n");
 	set_player(cube);
 	printf("salut2\n");
 	cube->wall_tex = mlx_load_png("./png/square-32(1).png");
 	cube->floor_tex = mlx_load_png("./png/square-32.png");
+	printf("salut 2.2\n");
 	cube->wall_img = mlx_texture_to_image(cube->mlx, cube->wall_tex);
 	cube->floor_img = mlx_texture_to_image(cube->mlx, cube->floor_tex);
+	printf("salut 2.3\n");
 	renderloop(cube->mlx, map, cube);
 	printf("salut3\n");
 	mlx_loop_hook(cube->mlx, ft_general, cube);

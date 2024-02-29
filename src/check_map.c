@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/02/28 15:35:54 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/29 12:07:38 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,33 @@ char	**mapcopy(char **map)
 }
 */
 
-static int	*findchar(char **map, char* str)
+int	findchar(char **map, char* str)
 {
 	int	mapx;
 	int	mapy;
-	int	*pos;
+	//int	*pos;
 
 	mapx = 0;
 	mapy = 0;
-	pos = malloc(sizeof(int) * 2);
+	//pos = malloc(sizeof(int) * 2);
 	while (map[mapy])
 	{
 		while (map[mapy][mapx])
 		{
 			if (ft_strchr(str, map[mapy][mapx]))
 			{
-				pos[0] = mapx;
-				pos[1] = mapy;
-				return (pos);
+				return (1);
+				//pos[0] = mapx;
+				//pos[1] = mapy;
+				//return (pos);
 			}
 			mapx++;
 		}
 		mapy++;
 		mapx = 0;
 	}
-	free(pos);
-	return (NULL);
+	//free(pos);
+	return (0);
 }
 
 /*
@@ -86,16 +87,16 @@ static int	checkpath(char **map)
 int	check_map(char **map)
 {
 	//char	**copy;
-	int		*pos;
+	//int		*pos;
 
 	/*
 	copy = mapcopy(map);
 	if (!copy)
 		return (error_func("ft_calloc"));
 	*/
-	pos = findchar(map, "NSWE");
-	if (!pos)
+	//pos = findchar(map, "NSWE");
+	if (!findchar(map, "NSWE"))
 		return (error_map("Cannot find player character"));	
-	free(pos);
+	//free(pos);
 	return (0);
 }
