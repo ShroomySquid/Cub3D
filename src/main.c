@@ -60,28 +60,63 @@ int	touch_tile(char **map, char c, int x, int y)
 	return (map[y / 32][x / 32] == c);
 }
 
-int	ft_getscale(t_cube *cube, float x, float screenx, int y)
+int	ft_getscale(t_cube *cube, float screenx)
 {
+	float	x;
 	float	xinit;
+	int		y;
 	int		yinit;
 
-	screenx -= 1024.0 / 2.0;
-	x -= 16;
+	screenx -= (float)HEIGHT / 2;
+	x = cube->player->instances[0].x + screenx / 32;
+	y = cube->player->instances[0].y;
 	screenx /= 512.0;
-	printf("%f\n", screenx);
 	yinit = y;
 	xinit = x;
 	while (y--)
 	{
-		x += screenx;
+		x += screenx / 8;
 		if (touch_tile(cube->map, '1', x, y))
-			return (yinit - y);
+			break ;
 	}
-	return (HEIGHT - (abs(yinit - y) + abs((int)xinit - (int)x)));
+	return (HEIGHT - abs(yinit - y) * 4);
+}
+
+int	get_color(t_cube *cube, float screenx)
+{
+	int		color;
+	float	x;
+	float	xinit;
+	int		y;
+	int		yinit;
+
+	color = get_rgba(0x00, 0xFF, 0xFF, 0xFF);
+	screenx -= (float)HEIGHT / 2;
+	x = cube->player->instances[0].x + screenx / 32;
+	y = cube->player->instances[0].y;
+	screenx /= 512.0;
+	yinit = y;
+	xinit = x;
+	while (y--)
+	{
+		x += screenx / 8;
+		if (touch_tile(cube->map, '1', x, y))
+		{
+			if (y % 32 == 31)
+				color = get_rgba(0xFF, 0xFF, 0x00, 0xFF);
+			else if ((int)x % 32 == 31)
+				color = get_rgba(0xFF, 0x00, 0xFF, 0xFF);
+			else
+				color = get_rgba(0x00, 0xFF, 0xFF, 0xFF);
+			break ;
+		}
+	}
+	return (color);
 }
 
 void	ft_render(void *param)
 {
+	int			color;
 	t_cube		*cube;
 	static bool	done = false;
 	int			x;
@@ -93,7 +128,8 @@ void	ft_render(void *param)
 	while (++x < WIDTH)
 	{
 		y = -1;
-		scale = HEIGHT - ft_getscale(cube, cube->player->instances[0].x + (float)x / 32, (float)x, cube->player->instances[0].y) * 4;
+		color = get_color(cube, (float)x);
+		scale = ft_getscale(cube, (float)x);
 		while (++y < HEIGHT)
 		{
 			if (y < HEIGHT / 2 - scale / 2 || y >= HEIGHT / 2 + scale / 2)
@@ -104,7 +140,7 @@ void	ft_render(void *param)
 					mlx_put_pixel(cube->render, x, y, get_rgba(0x00, 0x00, 0xFF, 0xFF));
 			}
 			else
-				mlx_put_pixel(cube->render, x, y, get_rgba(0x00, 0xFF, 0x00, 0xFF));
+				mlx_put_pixel(cube->render, x, y, color);
 		}
 	}
 	if (!done)

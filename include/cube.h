@@ -14,6 +14,7 @@
 # define CUBE_H
 # include "../libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
+#include <math.h>
 # include <stdio.h>
 # ifndef WIDTH
 #  define WIDTH 1024
