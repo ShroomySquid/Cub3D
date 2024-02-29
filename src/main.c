@@ -57,25 +57,27 @@ void	ft_general(void *param)
 
 int	touch_tile(char **map, char c, int x, int y)
 {
-	int	touching;
-
-	touching = 0;
-	if (map[y / 32][x / 32] == c)
-		touching = 1;
-	return (touching);
+	return (map[y / 32][x / 32] == c);
 }
 
-int	ft_getscale(t_cube *cube, int x, int y)
+int	ft_getscale(t_cube *cube, float x, float screenx, int y)
 {
-	int	xinit;
-	int	yinit;
+	float	xinit;
+	int		yinit;
 
+	screenx -= 1024.0 / 2.0;
+	x -= 16;
+	screenx /= 512.0;
+	printf("%f\n", screenx);
 	yinit = y;
 	xinit = x;
 	while (y--)
+	{
+		x += screenx;
 		if (touch_tile(cube->map, '1', x, y))
 			return (yinit - y);
-	return (HEIGHT - (abs(yinit - y)));
+	}
+	return (HEIGHT - (abs(yinit - y) + abs((int)xinit - (int)x)));
 }
 
 void	ft_render(void *param)
@@ -91,7 +93,7 @@ void	ft_render(void *param)
 	while (++x < WIDTH)
 	{
 		y = -1;
-		scale = HEIGHT / 2 - ft_getscale(cube, cube->player->instances[0].x + x / 32, cube->player->instances[0].y) * 4;
+		scale = HEIGHT - ft_getscale(cube, cube->player->instances[0].x + (float)x / 32, (float)x, cube->player->instances[0].y) * 4;
 		while (++y < HEIGHT)
 		{
 			if (y < HEIGHT / 2 - scale / 2 || y >= HEIGHT / 2 + scale / 2)
@@ -111,34 +113,6 @@ void	ft_render(void *param)
 		mlx_set_instance_depth(&cube->render->instances[0], 0);
 		done = true;
 	}
-}
-
-void	set_map(t_cube *cube, int *map)
-{
-	uint32_t x;
-	uint32_t y;
-	int i;
-	uint32_t max_coord;
-
-	x = 0;
-	y = 0;
-	i = 0;
-	max_coord = 8;
-	while (x < max_coord && map[i])
-	{
-		while (y < max_coord && map[i])
-		{
-			if (map[i] == 1)
-				mlx_image_to_window(cube->mlx, cube->wall_img, (y * 32), (x * 32));
-			if (map[i] == 2 || map[i] == 3)
-				mlx_image_to_window(cube->mlx, cube->floor_img, (y * 32), (x * 32));
-			y += 1;
-			i += 1;
-		}
-		y = 0;
-		x += 1;
-	}
-	//set_player(cube, map);
 }
 
 int main(int argc, char **argv)
