@@ -91,7 +91,7 @@ void	ft_render(void *param)
 	while (++x < WIDTH)
 	{
 		y = -1;
-		scale = ft_getscale(cube, cube->player->instances[0].x + x / 32, cube->player->instances[0].y);
+		scale = HEIGHT / 2 - ft_getscale(cube, cube->player->instances[0].x + x / 32, cube->player->instances[0].y) * 4;
 		while (++y < HEIGHT)
 		{
 			if (y < HEIGHT / 2 - scale / 2 || y >= HEIGHT / 2 + scale / 2)
