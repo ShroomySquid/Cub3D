@@ -52,7 +52,7 @@ void	ft_general(void *param)
 
 	cube = param;	
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(cube->mlx);		
+		mlx_close_window(cube->mlx);
 }
 
 int	touch_tile(char **map, char c, int x, int y)
@@ -78,7 +78,6 @@ int	*ft_getscale(t_cube *cube, float screenx)
 	{
 		x += screenx / 8;
 		if (touch_tile(cube->map, '1', x, y))
-		if (touch_tile(cube->map, '1', x, y))
 		{
 			if (y % 32 == 31)
 				ret[1] = get_rgba(0xFF, 0xFF, 0x00, 0xFF);
@@ -89,7 +88,7 @@ int	*ft_getscale(t_cube *cube, float screenx)
 			break ;
 		}
 	}
-	ret[0] = HEIGHT - abs(yinit - y) * 4;
+	ret[0] = HEIGHT - abs(yinit - y) * 2;
 	return (ret);
 }
 
