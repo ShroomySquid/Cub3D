@@ -1,9 +1,9 @@
-NE
-NW
-SE
-SW
+NO /lib/
+SO /home/
+EA /home/
+WE /home/
 F 255, 0, 0
-R 255, 0, 0
+C 255, 0, 0
 11111
 10001
 10001   11111

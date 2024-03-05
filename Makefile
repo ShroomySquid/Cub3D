@@ -20,7 +20,7 @@ MY_LIBRARY	=	./libft/
 
 MLX_LIBRARY	=	./MLX42/
 
-MY_FILES	=	main.c check_map.c render_map.c error_msg.c	check_textures.c
+MY_FILES	=	main.c check_map.c render_map.c error_msg.c	check_textures.c render.c
 
 MY_SOURCES = $(addprefix $(SRC_DIRECT), $(MY_FILES))
 

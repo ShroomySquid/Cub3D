@@ -50,6 +50,8 @@ typedef struct s_cube
 	int				map_nbr_line;
 }				t_cube;
 
+void	ft_render(void *param);
+int32_t	get_rgba(int r, int g, int b, int a);
 char	**render_map(t_cube *c, char **argv);
 void	renderloop(mlx_t *mlx, char **map, t_cube *c);
 int		check_map(char **map);
