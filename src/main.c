@@ -44,6 +44,12 @@ void	ft_player(void *param)
 		cube->player->instances[0].x += 2;
 	else if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
 		cube->player->instances[0].x += 2;
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_Q))
+	{
+		if (cube->rotation++ >= 361)
+			cube->rotation = 1;
+		printf("%d\n", cube->rotation);
+	}
 }
 
 void	ft_general(void *param)
@@ -60,13 +66,25 @@ int	touch_tile(char **map, char c, int x, int y)
 	return (map[y / 32][x / 32] == c);
 }
 
+void	step(float *x, float *y, int rotation)
+{
+	(void)*x;
+	(void)rotation;
+	if (rotation < 90.0)
+		*y -= (1.0 / (float)rotation);
+	else if (rotation > 270.0)
+		*y -= (1.0 / ((float)rotation - 180.0 - (rotation - 270.0)));
+	else if (rotation < 181.0)
+		*y += (1.0 / (float)rotation - 90.0);
+}
+
 int	*ft_getscale(t_cube *cube, float screenx)
 {
 	static int	ret[2];
 	float		x;
 	float		xinit;
-	int			y;
-	int			yinit;
+	float		y;
+	float		yinit;
 
 	screenx -= (float)HEIGHT / 2;
 	x = cube->player->instances[0].x + screenx / 32;
@@ -74,12 +92,13 @@ int	*ft_getscale(t_cube *cube, float screenx)
 	screenx /= 512.0;
 	yinit = y;
 	xinit = x;
-	while (y--)
+	while (y)
 	{
+		step(&x, &y, cube->rotation);
 		x += screenx / 8;
 		if (touch_tile(cube->map, '1', x, y))
 		{
-			if (y % 32 == 31)
+			if (fmod(y, 32) == 31)
 				ret[1] = get_rgba(0xFF, 0xFF, 0x00, 0xFF);
 			else if ((int)x % 32 == 31)
 				ret[1] = get_rgba(0xFF, 0x00, 0xFF, 0xFF);
@@ -88,7 +107,7 @@ int	*ft_getscale(t_cube *cube, float screenx)
 			break ;
 		}
 	}
-	ret[0] = HEIGHT - abs(yinit - y) * 2;
+	ret[0] = HEIGHT - fabs(yinit - y) * 2;
 	return (ret);
 }
 
@@ -136,6 +155,7 @@ int main(int argc, char **argv)
 	cube = ft_calloc(sizeof(t_cube), 1);
 	if (!cube)
 		return (error_msg("ft_calloc"));
+	cube->rotation = 1;
 	cube->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
 	if (!cube->mlx)
 		return (error_msg("mlx_init"));

@@ -52,6 +52,12 @@ clean:
 	rm -rf *.dSYM
 	rm -f $(O_DIRECT)*.o
 
+debug: $(MLX_LIBRARY) $(O_DEBUG) $(MY_OBJECTS) $(MY_LIBRARY)
+	@make -C $(MY_LIBRARY)
+	@cmake -S ./MLX42 -B ./MLX42/build
+	@make -C ./MLX42/build -j4
+	$(CC) $(CCFLAGS) -g -fsanitize=address -o $(NAME) $(MY_OBJECTS) $(LIBFLAGS) $(MLXLIBFLAGS)
+
 fclean:	clean
 	rm -f $(NAME)
 	rm -rf $(O_DIRECT)
@@ -64,6 +70,12 @@ $(O_DIRECT)%.o: src/%.c
 	$(CC) $(CCFLAGS) -o $@ -c $<
 
 $(O_DIRECT):
+	mkdir -p -m 777 $(O_DIRECT)
+
+$(O_DEBUG)%.o: src/%.c
+	$(CC) $(CCFLAGS) -g -fsanitize=address -o $@ -c $<
+
+$(O_DEBUG):
 	mkdir -p -m 777 $(O_DIRECT)
 
 re:	fclean $(NAME)

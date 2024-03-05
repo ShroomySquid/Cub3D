@@ -33,6 +33,7 @@ typedef struct s_cube
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;
 	mlx_image_t		*render;
+	int				rotation;
 	mlx_image_t		*wall_img;
 	mlx_texture_t	*wall_tex;
 }				t_cube;
