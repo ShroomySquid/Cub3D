@@ -14,6 +14,7 @@
 # define CUBE_H
 # include "../libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
+#include <math.h>
 # include <stdio.h>
 # ifndef WIDTH
 #  define WIDTH 1024
@@ -38,9 +39,12 @@ typedef struct s_cube
 {
 	mlx_t			*mlx;
 	mlx_image_t		*player;
+	char			**map;
 	t_map			*map;
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;
+	mlx_image_t		*render;
+	int				rotation;
 	mlx_image_t		*wall_img;
 	mlx_texture_t	*wall_tex;
 	int				map_nbr_line;
