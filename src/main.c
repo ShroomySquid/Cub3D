@@ -48,6 +48,14 @@ void	ft_player(void *param)
 	{
 		if (cube->rotation++ >= 361)
 			cube->rotation = 1;
+		if (cube->rotation < 90.0)
+			printf("%f\n", 1.0 / 90.0 * (90.0 - (float)cube->rotation));
+		else if (cube->rotation < 181.0)
+			printf("%f\n", (1.0 / 90.0 * (float)cube->rotation) - 1);
+		else if (cube->rotation < 270.0)
+			printf("%f\n", (1.0 / 90.0 * (90.0 - (float)cube->rotation - 180.0)) + 4.0);
+		else
+			printf("%f\n", (1.0 / 90.0 * ((float)cube->rotation - 180.0)) - 1);
 		printf("%d\n", cube->rotation);
 	}
 }
@@ -70,12 +78,16 @@ void	step(float *x, float *y, int rotation)
 {
 	(void)*x;
 	(void)rotation;
-	if (rotation < 90.0)
-		*y -= (1.0 / (float)rotation);
-	else if (rotation > 270.0)
-		*y -= (1.0 / ((float)rotation - 180.0 - (rotation - 270.0)));
+	if (rotation == 90 || rotation == 270)
+		*y -= 1;
+	else if (rotation < 90.0)
+		*y -= 1.0 / 90.0 * (90.0 - (float)rotation);
 	else if (rotation < 181.0)
-		*y += (1.0 / (float)rotation - 90.0);
+		*y += (1.0 / 90.0 * (float)rotation) - 1;
+	else if (rotation < 270.0)
+		*y += (1.0 / 90.0 * (90.0 - (float)rotation - 180.0)) + 4.0;
+	else
+		*y -= (1.0 / 90.0 * ((float)rotation - 180.0)) - 1;
 }
 
 int	*ft_getscale(t_cube *cube, float screenx)
@@ -98,7 +110,7 @@ int	*ft_getscale(t_cube *cube, float screenx)
 		x += screenx / 8;
 		if (touch_tile(cube->map, '1', x, y))
 		{
-			if (fmod(y, 32) == 31)
+			if ((int)y % 32 == 31)
 				ret[1] = get_rgba(0xFF, 0xFF, 0x00, 0xFF);
 			else if ((int)x % 32 == 31)
 				ret[1] = get_rgba(0xFF, 0x00, 0xFF, 0xFF);
