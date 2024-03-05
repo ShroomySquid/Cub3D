@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/05 17:48:34 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:11:57 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,20 @@ typedef struct	s_map
 	char	*EA;
 	char	*floor;
 	char	*roof;
+	char	**map;
 }				t_map;
 
 typedef struct s_cube
 {
 	mlx_t			*mlx;
 	mlx_image_t		*player;
-	char			**map;
-	t_map			*map;
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;
 	mlx_image_t		*render;
 	int				rotation;
 	mlx_image_t		*wall_img;
 	mlx_texture_t	*wall_tex;
+	t_map			*map;
 	int				map_nbr_line;
 }				t_cube;
 
