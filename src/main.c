@@ -128,7 +128,7 @@ int	*ft_getscale(t_cube *cube, float screenx)
 			break ;
 		}
 	}
-	ret[0] = HEIGHT - fabs(yinit - y) * 2;
+	ret[0] = HEIGHT - 2 * sqrt(fabs(yinit - y) * fabs(yinit - y) + fabs(xinit - x) * fabs(xinit - x));
 	return (ret);
 }
 
