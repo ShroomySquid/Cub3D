@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 12:28:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2023/10/25 13:21:22 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/29 10:41:33 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_list	*ft_lstlast(t_list *lst)
 
 	if (!lst)
 		return (0);
-	if (!lst)
+	if (!lst->next)
 		return (lst);
 	temp_list = lst;
 	while (temp_list->next)

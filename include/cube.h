@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/28 11:04:15 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/05 17:48:34 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,39 @@
 #  define HEIGHT 1024
 # endif
 
+typedef struct	s_map
+{
+	int 	fd;
+	int		nbr_line;
+	char	*NO;
+	char 	*SO;
+	char	*WE;
+	char	*EA;
+	char	*floor;
+	char	*roof;
+}				t_map;
+
 typedef struct s_cube
 {
 	mlx_t			*mlx;
 	mlx_image_t		*player;
 	char			**map;
-	int				mapfd;
-//	mlx_image_t		*map;
+	t_map			*map;
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;
 	mlx_image_t		*render;
 	int				rotation;
 	mlx_image_t		*wall_img;
 	mlx_texture_t	*wall_tex;
+	int				map_nbr_line;
 }				t_cube;
 
-char	**render_map(t_cube *c);
+char	**render_map(t_cube *c, char **argv);
+void	renderloop(mlx_t *mlx, char **map, t_cube *c);
+int		check_map(char **map);
+int		error_func(char *failed_func);
+int		error_argc(void);
+int		error_map(char *str);
+char	*check_textures(t_cube *cube);
 
 #endif
