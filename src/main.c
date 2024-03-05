@@ -44,18 +44,20 @@ void	ft_player(void *param)
 		cube->player->instances[0].x += 2;
 	else if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
 		cube->player->instances[0].x += 2;
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_Q))
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_Q) || mlx_is_key_down(cube->mlx, MLX_KEY_E))
 	{
-		if (cube->rotation++ >= 361)
+		if (mlx_is_key_down(cube->mlx, MLX_KEY_E) && cube->rotation++ >= 361)
 			cube->rotation = 1;
+		else if (mlx_is_key_down(cube->mlx, MLX_KEY_Q) && cube->rotation-- <= 0)
+			cube->rotation = 361;
 		if (cube->rotation < 90.0)
-			printf("%f\n", 1.0 / 90.0 * (90.0 - (float)cube->rotation));
+			printf("%f\n", 1.0 / 90.0 * (float)cube->rotation);
 		else if (cube->rotation < 181.0)
-			printf("%f\n", (1.0 / 90.0 * (float)cube->rotation) - 1);
+			printf("%f\n", 2.0 - (1.0 / 90.0 * (float)cube->rotation));
 		else if (cube->rotation < 270.0)
-			printf("%f\n", (1.0 / 90.0 * (90.0 - (float)cube->rotation - 180.0)) + 4.0);
+			printf("%f\n", 1.0 / 90.0 * ((float)cube->rotation - 180.0));
 		else
-			printf("%f\n", (1.0 / 90.0 * ((float)cube->rotation - 180.0)) - 1);
+			printf("%f\n", 2.0 - (1.0 / 90.0 * ((float)cube->rotation - 180.0)));
 		printf("%d\n", cube->rotation);
 	}
 }
@@ -74,20 +76,28 @@ int	touch_tile(char **map, char c, int x, int y)
 	return (map[y / 32][x / 32] == c);
 }
 
-void	step(float *x, float *y, int rotation)
+void	step(float *x, float *y, float rotation)
 {
-	(void)*x;
-	(void)rotation;
-	if (rotation == 90 || rotation == 270)
-		*y -= 1;
-	else if (rotation < 90.0)
-		*y -= 1.0 / 90.0 * (90.0 - (float)rotation);
-	else if (rotation < 181.0)
-		*y += (1.0 / 90.0 * (float)rotation) - 1;
+	if (rotation < 90.0)
+	{
+		*y -= 1.0 / 90.0 * (90.0 - rotation);
+		*x += 1.0 / 90.0 * rotation;
+	}
+	else if (rotation < 180.0)
+	{
+		*y += (1.0 / 90.0 * rotation) - 1.0;
+		*x += 2.0 - (1.0 / 90.0 * rotation);
+	}
 	else if (rotation < 270.0)
-		*y += (1.0 / 90.0 * (90.0 - (float)rotation - 180.0)) + 4.0;
+	{
+		*y += (1.0 / 90.0 * (90.0 - rotation - 180.0)) + 4.0;
+		*x -= 1.0 / 90.0 * (rotation - 180.0);
+	}
 	else
-		*y -= (1.0 / 90.0 * ((float)rotation - 180.0)) - 1;
+	{
+		*y -= (1.0 / 90.0 * (rotation - 180.0)) - 1.0;
+		*x -= 2.0 - (1.0 / 90.0 * (rotation - 180.0));
+	}
 }
 
 int	*ft_getscale(t_cube *cube, float screenx)
@@ -104,10 +114,9 @@ int	*ft_getscale(t_cube *cube, float screenx)
 	screenx /= 512.0;
 	yinit = y;
 	xinit = x;
-	while (y)
+	while (1)
 	{
-		step(&x, &y, cube->rotation);
-		x += screenx / 8;
+		step(&x, &y, (float)cube->rotation + screenx * 16.0);
 		if (touch_tile(cube->map, '1', x, y))
 		{
 			if ((int)y % 32 == 31)
