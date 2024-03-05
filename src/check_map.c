@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/02/29 12:07:38 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/05 17:21:34 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**mapcopy(char **map)
 }
 */
 
-int	findchar(char **map, char* str)
+int	find_coord(char **map, char* str)
 {
 	int	mapx;
 	int	mapy;
@@ -86,17 +86,7 @@ static int	checkpath(char **map)
 
 int	check_map(char **map)
 {
-	//char	**copy;
-	//int		*pos;
-
-	/*
-	copy = mapcopy(map);
-	if (!copy)
-		return (error_func("ft_calloc"));
-	*/
-	//pos = findchar(map, "NSWE");
-	if (!findchar(map, "NSWE"))
+	if (!find_coord(map, "NSWE"))
 		return (error_map("Cannot find player character"));	
-	//free(pos);
 	return (0);
 }
