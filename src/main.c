@@ -44,22 +44,10 @@ void	ft_player(void *param)
 		cube->player->instances[0].x += 2;
 	else if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
 		cube->player->instances[0].x += 2;
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_Q) || mlx_is_key_down(cube->mlx, MLX_KEY_E))
-	{
-		if (mlx_is_key_down(cube->mlx, MLX_KEY_E) && cube->rotation++ >= 361)
-			cube->rotation = 1;
-		else if (mlx_is_key_down(cube->mlx, MLX_KEY_Q) && cube->rotation-- <= 0)
-			cube->rotation = 361;
-		if (cube->rotation < 90.0)
-			printf("%f\n", 1.0 / 90.0 * (float)cube->rotation);
-		else if (cube->rotation < 181.0)
-			printf("%f\n", 2.0 - (1.0 / 90.0 * (float)cube->rotation));
-		else if (cube->rotation < 270.0)
-			printf("%f\n", 1.0 / 90.0 * ((float)cube->rotation - 180.0));
-		else
-			printf("%f\n", 2.0 - (1.0 / 90.0 * ((float)cube->rotation - 180.0)));
-		printf("%d\n", cube->rotation);
-	}
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_E) && cube->rotation++ >= 361)
+		cube->rotation = 1;
+	else if (mlx_is_key_down(cube->mlx, MLX_KEY_Q) && cube->rotation-- <= 0)
+		cube->rotation = 361;
 }
 
 void	ft_general(void *param)
@@ -108,15 +96,15 @@ int	*ft_getscale(t_cube *cube, float screenx)
 	float		y;
 	float		yinit;
 
-	screenx -= (float)HEIGHT / 2;
-	x = cube->player->instances[0].x + screenx / 32;
+	screenx -= (float)HEIGHT / 2.0;
+	x = cube->player->instances[0].x + screenx / 16.0;
 	y = cube->player->instances[0].y;
 	screenx /= 512.0;
 	yinit = y;
 	xinit = x;
 	while (1)
 	{
-		step(&x, &y, (float)cube->rotation + screenx * 16.0);
+		step(&x, &y, (float)cube->rotation + screenx * 8.0);
 		if (touch_tile(cube->map, '1', x, y))
 		{
 			if ((int)y % 32 == 31)
@@ -128,7 +116,7 @@ int	*ft_getscale(t_cube *cube, float screenx)
 			break ;
 		}
 	}
-	ret[0] = HEIGHT - 2 * sqrt(fabs(yinit - y) * fabs(yinit - y) + fabs(xinit - x) * fabs(xinit - x));
+	ret[0] = HEIGHT - 2.0 * sqrt(fabs(yinit - y) * fabs(yinit - y) + fabs(xinit - x) * fabs(xinit - x));
 	return (ret);
 }
 
@@ -172,7 +160,6 @@ int main(int argc, char **argv)
 	t_cube	*cube;
 
 	(void)argc;
-	(void)argv;
 	cube = ft_calloc(sizeof(t_cube), 1);
 	if (!cube)
 		return (error_msg("ft_calloc"));
@@ -199,8 +186,6 @@ int main(int argc, char **argv)
 	cube->wall_img = mlx_texture_to_image(cube->mlx, cube->wall_tex);
 	cube->floor_img = mlx_texture_to_image(cube->mlx, cube->floor_tex);
 	cube->map = render_map(cube);
-	//mlx_image_to_window(cube->mlx, cube->map, 0, 0);
-	//mlx_image_to_window(cube->mlx, cube->random_img, 32, 32);
 	mlx_image_to_window(cube->mlx, cube->player, 64, 64);
 	mlx_loop_hook(cube->mlx, ft_general, cube);
 	mlx_loop_hook(cube->mlx, ft_player, cube);
