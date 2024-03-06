@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/05 18:11:57 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/06 11:17:08 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ typedef struct	s_map
 	char 	*SO;
 	char	*WE;
 	char	*EA;
-	char	*floor;
-	char	*roof;
+	int32_t	floor;
+	int32_t	roof;
 	char	**map;
 }				t_map;
 
@@ -58,6 +58,9 @@ int		check_map(char **map);
 int		error_func(char *failed_func);
 int		error_argc(void);
 int		error_map(char *str);
-char	*check_textures(t_cube *cube);
+int		check_textures(t_cube *cube);
+int		is_whitespace(char c);
+int		is_whitespace_str(char *str);
+int		is_digit_str(char *str);
 
 #endif

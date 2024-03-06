@@ -6,7 +6,7 @@
 #    By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/30 09:59:24 by fbarrett          #+#    #+#              #
-#    Updated: 2024/03/05 17:18:19 by fbarrett         ###   ########.fr        #
+#    Updated: 2024/03/06 08:47:42 by fbarrett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ MY_LIBRARY	=	./libft/
 
 MLX_LIBRARY	=	./MLX42/
 
-MY_FILES	=	main.c check_map.c render_map.c error_msg.c	check_textures.c render.c
+MY_FILES	=	main.c check_map.c render_map.c error_msg.c	check_textures.c render.c	cube_utils.c
 
 MY_SOURCES = $(addprefix $(SRC_DIRECT), $(MY_FILES))
 
@@ -59,13 +59,7 @@ clean:
 	rm -f *.o
 	rm -rf *.dSYM
 	rm -f $(O_DIRECT)*.o
-
-debug: $(MLX_LIBRARY) $(O_DEBUG) $(MY_OBJECTS) $(MY_LIBRARY)
-	@make -C $(MY_LIBRARY)
-	@cmake -S ./MLX42 -B ./MLX42/build
-	@make -C ./MLX42/build -j4
-	$(CC) $(CCFLAGS) -g -fsanitize=address -o $(NAME) $(MY_OBJECTS) $(LIBFLAGS) $(MLXLIBFLAGS)
-
+	
 fclean:	clean
 	rm -f $(NAME)
 	rm -rf $(O_DIRECT)
@@ -79,13 +73,7 @@ $(O_DIRECT)%.o: src/%.c
 
 $(O_DIRECT):
 	mkdir -p -m 777 $(O_DIRECT)
-
-$(O_DEBUG)%.o: src/%.c
-	$(CC) $(CCFLAGS) -g -fsanitize=address -o $@ -c $<
-
-$(O_DEBUG):
-	mkdir -p -m 777 $(O_DIRECT)
-
+	
 re:	fclean $(NAME)
 
 .PHONY:	all clean fclean re test debug

@@ -1,31 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   cube_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/06 10:53:20 by fbarrett         ###   ########.fr       */
+/*   Created: 2024/03/06 08:34:36 by fbarrett          #+#    #+#             */
+/*   Updated: 2024/03/06 10:31:31 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
-int error_func(char *failed_func)
+int	is_whitespace(char c)
 {
-	printf("Function %s failed\n", failed_func);
+	if (c == 32 || (c < 14 && c > 8))
+		return (1);
+	return (0);
+}
+
+int	is_whitespace_str(char *str)
+{
+	int i;
+
+	i = 0;
+	if (!str)
+		return (1);
+	while (str[i] && is_whitespace(str[i]))
+		i++;
+	if (str[i])
+		return (0);
 	return (1);
 }
 
-int error_argc(void)
+int is_digit_str(char *str)
 {
-	printf("Invalid amount of arguments\n");
-	return (1);
-}
+	int i;
 
-int error_map(char *str)
-{
-	printf("Invalid map: %s\n", str);
+	i = 0;
+	if (!str)
+		return (1);
+	while (str[i] && ft_isdigit(str[i]))
+		i++;
+	if (str[i])
+		return (0);
 	return (1);
 }

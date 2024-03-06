@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/05 17:48:36 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/06 11:26:41 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ char	**render_map(t_cube *c, char **argv)
 {
 	int			i;
 	char		**map;
-	char		*temp_line;
 
 	if (check_extension(argv))
 		return (error_map("Invalid extension"), NULL); 
@@ -127,17 +126,11 @@ char	**render_map(t_cube *c, char **argv)
 	c->map->fd = open(argv[1], O_RDONLY);
 	if (c->map->fd == -1)
 		return (error_map("Failed to open map file"), NULL);
-	temp_line = check_textures(c);
-	if (!temp_line)
+	if (check_textures(c))
 		return (NULL); 
 	map = malloc((c->map->nbr_line + 1) * sizeof(char*));
 	if (!map)
-		return (error_func("malloc"), close(c->map->fd), free(temp_line), NULL);
-	map[i] = ft_strdup(temp_line);
-	free(temp_line);
-	if (!map[i])
-		return (error_func("ft_strdup"), close(c->map->fd), free_all(map), NULL);
-	i++;
+		return (error_func("malloc"), close(c->map->fd), NULL);
 	while (i < c->map->nbr_line)
 	{
 		map[i] = get_next_line(c->map->fd);

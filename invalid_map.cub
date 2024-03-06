@@ -3,7 +3,7 @@ SO ./a_valid_path
 WE ./a_valid_path
 EA ./a_valid_path
 
-F valid_rgb
+Fvalid_rgb
 C valid_rgb
 1111111111111
 1001000000001

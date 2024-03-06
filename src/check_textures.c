@@ -6,11 +6,21 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/05 17:48:31 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/06 11:23:33 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
+
+void	print_data(t_cube *cube)
+{
+	printf("NO: %s\n", cube->map->NO);
+	printf("SO: %s\n", cube->map->SO);
+	printf("WE: %s\n", cube->map->WE);
+	printf("EA: %s\n", cube->map->EA);
+	printf("floor: %d\n", cube->map->floor);
+	printf("roof: %d\n", cube->map->roof);
+}
 
 void	innit_map_struct(t_cube *cube)
 {
@@ -18,77 +28,87 @@ void	innit_map_struct(t_cube *cube)
 	cube->map->SO = NULL;
 	cube->map->WE = NULL;
 	cube->map->EA = NULL;
-	cube->map->floor = NULL;
-	cube->map->roof = NULL;
+	cube->map->floor = -1;
+	cube->map->roof = -1;
 }
 
 void	is_map_still_invalid(int *valid_map, t_cube *cube)
 {
 	if (cube->map->NO && cube->map->SO &&cube->map->WE &&cube->map->EA
-		&& cube->map->roof && cube->map->floor)
+		&& cube->map->roof != -1 && cube->map->floor != -1)
 		*valid_map = 1;
 }
 
-int	check_data_type(char *temp_line, int *valid_map, t_cube *cube)
+int	check_cardinals(char **data, char *temp_line, int *valid_map, t_cube *cube)
 {
-	if (ft_strnstr(temp_line, "NO", 2))
-	{
-		if (cube->map->NO)
-			return (0);
-		cube->map->NO = ft_strdup(temp_line);
-		if (!cube->map->NO)
-			return (error_func("ft_strdup"), 0);
-		return (is_map_still_invalid(valid_map, cube), 1);
-	}
-	else if (ft_strnstr(temp_line, "SO", 2))
-	{
-		if (cube->map->SO)
-			return (0);
-		cube->map->SO = ft_strdup(temp_line);
-		if (!cube->map->SO)
-			return (error_func("ft_strdup"), 0);
-		return (is_map_still_invalid(valid_map, cube), 1);
-	}
-	else if (ft_strnstr(temp_line, "WE", 2))
-	{
-		if (cube->map->WE)
-			return (0);
-		cube->map->WE = ft_strdup(temp_line);
-		if (!cube->map->WE)
-			return (error_func("ft_strdup"), 0);
-		return (is_map_still_invalid(valid_map, cube), 1);
-	}
-	else if (ft_strnstr(temp_line, "EA", 2))
-	{
-		if (cube->map->EA)
-			return (0);
-		cube->map->EA = ft_strdup(temp_line);
-		if (!cube->map->EA)
-			return (error_func("ft_strdup"), 0);
-		return (is_map_still_invalid(valid_map, cube), 1);
-	}
-	else if (ft_strnstr(temp_line, "F", 1))
-	{
-		if (cube->map->floor)
-			return (0);
-		cube->map->floor = ft_strdup(temp_line);
-		if (!cube->map->floor)
-			return (error_func("ft_strdup"), 0);
-		return (is_map_still_invalid(valid_map, cube), 1);
-	}
-	else if (ft_strnstr(temp_line, "C", 1))
-	{
-		if (cube->map->roof)
-			return (0);
-		cube->map->roof = ft_strdup(temp_line);
-		if (!cube->map->roof)
-			return (error_func("ft_strdup"), 0);
-		return (is_map_still_invalid(valid_map, cube), 1);
-	}
-	return (0);
+	if (*data)
+		return (1);
+	*data = ft_strdup(&temp_line[3]);
+	if (!*data)
+		return (error_func("ft_strdup"));
+	return (is_map_still_invalid(valid_map, cube), 0);
 }
 
-char *check_textures(t_cube *cube)
+int	check_FC(int *data, char *temp_line, int *valid_map, t_cube *cube)
+{
+	int 	*rgb;
+	char	*temp_color;
+	int		i;
+	int 	len;
+	int		a;
+
+	if (*data != -1)
+		return (1);
+	rgb = malloc(sizeof(int) * 4);
+	if (!rgb)
+		return (error_func("malloc"));
+	i = 2;
+	a = 0;
+	while (a < 3)
+	{
+		len = 0;
+		while (temp_line[i + len] && temp_line[i + len] != ',' && temp_line[i + len] != '\n')
+			len++;
+		if (len > 3 || len < 1)
+			return (free(rgb), error_map("Invalid color length for rgb"));
+		temp_color = ft_substr(temp_line, i, len);
+		if (!temp_color)
+			return (free(rgb), error_func("ft_substr"));
+		if (!is_digit_str(temp_color))
+			return (free(rgb), free(temp_color), error_map("Invalid color for rgb"));
+		rgb[a] = ft_atoi(temp_color);
+		if (rgb[a] > 255 || rgb[a] < 0)
+			return (free(rgb), free(temp_color), error_map("Invalid color for rgb"));
+		a++;
+		i += len + 1;
+		free(temp_color);
+	}
+	*data = get_rgba(rgb[0], rgb[1], rgb[2], 50);
+	free(rgb);
+	return (is_map_still_invalid(valid_map, cube), 0);
+}
+
+
+int	check_data_type(char *temp_line, int *valid_map, t_cube *cube)
+{
+	if (is_whitespace_str(temp_line))
+		return (0);
+	else if (ft_strnstr(temp_line, "NO ", 3))
+		return (check_cardinals(&cube->map->NO, temp_line, valid_map, cube));
+	else if (ft_strnstr(temp_line, "SO ", 3))
+		return (check_cardinals(&cube->map->SO, temp_line, valid_map, cube));
+	else if (ft_strnstr(temp_line, "WE ", 3))
+		return (check_cardinals(&cube->map->WE, temp_line, valid_map, cube));
+	else if (ft_strnstr(temp_line, "EA ", 3))
+		return (check_cardinals(&cube->map->EA, temp_line, valid_map, cube));
+	else if (ft_strnstr(temp_line, "F ", 2))
+		return (check_FC(&cube->map->floor, temp_line, valid_map, cube));
+	else if (ft_strnstr(temp_line, "C ", 2))
+		return (check_FC(&cube->map->roof, temp_line, valid_map, cube));
+	return (1);
+}
+
+int	check_textures(t_cube *cube)
 {
 	char	*temp_line;
 	int		valid_map;
@@ -101,15 +121,14 @@ char *check_textures(t_cube *cube)
 		temp_line = get_next_line(cube->map->fd);
 		cube->map->nbr_line -= 1;
 		if (!temp_line)
-			return (error_func("GNL"), close(cube->map->fd), NULL);
+			return (close(cube->map->fd), error_func("GNL"));
 		data_type = check_data_type(temp_line, &valid_map, cube);
 		if (!valid_map)
 			free(temp_line);
-		if (!data_type && !valid_map)
-		{
-			return (error_map("Invalid data in .cub file"), close(cube->map->fd), NULL);	
-		}
+		if (data_type && !valid_map)
+			return (close(cube->map->fd), error_map("Invalid data in .cub file"));
 	}
-	cube->map->nbr_line += 1;
-	return (temp_line);
+	print_data(cube);
+	//cube->map->nbr_line += 1;
+	return (0);
 }
