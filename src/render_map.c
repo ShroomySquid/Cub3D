@@ -41,7 +41,6 @@ void	renderloop(mlx_t *mlx, char **map, t_cube *c)
 				mlx_image_to_window(mlx, c->player, (x * 32) + 5, (y * 32) + 5);
 			}
 			x++;
-			// mettre image de joueur segfault.
 		}
 		y++;
 		x = 0;

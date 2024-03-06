@@ -84,7 +84,7 @@ int	check_FC(int *data, char *temp_line, int *valid_map, t_cube *cube)
 		i += len + 1;
 		free(temp_color);
 	}
-	*data = get_rgba(rgb[0], rgb[1], rgb[2], 50);
+	*data = get_rgba(rgb[0], rgb[1], rgb[2], 255);
 	free(rgb);
 	return (is_map_still_invalid(valid_map, cube), 0);
 }
