@@ -65,11 +65,11 @@ static int	*ft_getscale(t_cube *cube, float screenx)
 		step(&x, &y, (float)cube->rotation + screenx * 16.0);
 		if (touch_tile(cube->map->map, '1', x, y))
 		{
-			if (touch_tile(cube->map->map, '1', x + 1.0, y) && touch_tile(cube->map->map, '1', x - 1.0, y) && touch_tile(cube->map->map, '1', x, y - 1.0))
+			if ((touch_tile(cube->map->map, '1', x + 2.0, y) || touch_tile(cube->map->map, '1', x - 2.0, y)) && touch_tile(cube->map->map, '1', x, y - 2.0) && !touch_tile(cube->map->map, '1', x, y + 2.0))
 				ret[1] = get_rgba(0xFF, 0xFF, 0x00, 0xFF);
-			else if (touch_tile(cube->map->map, '1', x, y - 1.0) && touch_tile(cube->map->map, '1', x, y + 1.0) && touch_tile(cube->map->map, '1', x - 1.0, y))
+			else if ((touch_tile(cube->map->map, '1', x, y - 2.0) || touch_tile(cube->map->map, '1', x, y + 2.0)) && touch_tile(cube->map->map, '1', x - 2.0, y) && !touch_tile(cube->map->map, '1', x + 2.0, y))
 				ret[1] = get_rgba(0xFF, 0x00, 0xFF, 0xFF);
-			else if (touch_tile(cube->map->map, '1', x, y - 1.0) && touch_tile(cube->map->map, '1', x, y + 1.0) && touch_tile(cube->map->map, '1', x + 1.0, y))
+			else if ((touch_tile(cube->map->map, '1', x, y - 2.0) || touch_tile(cube->map->map, '1', x, y + 2.0)) && touch_tile(cube->map->map, '1', x + 2.0, y) && !touch_tile(cube->map->map, '1', x - 2.0, y))
 				ret[1] = get_rgba(0x00, 0xFF, 0xFF, 0xFF);
 			else
 				ret[1] = get_rgba(0x80, 0x80, 0x00, 0xFF);
