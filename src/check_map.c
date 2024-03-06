@@ -35,38 +35,43 @@ int	check_valid_floor(char **map, int x, int y)
 	return (0);	
 }
 
-int	check_map(char **map)
+int	check_map(t_cube *cube)
 {
 	int	x;
 	int	y;
-	int is_player;
+	int	is_player;
 
-	x = 0;
-	y = 0;
+	y = -1;
 	is_player = 0;
-	while (map[y])
+	while (cube->map->map[++y])
 	{
-		while (map[y][x])
+		x = -1;
+		while (cube->map->map[y][++x])
 		{
-			if (ft_strchr("NSWE", map[y][x]))
+			if (ft_strchr("NSWE", cube->map->map[y][x]))
 			{
+				if (cube->map->map[y][x] == 'N')
+					cube->rotation = 0;
+				if (cube->map->map[y][x] == 'E')
+					cube->rotation = 90;
+				if (cube->map->map[y][x] == 'S')
+					cube->rotation = 180;
+				if (cube->map->map[y][x] == 'W')
+					cube->rotation = 270;
 				if (is_player)
 					return (error_map("More than 1 player"));
 				is_player = 1;
-				if (check_valid_floor(map, x, y))
+				if (check_valid_floor(cube->map->map, x, y))
 					return (error_map("Invalid player location"));
 			}
-			else if (map[y][x] == '0' && check_valid_floor(map, x, y))
+			else if (cube->map->map[y][x] == '0' && check_valid_floor(cube->map->map, x, y))
 				return (error_map("Invalid floor location"));
-			else if (!is_whitespace(map[y][x]) && map[y][x] != '1' && map[y][x] != '0')
+			else if (!is_whitespace(cube->map->map[y][x]) && cube->map->map[y][x] != '1' && cube->map->map[y][x] != '0')
 			{
-				printf("symbol: %c, y: %d, x: %d\n", map[y][x], y, x);
+				printf("symbol: %c, y: %d, x: %d\n", cube->map->map[y][x], y, x);
 				return (error_map("Invalid symbol on map"));
 			}
-			x++;
 		}
-		y++;
-		x = 0;
 	}
 	return (0);
 }

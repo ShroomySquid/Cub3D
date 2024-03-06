@@ -74,6 +74,7 @@ int	check_FC(int *data, char *temp_line, int *valid_map, t_cube *cube)
 		temp_color = ft_substr(temp_line, i, len);
 		if (!temp_color)
 			return (free(rgb), error_func("ft_substr"));
+		printf("%s\n", temp_color);
 		if (!is_digit_str(temp_color))
 			return (free(rgb), free(temp_color), error_map("Invalid color for rgb"));
 		rgb[a] = ft_atoi(temp_color);
@@ -129,6 +130,5 @@ int	check_textures(t_cube *cube)
 			return (close(cube->map->fd), error_map("Invalid data in .cub file"));
 	}
 	print_data(cube);
-	//cube->map->nbr_line += 1;
 	return (0);
 }

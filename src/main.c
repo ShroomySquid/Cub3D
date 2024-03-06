@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	if (!cube->map)
 		return (error_func("malloc"));
 	cube->map->map = render_map(cube, argv);
-	if (check_map(cube->map->map))
+	if (check_map(cube))
 		return (force_exit(cube), 1);
 	if (!cube->map->map)
 		return (force_exit(cube), 1);
