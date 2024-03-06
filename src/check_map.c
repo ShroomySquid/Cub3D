@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/06 11:26:39 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/06 14:36:51 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,7 @@ int	check_map(char **map)
 		y++;
 		x = 0;
 	}
+	if (!is_player)
+		return (error_map("Invalid player location"));
 	return (0);
 }

@@ -1,7 +1,7 @@
-NO ./a_valid_path
-SO ./a_valid_path
-WE ./a_valid_path
-EA ./a_valid_path
+NO ./png/square-32.png
+SO ./png/planks.png
+WE ./png/planks.png
+EA ./png/planks.png
 F 200,4,200
 C 200,00,200
 1111111111111

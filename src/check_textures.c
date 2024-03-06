@@ -6,12 +6,13 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/06 11:23:33 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/06 15:16:45 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
+/*
 void	print_data(t_cube *cube)
 {
 	printf("NO: %s\n", cube->map->NO);
@@ -21,6 +22,7 @@ void	print_data(t_cube *cube)
 	printf("floor: %d\n", cube->map->floor);
 	printf("roof: %d\n", cube->map->roof);
 }
+*/
 
 void	innit_map_struct(t_cube *cube)
 {
@@ -39,13 +41,19 @@ void	is_map_still_invalid(int *valid_map, t_cube *cube)
 		*valid_map = 1;
 }
 
-int	check_cardinals(char **data, char *temp_line, int *valid_map, t_cube *cube)
+int	check_cardinals(mlx_image_t **data, char *temp_line, int *valid_map, t_cube *cube)
 {
+	mlx_texture_t *texture;
+
 	if (*data)
 		return (1);
-	*data = ft_strdup(&temp_line[3]);
+	printf ("path: %s\n", &temp_line[3]);
+	texture = mlx_load_png(&temp_line[3]);
+	if (!texture)
+		return (error_func("mlx_load_png"));
+	*data = mlx_texture_to_image(cube->mlx, texture);
 	if (!*data)
-		return (error_func("ft_strdup"));
+		return (error_func("mlx_texture_to_image"));
 	return (is_map_still_invalid(valid_map, cube), 0);
 }
 
@@ -83,7 +91,7 @@ int	check_FC(int *data, char *temp_line, int *valid_map, t_cube *cube)
 		i += len + 1;
 		free(temp_color);
 	}
-	*data = get_rgba(rgb[0], rgb[1], rgb[2], 50);
+	*data = get_rgba(rgb[0], rgb[1], rgb[2], 255);
 	free(rgb);
 	return (is_map_still_invalid(valid_map, cube), 0);
 }
@@ -128,7 +136,7 @@ int	check_textures(t_cube *cube)
 		if (data_type && !valid_map)
 			return (close(cube->map->fd), error_map("Invalid data in .cub file"));
 	}
-	print_data(cube);
+	//print_data(cube);
 	//cube->map->nbr_line += 1;
 	return (0);
 }
