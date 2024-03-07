@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 09:51:30 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:21:02 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,12 @@ typedef struct s_cube
 	int				map_nbr_line;
 }				t_cube;
 
+int		check_fc(int *data, char *line, int *valid_map, t_cube *cube);
+void	is_map_still_invalid(int *valid_map, t_cube *cube);
 void	ft_render(void *param);
 int32_t	get_rgba(int r, int g, int b, int a);
-char	**render_map(t_cube *c, char **argv);
-void	renderloop(mlx_t *mlx, char **map, t_cube *c);
+char	**parsing_map(t_cube *c, char **argv);
+void	render_minimap(mlx_t *mlx, char **map, t_cube *c);
 int		check_map(char **map);
 int		error_func(char *failed_func);
 int		error_argc(void);

@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 08:34:36 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/06 14:38:31 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:19:59 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_whitespace(char c)
 
 int	is_whitespace_str(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)
@@ -33,9 +33,9 @@ int	is_whitespace_str(char *str)
 	return (1);
 }
 
-int is_digit_str(char *str)
+int	is_digit_str(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)

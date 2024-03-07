@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 09:51:32 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/07 10:53:31 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 	cube->mlx = mlx_init(WIDTH, HEIGHT, "Cub3D\n", true);
 	if (!cube->mlx)
 		return (force_exit(cube), error_func("mlx_init"));
-	cube->map->map = render_map(cube, argv);
+	cube->map->map = parsing_map(cube, argv);
 	if (!cube->map->map)
 		return (force_exit(cube), 1);
 	if (check_map(cube->map->map))
@@ -116,8 +116,7 @@ int main(int argc, char **argv)
 	cube->floor_tex = mlx_load_png("./png/square-32.png");
 	cube->wall_img = mlx_texture_to_image(cube->mlx, cube->wall_tex);
 	cube->floor_img = mlx_texture_to_image(cube->mlx, cube->floor_tex);
-	//mlx_image_to_window(cube->mlx, cube->player, 64, 64);
-	renderloop(cube->mlx, cube->map->map, cube);
+	render_minimap(cube->mlx, cube->map->map, cube);
 	mlx_loop_hook(cube->mlx, ft_general, cube);
 	mlx_loop_hook(cube->mlx, ft_player, cube);
 	mlx_loop_hook(cube->mlx, ft_render, cube);
