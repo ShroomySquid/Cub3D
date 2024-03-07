@@ -40,6 +40,8 @@ typedef struct s_cube
 {
 	mlx_t			*mlx;
 	mlx_image_t		*player;
+	float			playerx;
+	float			playery;
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;
 	mlx_image_t		*render;
@@ -62,5 +64,6 @@ int		check_textures(t_cube *cube);
 int		is_whitespace(char c);
 int		is_whitespace_str(char *str);
 int		is_digit_str(char *str);
+void	step(float *x, float *y, float rotation, int iterations);
 
 #endif

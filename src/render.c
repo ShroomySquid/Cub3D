@@ -22,8 +22,9 @@ static int	touch_tile(char **map, char c, int x, int y)
 	return (map[y / 32][x / 32] == c);
 }
 
-static void	step(float *x, float *y, float rotation)
+void	step(float *x, float *y, float rotation, int iterations)
 {
+	rotation = fmod(rotation, 360);
 	if (rotation < 90.0)
 	{
 		*y -= 1.0 / 90.0 * (90.0 - rotation);
@@ -44,6 +45,8 @@ static void	step(float *x, float *y, float rotation)
 		*y -= (1.0 / 90.0 * (rotation - 180.0)) - 1.0;
 		*x -= 2.0 - (1.0 / 90.0 * (rotation - 180.0));
 	}
+	if (iterations > 1)
+		step(x, y, rotation, iterations - 1);
 }
 
 static int	*ft_getscale(t_cube *cube, float screenx)
@@ -55,14 +58,14 @@ static int	*ft_getscale(t_cube *cube, float screenx)
 	float		yinit;
 
 	screenx -= (float)HEIGHT / 2.0;
-	x = cube->player->instances[0].x;
-	y = cube->player->instances[0].y;
+	x = cube->playerx;
+	y = cube->playery;
 	screenx /= 512.0;
 	yinit = y;
 	xinit = x;
 	while (1)
 	{
-		step(&x, &y, (float)cube->rotation + screenx * 16.0);
+		step(&x, &y, (float)cube->rotation + screenx * 16.0, 1);
 		if (touch_tile(cube->map->map, '1', x, y))
 		{
 			if ((touch_tile(cube->map->map, '1', x + 2.0, y) || touch_tile(cube->map->map, '1', x - 2.0, y)) && touch_tile(cube->map->map, '1', x, y - 2.0) && !touch_tile(cube->map->map, '1', x, y + 2.0))
@@ -76,7 +79,16 @@ static int	*ft_getscale(t_cube *cube, float screenx)
 			break ;
 		}
 	}
-	ret[0] = HEIGHT - 2.0 * sqrt(fabs(yinit - y) * fabs(yinit - y) + fabs(xinit - x) * fabs(xinit - x));
+	int		i;
+	float	distance;
+	float	size;
+
+	i = -1;
+	size = 0;
+	distance = sqrt(fabs(yinit - y) * fabs(yinit - y) + fabs(xinit - x) * fabs(xinit - x));
+	while (++i < distance)
+		size += 1.0 - (float)i / 1000;
+	ret[0] = (float)HEIGHT / 2 - size;
 	return (ret);
 }
 

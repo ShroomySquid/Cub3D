@@ -36,26 +36,20 @@ void	ft_player(void *param)
 	t_cube	*cube;
 
 	cube = param;
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_W))
-		cube->player->instances[0].y -= 2;
-	else if (mlx_is_key_down(cube->mlx, MLX_KEY_UP))
-		cube->player->instances[0].y -= 2;
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_S))
-		cube->player->instances[0].y += 2;
-	else if (mlx_is_key_down(cube->mlx, MLX_KEY_DOWN))
-		cube->player->instances[0].y += 2;
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_UP) || mlx_is_key_down(cube->mlx, MLX_KEY_W))
+		step(&cube->playerx, &cube->playery, cube->rotation, 2);
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_DOWN) || mlx_is_key_down(cube->mlx, MLX_KEY_S))
+		step(&cube->playerx, &cube->playery, cube->rotation + 180, 2);
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT))
+		cube->rotation -= 2;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_A))
-		cube->player->instances[0].x -= 2;
-	else if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT))
-		cube->player->instances[0].x -= 2;
+		step(&cube->playerx, &cube->playery, cube->rotation + 270, 2);
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
+		cube->rotation += 2;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_D))
-		cube->player->instances[0].x += 2;
-	else if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
-		cube->player->instances[0].x += 2;
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_E) && cube->rotation++ >= 361)
-		cube->rotation = 1;
-	else if (mlx_is_key_down(cube->mlx, MLX_KEY_Q) && cube->rotation-- <= 0)
-		cube->rotation = 361;
+		step(&cube->playerx, &cube->playery, cube->rotation + 90, 2);
+	cube->player->instances[0].x = cube->playerx;
+	cube->player->instances[0].y = cube->playery;
 }
 
 void	ft_general(void *param)
@@ -116,8 +110,9 @@ int main(int argc, char **argv)
 	cube->floor_tex = mlx_load_png("./png/square-32.png");
 	cube->wall_img = mlx_texture_to_image(cube->mlx, cube->wall_tex);
 	cube->floor_img = mlx_texture_to_image(cube->mlx, cube->floor_tex);
-	mlx_image_to_window(cube->mlx, cube->player, 64, 64);
 	renderloop(cube->mlx, cube->map->map, cube);
+	cube->playerx = cube->player->instances[0].x;
+	cube->playery = cube->player->instances[0].y;
 	mlx_loop_hook(cube->mlx, ft_general, cube);
 	mlx_loop_hook(cube->mlx, ft_player, cube);
 	mlx_loop_hook(cube->mlx, ft_render, cube);
