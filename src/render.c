@@ -82,9 +82,9 @@ static int	*ft_getscale(t_cube *cube, float screenx)
 	if (!ret[1])
 		ret[2] = cube->map->NO->width / 32.0 * fmod(x, 32);
 	else if (ret[1] == 1)
-		ret[2] = cube->map->WE->width / 32.0 * fmod(x, 32);
+		ret[2] = 32.0 - cube->map->WE->width / 32.0 * fmod(y, 32);
 	else if (ret[1] == 2)
-		ret[2] = cube->map->EA->width / 32.0 * fmod(x, 32);
+		ret[2] = cube->map->EA->width / 32.0 * fmod(y, 32);
 	else if (ret[1] == 3)
 		ret[2] = 32.0 - (cube->map->SO->width / 32.0 * fmod(x, 32));
 	return (ret);
