@@ -6,7 +6,7 @@
 #    By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/30 09:59:24 by fbarrett          #+#    #+#              #
-#    Updated: 2024/03/07 13:17:16 by fbarrett         ###   ########.fr        #
+#    Updated: 2024/03/07 13:27:03 by fbarrett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ LIBFLAGS = -L$(MY_LIBRARY) -lft -I.
 
 MLXLIBFLAGS	=	-L./MLX42/build/ -lmlx42 -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib" -I. -framework Cocoa -framework OpenGL -framework IOKit
 
-CCFLAGS	=	-Wall -Wextra -Werror -g
+CCFLAGS	=	-Wall -Wextra -Werror
 
 DEBUG_FLAGS	=	-fsanitize=address
 

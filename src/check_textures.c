@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 11:19:19 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/07 14:05:31 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_cardinals(mlx_image_t **data, char *temp_line,
 	int				i;
 
 	if (*data)
-		return (error_map("Multile textures files for same element"));
+		return (error_map("Multiple textures files for same element"));
 	i = 0;
 	while (!is_whitespace(temp_line[i + 3]))
 		i++;
@@ -48,6 +48,7 @@ int	check_cardinals(mlx_image_t **data, char *temp_line,
 	*data = mlx_texture_to_image(cube->mlx, texture);
 	if (!*data)
 		return (error_func("mlx_texture_to_image"));
+	mlx_delete_texture(texture);
 	return (is_map_still_invalid(valid_map, cube), 0);
 }
 
@@ -85,8 +86,7 @@ int	check_textures(t_cube *cube)
 		if (!temp_line)
 			return (close(cube->map->fd), error_func("GNL"));
 		data_type = check_data_type(temp_line, &valid_map, cube);
-		if (!valid_map)
-			free(temp_line);
+		free(temp_line);
 		if (data_type && !valid_map)
 			return (close(cube->map->fd), error_map("Invalid data"));
 	}

@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 13:17:00 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/07 14:09:01 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ void	set_player(t_cube *cube)
 
 void	force_exit(t_cube *cube)
 {
+	mlx_terminate(cube->mlx);
 	if (cube && cube->map && cube->map->map)
 		free_all(cube->map->map);
 	if (cube && cube->map)
 		free(cube->map);
 	if (cube)
 		free(cube);
-	mlx_terminate(cube->mlx);
 }
 
 int	main(int argc, char **argv)
@@ -87,6 +87,8 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(cube->mlx, ft_player, cube);
 	mlx_loop_hook(cube->mlx, ft_render, cube);
 	mlx_loop(cube->mlx);
-	mlx_terminate(cube->mlx);
+	mlx_delete_texture(cube->wall_tex);
+	mlx_delete_texture(cube->floor_tex);
+	force_exit(cube);
 	return (0);
 }

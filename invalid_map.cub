@@ -1,7 +1,7 @@
 NO ./png/motif.png
 SO ./png/motif.png
 WE ./png/motif.png
-EA ./png/motif.png
+ ./png/motif.png
 F 200,200,200
 C 100,100,100
 1111111111111
