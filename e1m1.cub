@@ -1,7 +1,7 @@
-NO /lib/
-SO /home/
-EA /home/
-WE /home/
+NO ./png/motif.png
+SO ./png/planks.png
+EA ./png/square-32(1).png
+WE ./png/square-32.png
 
 F 255,0,0
 C 0,255,0
