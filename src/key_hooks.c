@@ -17,7 +17,6 @@ static void	step_collision(float rotation, t_cube *cube)
 	float	oldy;
 	float	oldx;
 
-	rotation = fmod(rotation, 360);
 	oldy = cube->playery;
 	if (rotation < 90.0)
 		cube->playery -= 1.0 / 90.0 * (90.0 - rotation);
@@ -54,11 +53,19 @@ void	ft_player(void *param)
 			MLX_KEY_S))
 		step_collision(cube->rotation + 180, cube);
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT))
-		cube->rotation -= 2;
+	{
+		cube->rotation -= 1;
+		if (cube->rotation < 0)
+			cube->rotation = 360 - cube->rotation;
+	}
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_A))
 		step_collision(cube->rotation + 270, cube);
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
-		cube->rotation += 2;
+	{
+		cube->rotation += 1;
+		if (cube->rotation > 360)
+			cube->rotation %= 360;
+	}
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_D))
 		step_collision(cube->rotation + 90, cube);
 	cube->player->instances[0].x = cube->playerx;

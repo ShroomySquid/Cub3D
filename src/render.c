@@ -22,9 +22,8 @@ int	touch_wall(t_cube *cube, int x, int y)
 	return (cube->map->map[y / 32][x / 32] == '1');
 }
 
-static void	step(float *x, float *y, float rotation)
+void	step(float *x, float *y, float rotation)
 {
-	rotation = fmod(rotation, 360);
 	if (rotation < 90.0)
 	{
 		*y -= 1.0 / 90.0 * (90.0 - rotation);
@@ -79,8 +78,7 @@ static int	*ft_getscale(t_cube *cube, float screenx)
 			break ;
 		}
 	}
-	ret[0] = (256 / hypotf(fabsf(cube->playery - y), fabsf(cube->playerx - x)))
-		* 256;
+	ret[0] = (192 / hypotf(fabsf(cube->playery - y), fabsf(cube->playerx - x))) * 192;
 	return (ret);
 }
 
