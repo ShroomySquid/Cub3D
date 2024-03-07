@@ -17,12 +17,12 @@ int32_t	get_rgba(int r, int g, int b, int a)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-static int	touch_wall(t_cube *cube, int x, int y)
+int	touch_wall(t_cube *cube, int x, int y)
 {
 	return (cube->map->map[y / 32][x / 32] == '1');
 }
 
-void	step(float *x, float *y, float rotation, int iterations)
+static void	step(float *x, float *y, float rotation)
 {
 	rotation = fmod(rotation, 360);
 	if (rotation < 90.0)
@@ -45,8 +45,6 @@ void	step(float *x, float *y, float rotation, int iterations)
 		*y -= (1.0 / 90.0 * (rotation - 180.0)) - 1.0;
 		*x -= 2.0 - (1.0 / 90.0 * (rotation - 180.0));
 	}
-	if (iterations > 1)
-		step(x, y, rotation, iterations - 1);
 }
 
 static int	*ft_getscale(t_cube *cube, float screenx)
@@ -61,7 +59,7 @@ static int	*ft_getscale(t_cube *cube, float screenx)
 	screenx /= 512.0;
 	while (1)
 	{
-		step(&x, &y, (float)cube->rotation + screenx * 16.0, 1);
+		step(&x, &y, (float)cube->rotation + screenx * 16.0);
 		if (touch_wall(cube, x, y))
 		{
 			if ((touch_wall(cube, x + 2.0, y) || touch_wall(cube, x - 2.0, y))
