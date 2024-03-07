@@ -14,8 +14,8 @@
 
 void	set_player(t_cube *cube)
 {
-	uint32_t x;
-	uint32_t y;
+	uint32_t	x;
+	uint32_t	y;
 
 	x = 0;
 	y = 0;
@@ -36,9 +36,11 @@ void	ft_player(void *param)
 	t_cube	*cube;
 
 	cube = param;
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_UP) || mlx_is_key_down(cube->mlx, MLX_KEY_W))
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_UP) || mlx_is_key_down(cube->mlx,
+			MLX_KEY_W))
 		step(&cube->playerx, &cube->playery, cube->rotation, 2);
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_DOWN) || mlx_is_key_down(cube->mlx, MLX_KEY_S))
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_DOWN) || mlx_is_key_down(cube->mlx,
+			MLX_KEY_S))
 		step(&cube->playerx, &cube->playery, cube->rotation + 180, 2);
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT))
 		cube->rotation -= 2;
@@ -56,7 +58,7 @@ void	ft_general(void *param)
 {
 	t_cube	*cube;
 
-	cube = param;	
+	cube = param;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(cube->mlx);
 }
@@ -72,7 +74,7 @@ void	force_exit(t_cube *cube)
 	mlx_terminate(cube->mlx);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_cube	*cube;
 
@@ -81,7 +83,7 @@ int main(int argc, char **argv)
 	cube = malloc(sizeof(t_cube));
 	if (!cube)
 		return (error_func("malloc"));
-  	cube->rotation = 1;
+	cube->rotation = 1;
 	cube->map = malloc(sizeof(t_map));
 	if (!cube->map)
 		return (error_func("malloc"));
@@ -95,13 +97,13 @@ int main(int argc, char **argv)
 		return (force_exit(cube), error_func("mlx_init"));
 	cube->wall_img = mlx_new_image(cube->mlx, 32, 32);
 	if (!cube->wall_img)
-    return (force_exit(cube), error_func("mlx_new_image"));
+		return (force_exit(cube), error_func("mlx_new_image"));
 	cube->render = mlx_new_image(cube->mlx, WIDTH, HEIGHT);
 	if (!cube->render)
 		return (force_exit(cube), error_func("mlx_new_image"));
 	cube->floor_img = mlx_new_image(cube->mlx, 32, 32);
 	if (!cube->floor_img)
-		return (force_exit(cube), error_func("mlx_new_image"));	
+		return (force_exit(cube), error_func("mlx_new_image"));
 	cube->player = mlx_new_image(cube->mlx, 4, 4);
 	if (!cube->player)
 		return (force_exit(cube), error_func("mlx_new_image"));

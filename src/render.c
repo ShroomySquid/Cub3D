@@ -12,7 +12,7 @@
 
 #include "../include/cube.h"
 
-int32_t get_rgba(int r, int g, int b, int a)
+int32_t	get_rgba(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
@@ -68,27 +68,28 @@ static int	*ft_getscale(t_cube *cube, float screenx)
 		step(&x, &y, (float)cube->rotation + screenx * 16.0, 1);
 		if (touch_tile(cube->map->map, '1', x, y))
 		{
-			if ((touch_tile(cube->map->map, '1', x + 2.0, y) || touch_tile(cube->map->map, '1', x - 2.0, y)) && touch_tile(cube->map->map, '1', x, y - 2.0) && !touch_tile(cube->map->map, '1', x, y + 2.0))
+			if ((touch_tile(cube->map->map, '1', x + 2.0, y)
+					|| touch_tile(cube->map->map, '1', x - 2.0, y))
+				&& touch_tile(cube->map->map, '1', x, y - 2.0)
+				&& !touch_tile(cube->map->map, '1', x, y + 2.0))
 				ret[1] = get_rgba(0xFF, 0xFF, 0x00, 0xFF);
-			else if ((touch_tile(cube->map->map, '1', x, y - 2.0) || touch_tile(cube->map->map, '1', x, y + 2.0)) && touch_tile(cube->map->map, '1', x - 2.0, y) && !touch_tile(cube->map->map, '1', x + 2.0, y))
+			else if ((touch_tile(cube->map->map, '1', x, y - 2.0)
+					|| touch_tile(cube->map->map, '1', x, y + 2.0))
+				&& touch_tile(cube->map->map, '1', x - 2.0, y)
+				&& !touch_tile(cube->map->map, '1', x + 2.0, y))
 				ret[1] = get_rgba(0xFF, 0x00, 0xFF, 0xFF);
-			else if ((touch_tile(cube->map->map, '1', x, y - 2.0) || touch_tile(cube->map->map, '1', x, y + 2.0)) && touch_tile(cube->map->map, '1', x + 2.0, y) && !touch_tile(cube->map->map, '1', x - 2.0, y))
+			else if ((touch_tile(cube->map->map, '1', x, y - 2.0)
+					|| touch_tile(cube->map->map, '1', x, y + 2.0))
+				&& touch_tile(cube->map->map, '1', x + 2.0, y)
+				&& !touch_tile(cube->map->map, '1', x - 2.0, y))
 				ret[1] = get_rgba(0x00, 0xFF, 0xFF, 0xFF);
 			else
 				ret[1] = get_rgba(0x80, 0x80, 0x00, 0xFF);
 			break ;
 		}
 	}
-	int		i;
-	float	distance;
-	float	size;
-
-	i = -1;
-	size = 0;
-	distance = sqrt(fabs(yinit - y) * fabs(yinit - y) + fabs(xinit - x) * fabs(xinit - x));
-	while (++i < distance)
-		size += 1.0 - (float)i / 1000;
-	ret[0] = (float)HEIGHT / 2 - size;
+	ret[0] = (256 / sqrt(fabs(yinit - y) * fabs(yinit - y) + fabs(xinit - x)
+				* fabs(xinit - x))) * 512;
 	return (ret);
 }
 
