@@ -12,18 +12,19 @@
 
 #include "../include/cube.h"
 
-int32_t get_rgba(int r, int g, int b, int a)
+int32_t	get_rgba(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-static int	touch_tile(char **map, char c, int x, int y)
+static int	touch_wall(t_cube *cube, int x, int y)
 {
-	return (map[y / 32][x / 32] == c);
+	return (cube->map->map[y / 32][x / 32] == '1');
 }
 
-static void	step(float *x, float *y, float rotation)
+void	step(float *x, float *y, float rotation, int iterations)
 {
+	rotation = fmod(rotation, 360);
 	if (rotation < 90.0)
 	{
 		*y -= 1.0 / 90.0 * (90.0 - rotation);
@@ -44,37 +45,44 @@ static void	step(float *x, float *y, float rotation)
 		*y -= (1.0 / 90.0 * (rotation - 180.0)) - 1.0;
 		*x -= 2.0 - (1.0 / 90.0 * (rotation - 180.0));
 	}
+	if (iterations > 1)
+		step(x, y, rotation, iterations - 1);
 }
 
 static int	*ft_getscale(t_cube *cube, float screenx)
 {
 	static int	ret[2];
 	float		x;
-	float		xinit;
 	float		y;
-	float		yinit;
 
 	screenx -= (float)HEIGHT / 2.0;
-	x = cube->player->instances[0].x + screenx / 16.0;
-	y = cube->player->instances[0].y;
+	x = cube->playerx;
+	y = cube->playery;
 	screenx /= 512.0;
-	yinit = y;
-	xinit = x;
 	while (1)
 	{
-		step(&x, &y, (float)cube->rotation + screenx * 8.0);
-		if (touch_tile(cube->map->map, '1', x, y))
+		step(&x, &y, (float)cube->rotation + screenx * 16.0, 1);
+		if (touch_wall(cube, x, y))
 		{
-			if ((int)y % 32 == 31)
+			if ((touch_wall(cube, x + 2.0, y) || touch_wall(cube, x - 2.0, y))
+				&& touch_wall(cube, x, y - 2.0) && !touch_wall(cube, x, y
+					+ 2.0))
 				ret[1] = get_rgba(0xFF, 0xFF, 0x00, 0xFF);
-			else if ((int)x % 32 == 31)
+			else if ((touch_wall(cube, x, y - 2.0) || touch_wall(cube, x, y
+						+ 2.0)) && touch_wall(cube, x - 2.0, y)
+				&& !touch_wall(cube, x + 2.0, y))
 				ret[1] = get_rgba(0xFF, 0x00, 0xFF, 0xFF);
-			else
+			else if ((touch_wall(cube, x, y - 2.0) || touch_wall(cube, x, y
+						+ 2.0)) && touch_wall(cube, x + 2.0, y)
+				&& !touch_wall(cube, x - 2.0, y))
 				ret[1] = get_rgba(0x00, 0xFF, 0xFF, 0xFF);
+			else
+				ret[1] = get_rgba(0x80, 0x80, 0x00, 0xFF);
 			break ;
 		}
 	}
-	ret[0] = HEIGHT - 2.0 * sqrt(fabs(yinit - y) * fabs(yinit - y) + fabs(xinit - x) * fabs(xinit - x));
+	ret[0] = (256 / hypotf(fabsf(cube->playery - y), fabsf(cube->playerx - x)))
+		* 256;
 	return (ret);
 }
 
@@ -97,9 +105,9 @@ void	ft_render(void *param)
 			if (y < HEIGHT / 2 - val[0] / 2 || y >= HEIGHT / 2 + val[0] / 2)
 			{
 				if (y < HEIGHT / 2)
-					mlx_put_pixel(cube->render, x, y, get_rgba(0xFF, 0x00, 0x00, 0xFF));
+					mlx_put_pixel(cube->render, x, y, cube->map->roof);
 				else
-					mlx_put_pixel(cube->render, x, y, get_rgba(0x00, 0x00, 0xFF, 0xFF));
+					mlx_put_pixel(cube->render, x, y, cube->map->floor);
 			}
 			else
 				mlx_put_pixel(cube->render, x, y, val[1]);

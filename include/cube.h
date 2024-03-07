@@ -40,6 +40,8 @@ typedef struct s_cube
 {
 	mlx_t			*mlx;
 	mlx_image_t		*player;
+	float			playerx;
+	float			playery;
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;
 	mlx_image_t		*render;
@@ -56,7 +58,7 @@ void	ft_render(void *param);
 int32_t	get_rgba(int r, int g, int b, int a);
 char	**parsing_map(t_cube *c, char **argv);
 void	render_minimap(mlx_t *mlx, char **map, t_cube *c);
-int		check_map(char **map);
+int		check_map(char **map, t_cube *cube);
 int		error_func(char *failed_func);
 int		error_argc(void);
 int		error_map(char *str);
@@ -64,5 +66,6 @@ int		check_textures(t_cube *cube);
 int		is_whitespace(char c);
 int		is_whitespace_str(char *str);
 int		is_digit_str(char *str);
+void	step(float *x, float *y, float rotation, int iterations);
 
 #endif

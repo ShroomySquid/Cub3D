@@ -86,8 +86,8 @@ int	initial_checks(t_cube *c, char **argv)
 
 char	**parsing_map(t_cube *c, char **argv)
 {
-	int			i;
-	char		**map;
+	int		i;
+	char	**map;
 
 	i = 0;
 	if (initial_checks(c, argv))
