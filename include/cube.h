@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 13:18:14 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/07 14:34:29 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_cube
 	int				map_nbr_line;
 }				t_cube;
 
+int		set_minimap(t_cube *cube);
 void	ft_player(void *param);
 void	ft_general(void *param);
 int		check_fc(int *data, char *line, int *valid_map, t_cube *cube);
