@@ -1,10 +1,9 @@
-NO ./a_valid_path
-SO ./a_valid_path
-WE ./a_valid_path
-EA ./a_valid_path
-
-Fvalid_rgb
-C valid_rgb
+NO ./a_invalid_path
+SO ./a_invalid_path
+WE ./a_invalid_path
+EA ./a_invalid_path
+F 200,200,200
+C 100,100,100
 1111111111111
 1001000000001
 1000011111001

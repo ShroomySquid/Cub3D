@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/06 11:26:41 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/07 09:51:34 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ char	**render_map(t_cube *c, char **argv)
 	if (c->map->fd == -1)
 		return (error_map("Failed to open map file"), NULL);
 	if (check_textures(c))
-		return (NULL); 
+		return (close(c->map->fd), NULL); 
 	map = malloc((c->map->nbr_line + 1) * sizeof(char*));
 	if (!map)
 		return (error_func("malloc"), close(c->map->fd), NULL);

@@ -6,23 +6,11 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/06 15:16:45 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/07 09:49:45 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
-
-/*
-void	print_data(t_cube *cube)
-{
-	printf("NO: %s\n", cube->map->NO);
-	printf("SO: %s\n", cube->map->SO);
-	printf("WE: %s\n", cube->map->WE);
-	printf("EA: %s\n", cube->map->EA);
-	printf("floor: %d\n", cube->map->floor);
-	printf("roof: %d\n", cube->map->roof);
-}
-*/
 
 void	innit_map_struct(t_cube *cube)
 {
@@ -44,10 +32,18 @@ void	is_map_still_invalid(int *valid_map, t_cube *cube)
 int	check_cardinals(mlx_image_t **data, char *temp_line, int *valid_map, t_cube *cube)
 {
 	mlx_texture_t *texture;
+	int i;
 
 	if (*data)
-		return (1);
-	printf ("path: %s\n", &temp_line[3]);
+		return (error_map("Multile textures files for same element"));
+	i = 0;
+	while (!is_whitespace(temp_line[i + 3]))
+		i++;
+	if (temp_line[i + 3])
+	{
+		printf("i: %d\n", i);
+		temp_line[i + 3] = '\0';
+	}
 	texture = mlx_load_png(&temp_line[3]);
 	if (!texture)
 		return (error_func("mlx_load_png"));
@@ -65,6 +61,7 @@ int	check_FC(int *data, char *temp_line, int *valid_map, t_cube *cube)
 	int 	len;
 	int		a;
 
+	printf("running FC\n");
 	if (*data != -1)
 		return (1);
 	rgb = malloc(sizeof(int) * 4);
