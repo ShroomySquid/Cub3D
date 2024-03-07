@@ -17,6 +17,7 @@ static void	step_collision(float rotation, t_cube *cube)
 	float	oldy;
 	float	oldx;
 
+	rotation = fmodf(rotation, 360);
 	oldy = cube->playery;
 	if (rotation < 90.0)
 		cube->playery -= 1.0 / 90.0 * (90.0 - rotation);
