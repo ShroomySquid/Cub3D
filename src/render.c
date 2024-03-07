@@ -80,13 +80,13 @@ static int	*ft_getscale(t_cube *cube, float screenx)
 	}
 	ret[0] = (192 / hypotf(fabsf(cube->playery - y), fabsf(cube->playerx - x))) * 192;
 	if (!ret[1])
-		ret[2] = cube->map->NO->width / 32.0 * fmod(x, 32);
+		ret[2] = cube->map->NO->width / 32.0 * fmodf(x, 32);
 	else if (ret[1] == 1)
-		ret[2] = 32.0 - cube->map->WE->width / 32.0 * fmod(y, 32);
+		ret[2] = cube->map->WE->width - cube->map->WE->width / 32.0 * fmodf(y, 32);
 	else if (ret[1] == 2)
-		ret[2] = cube->map->EA->width / 32.0 * fmod(y, 32);
-	else if (ret[1] == 3)
-		ret[2] = 32.0 - (cube->map->SO->width / 32.0 * fmod(x, 32));
+		ret[2] = cube->map->EA->width / 32.0 * fmodf(y, 32);
+	else
+		ret[2] = cube->map->SO->width - cube->map->SO->width / 32.0 * fmodf(x, 32);
 	return (ret);
 }
 
@@ -131,7 +131,7 @@ void	ft_render(void *param)
 					mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->WE, val[2], (float)cube->map->WE->height / (float)val[0] * (float)count));
 				else if (val[1] == 2)
 					mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->EA, val[2], (float)cube->map->EA->height / (float)val[0] * (float)count));
-				else if (val[1] == 3)
+				else
 					mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->SO, val[2], (float)cube->map->SO->height / (float)val[0] * (float)count));
 				count++;
 			}
