@@ -59,13 +59,13 @@ static float	*ft_getscale(t_cube *cube, float screenx)
 		ret[1] = 1;
 	ret[0] = (192 / hypotf(fabsf(cube->playery - y), fabsf(cube->playerx - x))) * 384;
 	if (!ret[1])
-		ret[2] = (float)cube->map->NO->width / 32 * fmodf(x, 32);
+		ret[2] = (float)cube->map->walls[(int)ret[1]][0]->width / 32 * fmodf(x, 32);
 	else if (ret[1] == 1)
-		ret[2] = cube->map->SO->width - (float)cube->map->SO->width / 32 * fmodf(x, 32);
+		ret[2] = cube->map->walls[(int)ret[1]][0]->width - (float)cube->map->walls[(int)ret[1]][0]->width / 32 * fmodf(x, 32);
 	else if (ret[1] == 2)
-		ret[2] = cube->map->WE->width - (float)cube->map->WE->width / 32 * fmodf(y, 32);
+		ret[2] = cube->map->walls[(int)ret[1]][0]->width - (float)cube->map->walls[(int)ret[1]][0]->width / 32 * fmodf(y, 32);
 	else
-		ret[2] = (float)cube->map->EA->width / 32 * fmodf(y, 32);
+		ret[2] = (float)cube->map->walls[(int)ret[1]][0]->width / 32 * fmodf(y, 32);
 	return (ret);
 }
 
@@ -123,13 +123,13 @@ void	ft_render(void *param)
 					mlx_put_pixel(cube->render, x, y, cube->map->floor);
 			}
 			else if (!val[1])
-				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->NO, val[2], cube->map->NO->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
+				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->walls[(int)val[1]][0], val[2], cube->map->walls[(int)val[1]][0]->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
 			else if (val[1] == 1)
-				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->SO, val[2], cube->map->SO->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
+				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->walls[(int)val[1]][0], val[2], cube->map->walls[(int)val[1]][0]->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
 			else if (val[1] == 2)
-				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->WE, val[2], cube->map->WE->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
+				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->walls[(int)val[1]][0], val[2], cube->map->walls[(int)val[1]][0]->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
 			else
-				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->EA, val[2], cube->map->EA->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
+				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->walls[(int)val[1]][0], val[2], cube->map->walls[(int)val[1]][0]->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
 		}
 	}
 }
