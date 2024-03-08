@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 14:05:31 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/08 18:35:35 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,61 +14,127 @@
 
 void	innit_map_struct(t_cube *cube)
 {
-	cube->map->NO = NULL;
-	cube->map->SO = NULL;
-	cube->map->WE = NULL;
-	cube->map->EA = NULL;
+	cube->map->walls[0] = NULL;
+	cube->map->walls[1] = NULL;
+	cube->map->walls[2] = NULL;
+	cube->map->walls[3] = NULL;
+	cube->map->walls[4] = NULL;
 	cube->map->floor = -1;
 	cube->map->roof = -1;
 }
 
 void	is_map_still_invalid(int *valid_map, t_cube *cube)
 {
-	if (cube->map->NO && cube->map->SO && cube->map->WE && cube->map->EA
-		&& cube->map->roof != -1 && cube->map->floor != -1)
+	int i;
+
+	i = 0;
+	while (cube->map->walls[i])
+		i++;
+	if (i != 4)
+		return ;
+	if (cube->map->roof != -1 && cube->map->floor != -1)
 		*valid_map = 1;
 }
 
-int	check_cardinals(mlx_image_t **data, char *temp_line,
-	int *valid_map, t_cube *cube)
+int	array_len(char **array)
+{
+	int i;
+
+	i = 0;
+	if (!array)
+		return (0);
+	while (array[i])
+		i++;
+	return (i);
+}
+
+int	check_cardinals(char *paths, t_cube *c)
 {
 	mlx_texture_t	*texture;
 	int				i;
+	char			**split_path;
 
-	if (*data)
+	if (c->map->walls[c->map->car])
 		return (error_map("Multiple textures files for same element"));
+	split_path = ft_split(paths, ";");
+	if (!split_path)
+		return (error_func("ft_split"));
+	// allouer mémoire problème?
+	c->map->walls[c->map->car] = malloc((array_len(split_path) + 1) * sizeof(mlx_image_t *));
+	if (!c->map->walls[c->map->car])
+		return (free_all(split_path), error_func("malloc"));
 	i = 0;
-	while (!is_whitespace(temp_line[i + 3]))
+	if (!split_path[i])
+		return (free_all(split_path), error_map("No texture file for element"));
+	while (split_path[i])
+	{
+		texture = mlx_load_png(split_path[i]);
+		if (!texture)
+			return (free_all(split_path), error_func("mlx_load_png"));
+		c->map->walls[c->map->car][i] = mlx_texture_to_image(c->mlx, texture);
+		if (!c->map->walls[c->map->car][i])
+			return (free_all(split_path), error_func("mlx_texture_to_image"));
+		mlx_delete_texture(texture);
 		i++;
-	if (temp_line[i + 3])
-		temp_line[i + 3] = '\0';
-	texture = mlx_load_png(&temp_line[3]);
-	if (!texture)
-		return (error_func("mlx_load_png"));
-	*data = mlx_texture_to_image(cube->mlx, texture);
-	if (!*data)
-		return (error_func("mlx_texture_to_image"));
-	mlx_delete_texture(texture);
-	return (is_map_still_invalid(valid_map, cube), 0);
+	}
+	free_all(split_path);
+	c->map->walls[c->map->car][i] = NULL;
+	return (0);
+}
+
+int	is_cardinal(char *str, t_cube *cube)
+{
+	if (!ft_strncmp(str, "NO", 3))
+		cube->map->car = 0;
+	else if (!ft_strncmp(str, "SO", 3))
+		cube->map->car = 1;
+	else if (!ft_strncmp(str, "WE", 3))
+		cube->map->car = 2;
+	else if (!ft_strncmp(str, "EA", 3))
+		cube->map->car = 3;
+	else
+		cube->map->car = -1;
+	return (cube->map->car);
 }
 
 int	check_data_type(char *temp_line, int *valid_map, t_cube *cube)
 {
+	char	**data;
+	char	*whitespaces;
+	int		i;
+
+	i = 0;
 	if (is_whitespace_str(temp_line))
 		return (0);
-	else if (ft_strnstr(temp_line, "NO ", 3))
-		return (check_cardinals(&cube->map->NO, temp_line, valid_map, cube));
-	else if (ft_strnstr(temp_line, "SO ", 3))
-		return (check_cardinals(&cube->map->SO, temp_line, valid_map, cube));
-	else if (ft_strnstr(temp_line, "WE ", 3))
-		return (check_cardinals(&cube->map->WE, temp_line, valid_map, cube));
-	else if (ft_strnstr(temp_line, "EA ", 3))
-		return (check_cardinals(&cube->map->EA, temp_line, valid_map, cube));
-	else if (ft_strnstr(temp_line, "F ", 2))
-		return (check_fc(&cube->map->floor, temp_line, valid_map, cube));
-	else if (ft_strnstr(temp_line, "C ", 2))
-		return (check_fc(&cube->map->roof, temp_line, valid_map, cube));
-	return (1);
+	whitespaces = whitespace_array();
+	data = ft_split(temp_line, whitespaces);
+	free(whitespaces);
+	while (data[i])
+	{
+		printf("%s\n", data[i]);
+		if (is_cardinal(data[i], cube) > -1)
+		{
+			i++;
+			if (check_cardinals(data[i], cube))
+				return (1);
+		}
+		else if (data[i] && ft_strnstr(data[i], "F", 2))
+		{
+			i++;
+			if (check_fc(&i, data, cube))
+				return (1);
+		}
+		else if (data[i] && ft_strnstr(data[i], "C", 2))
+		{
+			i++;
+			if (check_fc(&i, data, cube))
+				return (1);
+		}
+		if (data[i])
+			i++;
+	}
+	free_all(data);
+	return (is_map_still_invalid(valid_map, cube), 0);
 }
 
 int	check_textures(t_cube *cube)
@@ -78,6 +144,8 @@ int	check_textures(t_cube *cube)
 	char	data_type;
 
 	innit_map_struct(cube);
+	if (!cube->map->walls)
+		return(close(cube->map->fd), error_func("malloc"));
 	valid_map = 0;
 	while (!valid_map)
 	{

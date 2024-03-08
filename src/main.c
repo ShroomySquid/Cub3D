@@ -6,15 +6,31 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 14:35:36 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/08 18:32:41 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
+void	free_walls(mlx_image_t ***array)
+{
+	int i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);		
+	}
+	free(array);
+}
+
 int	force_exit(t_cube *cube)
 {
 	mlx_terminate(cube->mlx);
+	if (cube && cube->map && cube->map->map && cube->map->walls)
+		free_walls(cube->map->walls);
 	if (cube && cube->map && cube->map->map)
 		free_all(cube->map->map);
 	if (cube && cube->map)
@@ -53,7 +69,10 @@ int	main(int argc, char **argv)
 	cube->rotation = 1;
 	cube->map = malloc(sizeof(t_map));
 	if (!cube->map)
-		return (error_func("malloc"));
+		return (free(cube), error_func("malloc"));
+	cube->map->walls = malloc(5 * sizeof(mlx_image_t **));
+	if (!cube->map->walls)
+		return (error_func("malloc"), force_exit(cube));
 	cube->mlx = mlx_init(WIDTH, HEIGHT, "Cub3D\n", true);
 	if (!cube->mlx)
 		return (force_exit(cube), error_func("mlx_init"));

@@ -6,11 +6,28 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 08:34:36 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 11:19:59 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:22:32 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
+
+char	*whitespace_array(void)
+{
+	char	*whitespaces;
+
+	whitespaces = malloc(7 * sizeof(char));
+	if (!whitespaces)
+		return (NULL);
+	whitespaces[0] = 32;
+	whitespaces[1] = 9;
+	whitespaces[2] = 10;
+	whitespaces[3] = 11;
+	whitespaces[4] = 12;
+	whitespaces[5] = 13;
+	whitespaces[6] = 0;
+	return (whitespaces);
+}
 
 int	is_whitespace(char c)
 {

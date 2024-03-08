@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 11:28:14 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/07 12:53:10 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:42:36 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ft_itoa(int n);
-char	**ft_split(char const *s, char c);
+char	**ft_split(char const *s, char *str);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);

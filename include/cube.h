@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 14:34:29 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/08 18:35:37 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,11 @@ typedef struct	s_map
 {
 	int 		fd;
 	int			nbr_line;
-	mlx_image_t	*NO;
-	mlx_image_t	*SO;
-	mlx_image_t	*WE;
-	mlx_image_t	*EA;
+	mlx_image_t ***walls;
 	int32_t		floor;
 	int32_t		roof;
 	char		**map;
+	int			car;
 }				t_map;
 
 typedef struct s_cube
@@ -52,10 +50,11 @@ typedef struct s_cube
 	int				map_nbr_line;
 }				t_cube;
 
+char	*whitespace_array(void);
 int		set_minimap(t_cube *cube);
 void	ft_player(void *param);
 void	ft_general(void *param);
-int		check_fc(int *data, char *line, int *valid_map, t_cube *cube);
+int		check_fc(int *i, char **data, t_cube *cube);
 void	is_map_still_invalid(int *valid_map, t_cube *cube);
 void	ft_render(void *param);
 int32_t	get_rgba(int r, int g, int b, int a);
