@@ -26,9 +26,6 @@ int	force_exit(t_cube *cube)
 
 int	start_cube(t_cube *cube)
 {
-	cube->render = mlx_new_image(cube->mlx, WIDTH, HEIGHT);
-	if (!cube->render)
-		return (error_func("mlx_new_image"));
 	if (set_minimap(cube))
 		return (1);
 	render_minimap(cube->mlx, cube->map->map, cube);
