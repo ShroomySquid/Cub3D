@@ -58,7 +58,7 @@ static float	*ft_getscale(t_cube *cube, float screenx)
 	screenx -= (float)cube->mlx->width / 2.0;
 	x = cube->playerx;
 	y = cube->playery;
-	screenx /= ((float)cube->mlx->width / 2);
+	screenx /= (float)cube->mlx->width;
 	while (1)
 	{
 		step(&x, &y, (float)cube->rotation + screenx * sqrtf(cube->mlx->width));
@@ -67,20 +67,20 @@ static float	*ft_getscale(t_cube *cube, float screenx)
 			if ((touch_wall(cube, x + 2.0, y) || touch_wall(cube, x - 2.0, y)) && touch_wall(cube, x, y - 2.0) && !touch_wall(cube, x, y + 2.0))
 				ret[1] = 0;
 			else if ((touch_wall(cube, x, y - 2.0) || touch_wall(cube, x, y + 2.0)) && touch_wall(cube, x - 2.0, y) && !touch_wall(cube, x + 2.0, y))
-				ret[1] = 1;
-			else if ((touch_wall(cube, x, y - 2.0) || touch_wall(cube, x, y + 2.0)) && touch_wall(cube, x + 2.0, y) && !touch_wall(cube, x - 2.0, y))
 				ret[1] = 2;
-			else
+			else if ((touch_wall(cube, x, y - 2.0) || touch_wall(cube, x, y + 2.0)) && touch_wall(cube, x + 2.0, y) && !touch_wall(cube, x - 2.0, y))
 				ret[1] = 3;
+			else
+				ret[1] = 1;
 			break ;
 		}
 	}
-	ret[0] = (192.0 / hypotf(fabsf(cube->playery - y), fabsf(cube->playerx - x))) * 192.0;
+	ret[0] = (192.0 / hypotf(fabsf(cube->playery - y), fabsf(cube->playerx - x))) * 384.0;
 	if (!ret[1])
 		ret[2] = cube->map->NO->width / 32.0 * fmodf(x, 32);
-	else if (ret[1] == 1)
-		ret[2] = cube->map->WE->width - cube->map->WE->width / 32.0 * fmodf(y, 32);
 	else if (ret[1] == 2)
+		ret[2] = cube->map->WE->width - cube->map->WE->width / 32.0 * fmodf(y, 32);
+	else if (ret[1] == 3)
 		ret[2] = cube->map->EA->width / 32.0 * fmodf(y, 32);
 	else
 		ret[2] = cube->map->SO->width - cube->map->SO->width / 32.0 * fmodf(x, 32);
@@ -140,9 +140,9 @@ void	ft_render(void *param)
 			}
 			else if (!val[1])
 				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->NO, val[2], (float)cube->map->NO->height / val[0] * ((float)y - ((float)cube->mlx->height - val[0]) / 2.0)));
-			else if (val[1] == 1)
-				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->WE, val[2], (float)cube->map->WE->height / val[0] * ((float)y - ((float)cube->mlx->height - val[0]) / 2.0)));
 			else if (val[1] == 2)
+				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->WE, val[2], (float)cube->map->WE->height / val[0] * ((float)y - ((float)cube->mlx->height - val[0]) / 2.0)));
+			else if (val[1] == 3)
 				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->EA, val[2], (float)cube->map->EA->height / val[0] * ((float)y - ((float)cube->mlx->height - val[0]) / 2.0)));
 			else
 				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->SO, val[2], (float)cube->map->SO->height / val[0] * ((float)y - ((float)cube->mlx->height - val[0]) / 2.0)));

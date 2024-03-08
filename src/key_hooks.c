@@ -63,8 +63,6 @@ void	ft_player(void *param)
 			cube->rotation = 0;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_D))
 		step_collision(cube->rotation + 90, cube);
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT) || mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
-		printf("rotation: %d\n", cube->rotation);
 	cube->player->instances[0].x = cube->playerx;
 	cube->player->instances[0].y = cube->playery;
 }
