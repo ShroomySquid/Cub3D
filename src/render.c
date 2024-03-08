@@ -55,7 +55,7 @@ static int	*ft_getscale(t_cube *cube, float screenx)
 	screenx -= (float)HEIGHT / 2.0;
 	x = cube->playerx;
 	y = cube->playery;
-	screenx /= 512.0;
+	screenx /= ((float)WIDTH / 2);
 	while (1)
 	{
 		step(&x, &y, (float)cube->rotation + screenx * 16.0);
@@ -83,13 +83,11 @@ static int	*ft_getscale(t_cube *cube, float screenx)
 	if (!ret[1])
 		ret[2] = cube->map->NO->width / 32.0 * fmodf(x, 32);
 	else if (ret[1] == 1)
-		ret[2] = cube->map->WE->width - cube->map->WE->width / 32.0 * fmodf(y,
-				32);
+		ret[2] = cube->map->WE->width - cube->map->WE->width / 32.0 * fmodf(y, 32);
 	else if (ret[1] == 2)
 		ret[2] = cube->map->EA->width / 32.0 * fmodf(y, 32);
 	else
-		ret[2] = cube->map->SO->width - cube->map->SO->width / 32.0 * fmodf(x,
-				32);
+		ret[2] = cube->map->SO->width - cube->map->SO->width / 32.0 * fmodf(x, 32);
 	return (ret);
 }
 
