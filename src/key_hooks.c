@@ -12,13 +12,16 @@
 
 #include "../include/cube.h"
 
+int	touch_wall(t_cube *cube, int x, int y)
+{
+	return (cube->map->map[y / 32][x / 32] == '1');
+}
+
 static void	step_collision(float rotation, t_cube *cube, bool running)
 {
-	float	oldy;
-	float	oldx;
+	const float	oldy = cube->playery;
+	const float	oldx = cube->playerx;
 
-	rotation = fmodf(rotation, 360);
-	oldy = cube->playery;
 	if (rotation < 90.0)
 		cube->playery -= 1.0 / 90.0 * (90.0 - rotation);
 	else if (rotation < 180.0)
@@ -29,7 +32,6 @@ static void	step_collision(float rotation, t_cube *cube, bool running)
 		cube->playery -= (1.0 / 90.0 * (rotation - 180.0)) - 1.0;
 	if (touch_wall(cube, cube->playerx, cube->playery))
 		cube->playery = oldy;
-	oldx = cube->playerx;
 	if (rotation < 90.0)
 		cube->playerx += 1.0 / 90.0 * rotation;
 	else if (rotation < 180.0)
@@ -54,21 +56,21 @@ static void	ft_movement(bool running, t_cube *cube)
 			|| mlx_is_key_down(cube->mlx, MLX_KEY_W));
 
 	if ((up && !left && !down && !right) || (up && left && !down && right))
-		step_collision(cube->rotation, cube, running);
+		step_collision(fmodf(cube->rotation, 360), cube, running);
 	else if (up && !left && !down && right)
-		step_collision(cube->rotation + 45, cube, running);
+		step_collision(fmodf(cube->rotation + 45, 360), cube, running);
 	else if ((!up && !left && !down && right) || (up && !left && down && right))
-		step_collision(cube->rotation + 90, cube, running);
+		step_collision(fmodf(cube->rotation + 90, 360), cube, running);
 	else if (!up && !left && down && right)
-		step_collision(cube->rotation + 135, cube, running);
+		step_collision(fmodf(cube->rotation + 135, 360), cube, running);
 	else if ((!up && !left && down && !right) || (!up && left && down && right))
-		step_collision(cube->rotation + 180, cube, running);
+		step_collision(fmodf(cube->rotation + 180, 360), cube, running);
 	else if (!up && left && down && !right)
-		step_collision(cube->rotation + 225, cube, running);
+		step_collision(fmodf(cube->rotation + 225, 360), cube, running);
 	else if ((!up && left && !down && !right) || (up && left && down && !right))
-		step_collision(cube->rotation + 270, cube, running);
+		step_collision(fmodf(cube->rotation + 270, 360), cube, running);
 	else if (up && left && !down && !right)
-		step_collision(cube->rotation + 315, cube, running);
+		step_collision(fmodf(cube->rotation + 315, 360), cube, running);
 }
 
 void	ft_player(void *param)
