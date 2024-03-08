@@ -53,14 +53,12 @@ void	ft_player(void *param)
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_DOWN) || mlx_is_key_down(cube->mlx,
 			MLX_KEY_S))
 		step_collision(cube->rotation + 180, cube);
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT))
-		if (--cube->rotation < 0)
-			cube->rotation = 360;
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT) && --cube->rotation < 0)
+		cube->rotation = 359;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_A))
 		step_collision(cube->rotation + 270, cube);
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
-		if (++cube->rotation > 360)
-			cube->rotation %= 360;
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT) && ++cube->rotation >= 360)
+		cube->rotation %= 360;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_D))
 		step_collision(cube->rotation + 90, cube);
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT) || mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
