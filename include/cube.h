@@ -23,7 +23,7 @@
 #  define HEIGHT 1024
 # endif
 
-typedef struct	s_map
+typedef struct s_map
 {
 	int 		fd;
 	int			nbr_line;
