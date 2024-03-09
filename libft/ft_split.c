@@ -20,7 +20,7 @@ static int	count_str(char *s, char *str)
 	str_nbr = 0;
 	while (*s)
 	{
-		while (ft_strchr(str, *s))
+		while (*s && ft_strchr(str, *s))
 			s++;
 		if (*s)
 			str_nbr++;
