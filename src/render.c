@@ -98,7 +98,7 @@ void	ft_render(void *param)
 {
 	t_cube		*cube;
 	float		*val;
-	static int	i[4] = {0, 0, 0, 0};
+	static int	i[4];
 	int			x;
 	int			y;
 
