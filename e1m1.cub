@@ -1,4 +1,4 @@
-NO ./png/motif.png
+NO ./png/motif.png;./png/motif.png;./png/motif.png;./png/motif.png;./png/motif.png;./png/motif.png;./png/motif.png;./png/motif.png;./png/planks.png;./png/planks.png;./png/planks.png;./png/planks.png;./png/planks.png;./png/planks.png;./png/planks.png;./png/planks.png
 SO ./png/planks.png
 EA ./png/square-32(1).png
 WE ./png/square-32.png
