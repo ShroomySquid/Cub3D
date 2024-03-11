@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/08 18:35:33 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/11 14:33:39 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	check_player(int *player, t_cube *cube, int y, int x)
 	if (*player)
 		return (error_map("More than 1 player"));
 	*player = 1;
+	cube->playerx = (32 * x) + 5;
+	cube->playery = (32 * y) + 5;
 	if (check_valid_floor(cube->map->map, x, y))
 		return (error_map("Invalid player location"));
 	return (0);
@@ -85,6 +87,7 @@ int	check_map(char **map, t_cube *cube)
 		}
 		y++;
 	}
+	cube->mini->last_line = (y - 1);
 	if (!player)
 		return (error_map("Invalid player location"));
 	return (0);

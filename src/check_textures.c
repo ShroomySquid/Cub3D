@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/08 18:35:35 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/11 14:03:39 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	check_cardinals(char *paths, t_cube *c)
 	split_path = ft_split(paths, ";");
 	if (!split_path)
 		return (error_func("ft_split"));
-	// allouer mémoire problème?
 	c->map->walls[c->map->car] = malloc((array_len(split_path) + 1) * sizeof(mlx_image_t *));
 	if (!c->map->walls[c->map->car])
 		return (free_all(split_path), error_func("malloc"));
@@ -111,7 +110,6 @@ int	check_data_type(char *temp_line, int *valid_map, t_cube *cube)
 	free(whitespaces);
 	while (data[i])
 	{
-		printf("%s\n", data[i]);
 		if (is_cardinal(data[i], cube) > -1)
 		{
 			i++;

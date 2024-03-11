@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/08 18:35:37 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:20:36 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,17 @@
 # ifndef HEIGHT
 #  define HEIGHT 1024
 # endif
+
+typedef struct s_minimap
+{
+	int		last_line;
+	int		max_y;
+	int		max_x;
+	int		min_y;
+	int		min_x;
+	int		x;
+	int		y;
+}				t_minimap;
 
 typedef struct s_map
 {
@@ -47,7 +58,9 @@ typedef struct s_cube
 	mlx_image_t		*wall_img;
 	mlx_texture_t	*wall_tex;
 	t_map			*map;
+	mlx_image_t		*minimap_img;
 	int				map_nbr_line;
+	t_minimap		*mini;
 }				t_cube;
 
 char	*whitespace_array(void);
@@ -59,7 +72,7 @@ void	is_map_still_invalid(int *valid_map, t_cube *cube);
 void	ft_render(void *param);
 int32_t	get_rgba(int r, int g, int b, int a);
 char	**parsing_map(t_cube *c, char **argv);
-void	render_minimap(mlx_t *mlx, char **map, t_cube *c);
+void	render_minimap(void *param);
 int		check_map(char **map, t_cube *cube);
 int		error_func(char *failed_func);
 int		error_argc(void);
@@ -69,5 +82,6 @@ int		is_whitespace(char c);
 int		is_whitespace_str(char *str);
 int		is_digit_str(char *str);
 int		touch_wall(t_cube *cube, int x, int y);
+void	render_player(void *param);
 
 #endif

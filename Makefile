@@ -6,7 +6,7 @@
 #    By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/30 09:59:24 by fbarrett          #+#    #+#              #
-#    Updated: 2024/03/07 14:24:00 by fbarrett         ###   ########.fr        #
+#    Updated: 2024/03/11 17:20:50 by fbarrett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ MY_LIBRARY	=	./libft/
 
 MLX_LIBRARY	=	./MLX42/
 
-MY_FILES	=	main.c check_map.c render_minimap.c error_msg.c check_textures.c render.c render2.c cube_utils.c parsing_map.c check_FC.c key_hooks.c minimap.c
+MY_FILES	=	main.c check_map.c render_minimap.c error_msg.c check_textures.c render.c render2.c cube_utils.c parsing_map.c check_FC.c key_hooks.c minimap.c	player.c
 
 MY_SOURCES	=	$(addprefix $(SRC_DIRECT), $(MY_FILES))
 

@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/08 18:32:41 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:21:45 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	free_walls(mlx_image_t ***array)
 int	force_exit(t_cube *cube)
 {
 	mlx_terminate(cube->mlx);
+	if (cube && cube->mini)
+		free(cube->mini);
 	if (cube && cube->map && cube->map->map && cube->map->walls)
 		free_walls(cube->map->walls);
 	if (cube && cube->map && cube->map->map)
@@ -45,12 +47,11 @@ int	start_cube(t_cube *cube)
 {
 	if (set_minimap(cube))
 		return (1);
-	render_minimap(cube->mlx, cube->map->map, cube);
-	cube->playerx = cube->player->instances[0].x;
-	cube->playery = cube->player->instances[0].y;
 	mlx_loop_hook(cube->mlx, ft_general, cube);
 	mlx_loop_hook(cube->mlx, ft_player, cube);
 	mlx_loop_hook(cube->mlx, ft_render, cube);
+	mlx_loop_hook(cube->mlx, render_minimap, cube);
+	mlx_loop_hook(cube->mlx, render_player, cube);
 	mlx_loop(cube->mlx);
 	return (0);
 }
@@ -65,6 +66,9 @@ int	main(int argc, char **argv)
 	if (!cube)
 		return (error_func("malloc"));
 	cube->rotation = 1;
+	cube->mini = malloc(sizeof(t_minimap));
+	if (!cube->mini)
+		return (free(cube), error_func("malloc"));
 	cube->map = malloc(sizeof(t_map));
 	if (!cube->map)
 		return (free(cube), error_func("malloc"));

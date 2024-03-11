@@ -6,30 +6,11 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/08 15:49:15 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:39:01 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
-
-void	set_player(t_cube *cube)
-{
-	uint32_t	x;
-	uint32_t	y;
-
-	x = 0;
-	y = 0;
-	while (x < cube->player->width)
-	{
-		while (y < cube->player->height)
-		{
-			mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 255));
-			y++;
-		}
-		y = 0;
-		x++;
-	}
-}
 
 int	set_minimap(t_cube *cube)
 {
@@ -39,13 +20,19 @@ int	set_minimap(t_cube *cube)
 	cube->floor_img = mlx_new_image(cube->mlx, 32, 32);
 	if (!cube->floor_img)
 		return (error_func("mlx_new_image"));
-	cube->player = mlx_new_image(cube->mlx, 4, 4);
+	cube->player = mlx_new_image(cube->mlx, 32, 32);
 	if (!cube->player)
 		return (error_func("mlx_new_image"));
-	set_player(cube);
+	cube->minimap_img = mlx_new_image(cube->mlx, 224, 224);
+	if (!cube->minimap_img)
+		return (error_func("mlx_new_image"));
 	cube->wall_tex = mlx_load_png("./png/square-32(1).png");
 	cube->floor_tex = mlx_load_png("./png/square-32.png");
 	cube->wall_img = mlx_texture_to_image(cube->mlx, cube->wall_tex);
 	cube->floor_img = mlx_texture_to_image(cube->mlx, cube->floor_tex);
+	mlx_image_to_window(cube->mlx, cube->minimap_img, 20, 20);
+	mlx_image_to_window(cube->mlx, cube->player, 117, 117);
+	mlx_set_instance_depth(&cube->minimap_img->instances[0], 1);
+	mlx_set_instance_depth(&cube->player->instances[0], 2);
 	return (0);
 }
