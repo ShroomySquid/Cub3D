@@ -58,14 +58,10 @@ static float	*ft_getscale(t_cube *cube, float screenx)
 	else
 		ret[1] = 1;
 	ret[0] = (192 / hypotf(fabsf(cube->playery - y), fabsf(cube->playerx - x))) * 384;
-	if (!ret[1])
+	if (!ret[1] || ret[1] == 3)
 		ret[2] = (float)cube->map->walls[(int)ret[1]][0]->width / 32 * fmodf(x, 32);
-	else if (ret[1] == 1)
-		ret[2] = cube->map->walls[(int)ret[1]][0]->width - (float)cube->map->walls[(int)ret[1]][0]->width / 32 * fmodf(x, 32);
-	else if (ret[1] == 2)
-		ret[2] = cube->map->walls[(int)ret[1]][0]->width - (float)cube->map->walls[(int)ret[1]][0]->width / 32 * fmodf(y, 32);
 	else
-		ret[2] = (float)cube->map->walls[(int)ret[1]][0]->width / 32 * fmodf(y, 32);
+		ret[2] = cube->map->walls[(int)ret[1]][0]->width - (float)cube->map->walls[(int)ret[1]][0]->width / 32 * fmodf(x, 32);
 	return (ret);
 }
 
@@ -122,12 +118,6 @@ void	ft_render(void *param)
 				else
 					mlx_put_pixel(cube->render, x, y, cube->map->floor);
 			}
-			else if (!val[1])
-				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->walls[(int)val[1]][0], val[2], cube->map->walls[(int)val[1]][0]->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
-			else if (val[1] == 1)
-				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->walls[(int)val[1]][0], val[2], cube->map->walls[(int)val[1]][0]->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
-			else if (val[1] == 2)
-				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->walls[(int)val[1]][0], val[2], cube->map->walls[(int)val[1]][0]->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
 			else
 				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->walls[(int)val[1]][0], val[2], cube->map->walls[(int)val[1]][0]->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
 		}
