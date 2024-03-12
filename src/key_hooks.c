@@ -54,17 +54,17 @@ static void	ft_mouse(t_cube *cube)
 
 	if (first)
 	{
-		mlx_set_mouse_pos(cube->mlx, cube->width / 2, cube->height / 2);
+		mlx_set_mouse_pos(cube->mlx, cube->mlx->width / 2, cube->mlx->height / 2);
 		first = true;
 		return ;
 	}
 	mlx_get_mouse_pos(cube->mlx, &newx, &newy);
-	cube->rotation += (newx - cube->width / 2) / 4;
+	cube->rotation += (newx - cube->mlx->width / 2) / 4;
 	if (cube->rotation < 0)
 		cube->rotation += 360;
 	else if (cube->rotation >= 360)
 		cube->rotation %= 360;
-	mlx_set_mouse_pos(cube->mlx, cube->width / 2, cube->height / 2);
+	mlx_set_mouse_pos(cube->mlx, cube->mlx->width / 2, cube->mlx->height / 2);
 }
 
 static void	ft_movement(bool running, t_cube *cube)
