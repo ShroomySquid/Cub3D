@@ -15,7 +15,10 @@
 
 static void	step(float *x, float *y, float rotation)
 {
-	rotation = fmodf(rotation, 360);
+	if (rotation < 0)
+		rotation += 360;
+	else
+		rotation = fmodf(rotation, 360);
 	if (rotation < 90.0)
 	{
 		*y -= 1.0 / 90.0 * (90.0 - rotation);
@@ -58,7 +61,7 @@ static float	*ft_getscale(t_cube *cube, float screenx, int *i)
 		ret[1] = 3;
 	else
 		ret[1] = 1;
-	ret[0] = (192 / hypot(fabsf(cube->playery - (int)y), fabsf(cube->playerx - (int)x))) * 384;
+	ret[0] = (192 / hypotf(fabsf(cube->playery - (int)y), fabsf(cube->playerx - (int)x))) * 384;
 	if (!ret[1])
 		ret[2] = (float)cube->map->walls[(int)ret[1]][i[(int)ret[1]]]->width / 32 * fmodf(x, 32);
 	else if (ret[1] == 1)
