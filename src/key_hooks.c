@@ -46,6 +46,27 @@ static void	step_collision(float rotation, t_cube *cube, bool running)
 		step_collision(rotation, cube, false);
 }
 
+static void	ft_mouse(t_cube *cube)
+{
+	static bool	first;
+	int			newx;
+	int			newy;
+
+	if (first)
+	{
+		mlx_set_mouse_pos(cube->mlx, WIDTH / 2, HEIGHT / 2);
+		first = true;
+		return ;
+	}
+	mlx_get_mouse_pos(cube->mlx, &newx, &newy);
+	cube->rotation += newx - WIDTH / 2;
+	if (cube->rotation < 0)
+		cube->rotation += 360;
+	else if (cube->rotation >= 360)
+		cube->rotation %= 360;
+	mlx_set_mouse_pos(cube->mlx, WIDTH / 2, HEIGHT / 2);
+}
+
 static void	ft_movement(bool running, t_cube *cube)
 {
 	const bool	down = (mlx_is_key_down(cube->mlx, MLX_KEY_DOWN)
@@ -78,6 +99,7 @@ void	ft_player(void *param)
 	t_cube	*cube;
 
 	cube = param;
+	ft_mouse(cube);
 	ft_movement(mlx_is_key_down(cube->mlx, MLX_KEY_LEFT_SHIFT), cube);
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT) && ++cube->rotation >= 360)
 		cube->rotation = 0;

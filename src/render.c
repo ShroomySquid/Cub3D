@@ -95,27 +95,6 @@ static void	ft_image(t_cube *cube)
 	}
 }
 
-static void	ft_mouse(t_cube *cube)
-{
-	static bool	first;
-	int			newx;
-	int			newy;
-
-	if (first)
-	{
-		mlx_set_mouse_pos(cube->mlx, WIDTH / 2, HEIGHT / 2);
-		first = true;
-		return ;
-	}
-	mlx_get_mouse_pos(cube->mlx, &newx, &newy);
-	cube->rotation += newx - WIDTH / 2;
-	if (cube->rotation < 0)
-		cube->rotation += 360;
-	else if (cube->rotation >= 360)
-		cube->rotation %= 360;
-	mlx_set_mouse_pos(cube->mlx, WIDTH / 2, HEIGHT / 2);
-}
-
 void	ft_render(void *param)
 {
 	t_cube		*cube;
@@ -125,7 +104,6 @@ void	ft_render(void *param)
 	int			y;
 
 	cube = param;
-	ft_mouse(cube);
 	ft_image(cube);
 	x = -1;
 	while (++x < cube->mlx->width)
