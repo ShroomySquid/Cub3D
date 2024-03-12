@@ -105,8 +105,6 @@ void	ft_player(void *param)
 		cube->rotation = 0;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT) && --cube->rotation < 0)
 		cube->rotation = 359;
-	cube->player->instances[0].x = cube->playerx;
-	cube->player->instances[0].y = cube->playery;
 }
 
 void	ft_general(void *param)
