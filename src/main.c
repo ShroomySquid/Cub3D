@@ -43,6 +43,7 @@ int	force_exit(t_cube *cube)
 	return (1);
 }
 
+
 int	start_cube(t_cube *cube)
 {
 	if (set_minimap(cube))

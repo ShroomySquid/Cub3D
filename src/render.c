@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/cube.h"
+#include <stdbool.h>
 
 static void	step(float *x, float *y, float rotation)
 {
