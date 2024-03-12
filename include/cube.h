@@ -22,6 +22,18 @@
 # ifndef HEIGHT
 #  define HEIGHT 1024
 # endif
+# ifndef X_MIN
+#  define X_MIN -768
+# endif
+# ifndef X_MAX
+#  define X_MAX 1791
+# endif
+# ifndef Y_MIN
+#  define Y_MIN -138
+# endif
+# ifndef Y_MAX
+#  define Y_MAX 1301
+# endif
 
 typedef struct s_map
 {
