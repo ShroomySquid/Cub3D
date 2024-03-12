@@ -41,6 +41,38 @@ static void	step(float *x, float *y, float rotation)
 	}
 }
 
+int	ft_getside(t_cube *cube, float offset, float x, float y)
+{
+	int	match;
+	int	ret;
+
+	match = 0;
+	ret = 0;
+	if ((touch_wall(cube, x + offset, y) || touch_wall(cube, x - offset, y)) && touch_wall(cube, x, y - offset) && !touch_wall(cube, x, y + offset))
+	{
+		ret = 0;
+		match++;
+	}
+	if ((touch_wall(cube, x, y - offset) || touch_wall(cube, x, y + offset)) && touch_wall(cube, x - offset, y) && !touch_wall(cube, x + offset, y))
+	{
+		ret = 2;
+		match++;
+	}
+	if ((touch_wall(cube, x, y - offset) || touch_wall(cube, x, y + offset)) && touch_wall(cube, x + offset, y) && !touch_wall(cube, x - offset, y))
+	{
+		ret = 3;
+		match++;
+	}
+	if ((touch_wall(cube, x + offset, y) || touch_wall(cube, x - offset, y)) && touch_wall(cube, x, y + offset) && !touch_wall(cube, x, y - offset))
+	{
+		ret = 1;
+		match++;
+	}
+	if (match > 1)
+		ret = ft_getside(cube, offset / 2, x, y);
+	return (ret);
+}
+
 static float	*ft_getscale(t_cube *cube, float screenx, int *i)
 {
 	static float	ret[3];
@@ -53,14 +85,7 @@ static float	*ft_getscale(t_cube *cube, float screenx, int *i)
 	screenx /= cube->mlx->width;
 	while (!touch_wall(cube, x, y))
 		step(&x, &y, cube->rotation + screenx * sqrtf(cube->mlx->width));
-	if ((touch_wall(cube, x + 2, y) || touch_wall(cube, x - 2, y)) && touch_wall(cube, x, y - 2) && !touch_wall(cube, x, y + 2))
-		ret[1] = 0;
-	else if ((touch_wall(cube, x, y - 2) || touch_wall(cube, x, y + 2)) && touch_wall(cube, x - 2, y) && !touch_wall(cube, x + 2, y))
-		ret[1] = 2;
-	else if ((touch_wall(cube, x, y - 2) || touch_wall(cube, x, y + 2)) && touch_wall(cube, x + 2, y) && !touch_wall(cube, x - 2, y))
-		ret[1] = 3;
-	else
-		ret[1] = 1;
+	ret[1] = ft_getside(cube, 2, x, y);
 	ret[0] = (192 / hypotf(fabsf(cube->playery - (int)y), fabsf(cube->playerx - (int)x))) * 384;
 	if (!ret[1])
 		ret[2] = (float)cube->map->walls[(int)ret[1]][i[(int)ret[1]]]->width / 32 * fmodf(x, 32);

@@ -81,7 +81,7 @@ int		check_textures(t_cube *cube);
 int		is_whitespace(char c);
 int		is_whitespace_str(char *str);
 int		is_digit_str(char *str);
-int		touch_wall(t_cube *cube, int x, int y);
+int		touch_wall(t_cube *cube, float x, float y);
 void	render_player(void *param);
 
 #endif

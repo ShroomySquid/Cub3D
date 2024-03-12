@@ -12,9 +12,14 @@
 
 #include "../include/cube.h"
 
-int	touch_wall(t_cube *cube, int x, int y)
+int	touch_wall(t_cube *cube, float x, float y)
 {
-	return (cube->map->map[y / 32][x / 32] == '1');
+	int	intx;
+	int	inty;
+
+	intx = x / 32.0;
+	inty = y / 32.0;
+	return (cube->map->map[inty][intx] == '1');
 }
 
 static void	step_collision(float rotation, t_cube *cube, bool running)

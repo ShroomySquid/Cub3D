@@ -49,7 +49,7 @@ $(NAME):	$(MLX_LIBRARY) $(O_DIRECT) $(MY_OBJECTS) $(MY_LIBRARY)
 	@make -C ./MLX42/build -j4
 	$(CC) $(CCFLAGS) -o $(NAME) $(MY_OBJECTS) $(LIBFLAGS) $(MLXLIBFLAGS)
 
-debug:		$(MLX_LIBRARY) $(O_DIRECT) $(MY_OBJECTS) $(MY_LIBRARY)
+debug:	fclean $(MLX_LIBRARY) $(O_DIRECT) $(MY_OBJECTS) $(MY_LIBRARY)
 	@make -C $(MY_LIBRARY)
 	@cmake -S ./MLX42 -B ./MLX42/build
 	@make -C ./MLX42/build -j4
