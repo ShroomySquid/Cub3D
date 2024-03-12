@@ -58,7 +58,7 @@ static float	*ft_getscale(t_cube *cube, float screenx, int *i)
 		ret[1] = 3;
 	else
 		ret[1] = 1;
-	ret[0] = (192 / hypotf(fabsf(cube->playery - y), fabsf(cube->playerx - x))) * 384;
+	ret[0] = (192 / hypot(fabsf(cube->playery - (int)y), fabsf(cube->playerx - (int)x))) * 384;
 	if (!ret[1])
 		ret[2] = (float)cube->map->walls[(int)ret[1]][i[(int)ret[1]]]->width / 32 * fmodf(x, 32);
 	else if (ret[1] == 1)
