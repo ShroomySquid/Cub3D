@@ -6,14 +6,14 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/13 10:32:47 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/13 13:48:33 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 #include <stdbool.h>
 
-static void	step(float *x, float *y, float rotation)
+void	step(float *x, float *y, float rotation)
 {
 	if (rotation < 0)
 		rotation += 360;
@@ -81,16 +81,12 @@ static float	*ft_getscale(t_cube *cube, float screenx, int *i)
 
 	screenx -= (float)cube->mlx->width / 2;
 	x = cube->playerx;
-	//printf("py: %f\n", cube->playery);
 	y = cube->playery;
-	//printf("y: %f\n", y);
 	screenx /= cube->mlx->width;
 	while (!touch_wall(cube, x, y))
 		step(&x, &y, cube->rotation + screenx * sqrtf(cube->mlx->width));
 	ret[1] = ft_getside(cube, 2, x, y);
 	ret[0] = ((192 / hypotf(fabsf(cube->playery - (int)y), fabsf(cube->playerx - (int)x)))) * 384;
-	//ret[0] -= ((int)ret[0] << 6) >> 6;
-	//printf("%f\n", ret[0]);
 	if (!ret[1])
 		ret[2] = (float)cube->map->walls[(int)ret[1]][i[(int)ret[1]]]->width / 32 * fmodf(x, 32);
 	else if (ret[1] == 1)
