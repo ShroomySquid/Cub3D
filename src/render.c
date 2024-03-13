@@ -6,13 +6,13 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/13 10:32:47 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/13 13:48:33 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
-static void	step(float *x, float *y, float rotation)
+void	step(float *x, float *y, float rotation)
 {
 	float	xinit;
 	float	yinit;

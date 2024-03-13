@@ -6,56 +6,26 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/13 11:44:12 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/13 13:48:30 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
-void	draw_line(uint32_t middle[2], int angle, t_cube *c)
+void draw_line(float angle, t_cube *cube)
 {
-	uint32_t x;
-	uint32_t y;
+	float x;
+	float y;
+	int i;
 
-	if (angle == 0)
+	y = cube->player->height / 2;
+	x = cube->player->width / 2;
+	i = 0;
+	while (x > 0 && x < cube->player->width && y > 0 && y < cube->player->height && i < 240)
 	{
-		y = 0;
-		while (y < middle[1])
-		{
-			mlx_put_pixel(c->player, middle[0], y, get_rgba(255, 255, 255, 255));
-			y++;
-		}
-		return ;
-	}
-	if (angle == 90)
-	{
-		x = middle[0];
-		while (x <= c->player->width)
-		{
-			mlx_put_pixel(c->player, x, middle[1], get_rgba(255, 255, 255, 255));
-			x++;
-		}
-		return ;
-	}
-	if (angle == 180)
-	{
-		y = middle[1];
-		while (y < c->player->height)
-		{
-			mlx_put_pixel(c->player, middle[0], y, get_rgba(255, 255, 255, 255));
-			y++;
-		}
-		return ;
-	}
-	if (angle == 270)
-	{
-		x = 0;
-		while (x < middle[0])
-		{
-			mlx_put_pixel(c->player, x, middle[1], get_rgba(255, 255, 255, 255));
-			x++;
-		}
-		return ;
+		mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 255 - i));
+		step(&x, &y, angle);
+		i += 12;
 	}
 }
 
@@ -64,21 +34,14 @@ void	render_player(void *param)
 	t_cube *cube;
 	uint32_t	x;
 	uint32_t	y;
-	int left;
-	uint32_t right;
-	uint32_t middle[2];
+	int los;
+	int i;
 
 	cube = param;
-	left = cube->rotation - 30;
-	if (left < 0)
-		left += 360;
-	right = cube->rotation + 30;
-	if (right > 360)
-		right -= 360;
-	middle[0] = cube->player->width / 2;
-	middle[1] = cube->player->height / 2;
-	draw_line(middle, left, cube);
-	draw_line(middle, right, cube);
+	los = cube->rotation - 30;
+	if (los < 0)
+		los += 360;
+	i = 0;
 	x = 0;
 	y = 0;
 	while (x < cube->player->width)
@@ -94,6 +57,12 @@ void	render_player(void *param)
 		y = 0;
 		x++;
 	}
-	draw_line(middle, left, cube);
-	draw_line(middle, right, cube);
+	while (i < 60)
+	{
+		draw_line(los, cube);
+		i++;
+		los += 1;
+		if (los >= 360)
+			los = 0;
+	}
 }
