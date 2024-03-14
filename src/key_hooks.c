@@ -14,18 +14,18 @@
 
 static void	ft_mouse(t_cube *c)
 {
-	static bool	first;
-	int			newx;
-	int			newy;
+	static int	first;
+	int			x;
+	int			y;
 
-	if (first)
+	if (first <= 2)
 	{
 		mlx_set_mouse_pos(c->mlx, c->mlx->width / 2, c->mlx->height / 2);
-		first = true;
+		first++;
 		return ;
 	}
-	mlx_get_mouse_pos(c->mlx, &newx, &newy);
-	c->rotation += (newx - c->mlx->width / 2) / 4;
+	mlx_get_mouse_pos(c->mlx, &x, &y);
+	c->rotation += (x - c->mlx->width / 2) / 4;
 	if (c->rotation < 0)
 		c->rotation += 360;
 	else if (c->rotation >= 360)
