@@ -11,40 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/cube.h"
-#include <float.h>
-
-void	step(float *x, float *y, float rotation)
-{
-	float	xinit;
-	float	yinit;
-
-	xinit = *x;
-	yinit = *y;
-	if (rotation < 0)
-		rotation += 360;
-	else
-		rotation = fmodf(rotation, 360);
-	if (rotation < 90.0)
-	{
-		*y -= 1.0 / 90.0 * (90.0 - rotation);
-		*x += 1.0 / 90.0 * rotation;
-	}
-	else if (rotation < 180.0)
-	{
-		*y += (1.0 / 90.0 * rotation) - 1.0;
-		*x += 2.0 - (1.0 / 90.0 * rotation);
-	}
-	else if (rotation < 270.0)
-	{
-		*y += (1.0 / 90.0 * (90.0 - rotation - 180.0)) + 4.0;
-		*x -= 1.0 / 90.0 * (rotation - 180.0);
-	}
-	else
-	{
-		*y -= (1.0 / 90.0 * (rotation - 180.0)) - 1.0;
-		*x -= 2.0 - (1.0 / 90.0 * (rotation - 180.0));
-	}
-}
 
 static int	ft_getside(t_cube *cube, float x, float y, float rotation)
 {
@@ -60,15 +26,15 @@ static int	ft_getside(t_cube *cube, float x, float y, float rotation)
 	ret = -1;
 	while (1)
 	{
-		if ((rotation > 270 || rotation < 90) && touch_wall(cube, x + offset, y) && touch_wall(cube, x - offset, y) && touch_wall(cube, x, y - offset) && !touch_wall(cube, x, y + offset))
+		if ((rotation > 270 || rotation < 90) && touch_wall(cube->map->map, 1, x + offset, y) && touch_wall(cube->map->map, 1, x - offset, y) && touch_wall(cube->map->map, 1, x, y - offset) && !touch_wall(cube->map->map, 1, x, y + offset))
 			ret = 0;
-		else if ((rotation > 180 && rotation < 360) && touch_wall(cube, x, y - offset) && touch_wall(cube, x, y + offset) && touch_wall(cube, x - offset, y) && !touch_wall(cube, x + offset, y))
+		else if ((rotation > 180 && rotation < 360) && touch_wall(cube->map->map, 1, x, y - offset) && touch_wall(cube->map->map, 1, x, y + offset) && touch_wall(cube->map->map, 1, x - offset, y) && !touch_wall(cube->map->map, 1, x + offset, y))
 			ret = 2;
-		else if ((rotation > 0 && rotation < 180) && touch_wall(cube, x, y - offset) && touch_wall(cube, x, y + offset) && touch_wall(cube, x + offset, y) && !touch_wall(cube, x - offset, y))
+		else if ((rotation > 0 && rotation < 180) && touch_wall(cube->map->map, 1, x, y - offset) && touch_wall(cube->map->map, 1, x, y + offset) && touch_wall(cube->map->map, 1, x + offset, y) && !touch_wall(cube->map->map, 1, x - offset, y))
 			ret = 3;
-		else if ((rotation > 90 && rotation < 270) && touch_wall(cube, x + offset, y) && touch_wall(cube, x - offset, y) && touch_wall(cube, x, y + offset) && !touch_wall(cube, x, y - offset))
+		else if ((rotation > 90 && rotation < 270) && touch_wall(cube->map->map, 1, x + offset, y) && touch_wall(cube->map->map, 1, x - offset, y) && touch_wall(cube->map->map, 1, x, y + offset) && !touch_wall(cube->map->map, 1, x, y - offset))
 			ret = 1;
-		if (ret == -1 && offset / 2 >= 0.250)
+		if (ret == -1 && offset / 2)
 		{
 			offset /= 2;
 			continue ;
@@ -92,7 +58,7 @@ static float	*ft_getscale(t_cube *cube, float screenx, int *i)
 	x = cube->playerx;
 	y = cube->playery;
 	screenx /= cube->mlx->width;
-	while (!touch_wall(cube, x, y))
+	while (!touch_wall(cube->map->map, 1, x, y))
 		step(&x, &y, cube->rotation + screenx * sqrtf(cube->mlx->width));
 	ret[1] = ft_getside(cube, x, y, cube->rotation + screenx * sqrtf(cube->mlx->width));
 	ret[0] = ((256 / hypotf(fabsf(cube->playery - (int)y), fabsf(cube->playerx - (int)x)))) * 256;
@@ -143,6 +109,7 @@ void	ft_render(void *param)
 	static int	i[4];
 	int			x;
 	int			y;
+	static unsigned	counter;
 
 	cube = param;
 	ft_image(cube);
@@ -176,4 +143,5 @@ void	ft_render(void *param)
 	i[3]++;
 	if (!cube->map->walls[3][i[3]])
 		i[3] = 0;
+	printf("%d\n", counter++);
 }

@@ -14,12 +14,12 @@
 
 void draw_line(float angle, t_cube *cube)
 {
-	float x;
-	float y;
-	int i;
+	float	x;
+	float	y;
+	int		i;
 
-	y = cube->player->height / 2;
-	x = cube->player->width / 2;
+	y = (float)cube->player->height / 2;
+	x = (float)cube->player->width / 2;
 	i = 0;
 	while (x > 0 && x < cube->player->width && y > 0 && y < cube->player->height && i < 240)
 	{
@@ -31,11 +31,11 @@ void draw_line(float angle, t_cube *cube)
 
 void	render_player(void *param)
 {
-	t_cube *cube;
+	t_cube		*cube;
 	uint32_t	x;
 	uint32_t	y;
-	int los;
-	int i;
+	int			los;
+	int			i;
 
 	cube = param;
 	los = cube->rotation - 30;

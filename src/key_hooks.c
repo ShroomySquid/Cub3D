@@ -12,14 +12,21 @@
 
 #include "../include/cube.h"
 
-int	touch_wall(t_cube *cube, float x, float y)
+bool	touch_wall(char **map, int size, int x, int y)
 {
-	int	intx;
-	int	inty;
-
-	intx = x / 32.0;
-	inty = y / 32.0;
-	return (cube->map->map[inty][intx] == '1');
+	if (size == 1)
+		return (map[y / 32][x / 32] == '1');
+	x -= size / 2;
+	y -= size / 2;
+	if (map[y / 32][x / 32] == '1')
+		return (true);
+	if (map[(y + size - 1) / 32][x / 32] == '1')
+		return (true);
+	if (map[y / 32][(x + size - 1) / 32] == '1')
+		return (true);
+	if (map[(y + size - 1) / 32][(x + size - 1) / 32] == '1')
+		return (true);
+	return (false);
 }
 
 static void	step_collision(float rotation, t_cube *cube, bool running)
@@ -35,7 +42,7 @@ static void	step_collision(float rotation, t_cube *cube, bool running)
 		cube->playery += (1.0 / 90.0 * (90.0 - rotation - 180.0)) + 4.0;
 	else
 		cube->playery -= (1.0 / 90.0 * (rotation - 180.0)) - 1.0;
-	if (touch_wall(cube, cube->playerx, cube->playery))
+	if (touch_wall(cube->map->map, 5, cube->playerx, cube->playery))
 		cube->playery = oldy;
 	if (rotation < 90.0)
 		cube->playerx += 1.0 / 90.0 * rotation;
@@ -45,13 +52,13 @@ static void	step_collision(float rotation, t_cube *cube, bool running)
 		cube->playerx -= 1.0 / 90.0 * (rotation - 180.0);
 	else
 		cube->playerx -= 2.0 - (1.0 / 90.0 * (rotation - 180.0));
-	if (touch_wall(cube, cube->playerx, cube->playery))
+	if (touch_wall(cube->map->map, 5, cube->playerx, cube->playery))
 		cube->playerx = oldx;
 	if (running)
 		step_collision(rotation, cube, false);
 }
 
-static void	ft_mouse(t_cube *cube)
+static void	ft_mouse(t_cube *c)
 {
 	static bool	first;
 	int			newx;
@@ -59,17 +66,17 @@ static void	ft_mouse(t_cube *cube)
 
 	if (first)
 	{
-		mlx_set_mouse_pos(cube->mlx, cube->mlx->width / 2, cube->mlx->height / 2);
+		mlx_set_mouse_pos(c->mlx, c->mlx->width / 2, c->mlx->height / 2);
 		first = true;
 		return ;
 	}
-	mlx_get_mouse_pos(cube->mlx, &newx, &newy);
-	cube->rotation += (newx - cube->mlx->width / 2) / 4;
-	if (cube->rotation < 0)
-		cube->rotation += 360;
-	else if (cube->rotation >= 360)
-		cube->rotation %= 360;
-	mlx_set_mouse_pos(cube->mlx, cube->mlx->width / 2, cube->mlx->height / 2);
+	mlx_get_mouse_pos(c->mlx, &newx, &newy);
+	c->rotation += (newx - c->mlx->width / 2) / 4;
+	if (c->rotation < 0)
+		c->rotation += 360;
+	else if (c->rotation >= 360)
+		c->rotation %= 360;
+	mlx_set_mouse_pos(c->mlx, c->mlx->width / 2, c->mlx->height / 2);
 }
 
 static void	ft_movement(bool running, t_cube *cube)

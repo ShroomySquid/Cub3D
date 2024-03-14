@@ -37,9 +37,9 @@ LIBFLAGS	= -L$(MY_LIBRARY) -lft -I.
 
 MLXLIBFLAGS	=	-L./MLX42/build/ -lmlx42 -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib" -I. -framework Cocoa -framework OpenGL -framework IOKit
 
-CCFLAGS		=	-Wall -Wextra -Werror
+CCFLAGS		=	-Wall -Wextra -Werror -g
 
-DEBUG_FLAGS	=	-g -fsanitize=address
+DEBUG_FLAGS	=	-fsanitize=address
 
 all:		$(NAME)
 
@@ -49,7 +49,7 @@ $(NAME):	$(MLX_LIBRARY) $(O_DIRECT) $(MY_OBJECTS) $(MY_LIBRARY)
 	@make -C ./MLX42/build -j4
 	$(CC) $(CCFLAGS) -o $(NAME) $(MY_OBJECTS) $(LIBFLAGS) $(MLXLIBFLAGS)
 
-debug:	fclean $(MLX_LIBRARY) $(O_DIRECT) $(MY_OBJECTS) $(MY_LIBRARY)
+debug:	$(MLX_LIBRARY) $(O_DIRECT) $(MY_OBJECTS) $(MY_LIBRARY)
 	@make -C $(MY_LIBRARY)
 	@cmake -S ./MLX42 -B ./MLX42/build
 	@make -C ./MLX42/build -j4
