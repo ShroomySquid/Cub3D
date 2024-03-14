@@ -14,22 +14,25 @@
 
 static void	ft_mouse(t_cube *c)
 {
-	static int	first;
+	static int	init = 2;
+	float		move;
 	int			x;
 	int			y;
 
-	if (first <= 2)
+	if (init)
 	{
 		mlx_set_mouse_pos(c->mlx, c->mlx->width / 2, c->mlx->height / 2);
-		first++;
+		init--;
 		return ;
 	}
 	mlx_get_mouse_pos(c->mlx, &x, &y);
-	c->rotation += (x - c->mlx->width / 2) / 4;
-	if (c->rotation < 0)
-		c->rotation += 360;
-	else if (c->rotation >= 360)
-		c->rotation %= 360;
+	if (x - (float)c->mlx->width / 2)
+		move = sqrtf(fabsf(x - (float)c->mlx->width / 2)) - 1;
+	if (x - (float)c->mlx->width / 2 < 0)
+		move = -move;
+	if (move)
+		c->rotation += move;
+	c->rotation = fmodf(c->rotation, 360) + (c->rotation < 0) * 360;
 	mlx_set_mouse_pos(c->mlx, c->mlx->width / 2, c->mlx->height / 2);
 }
 
@@ -67,10 +70,11 @@ void	ft_player(void *param)
 	cube = param;
 	ft_mouse(cube);
 	ft_movement(mlx_is_key_down(cube->mlx, MLX_KEY_LEFT_SHIFT), cube);
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT) && ++cube->rotation >= 360)
-		cube->rotation = 0;
-	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT) && --cube->rotation < 0)
-		cube->rotation = 359;
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
+		cube->rotation++;
+	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT))
+		cube->rotation--;
+	cube->rotation = fmodf(cube->rotation, 360) + (cube->rotation < 0) * 360;
 }
 
 void	ft_general(void *param)

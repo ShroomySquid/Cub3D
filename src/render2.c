@@ -46,10 +46,7 @@ static int	ft_getside(t_cube cube, float x, float y, float rotation)
 	float		offset;
 	int			ret;
 
-	if (rotation < 0)
-		rotation += 360;
-	else
-		rotation = fmodf(rotation, 360);
+	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
 	offset = 2;
 	ret = ft_getside_loop(cube, rotation, x, y);
 	if (ret == -1)
@@ -94,10 +91,7 @@ int32_t	get_rgba(int r, int g, int b, int a)
 
 void	step(float *x, float *y, float rotation)
 {
-	if (rotation < 0)
-		rotation += 360;
-	else
-		rotation = fmodf(rotation, 360);
+	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
 	if (rotation < 90.0)
 	{
 		*y -= 1.0 / 90.0 * (90.0 - rotation);
