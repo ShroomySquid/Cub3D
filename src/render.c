@@ -12,67 +12,6 @@
 
 #include "../include/cube.h"
 
-static int	ft_getside(t_cube *cube, float x, float y, float rotation)
-{
-	static int	lastret;
-	float		offset;
-	int			ret;
-
-	if (rotation < 0)
-		rotation += 360;
-	else
-		rotation = fmodf(rotation, 360);
-	offset = 2;
-	ret = -1;
-	while (1)
-	{
-		if ((rotation > 270 || rotation < 90) && touch_wall(cube->map->map, 1, x + offset, y) && touch_wall(cube->map->map, 1, x - offset, y) && touch_wall(cube->map->map, 1, x, y - offset) && !touch_wall(cube->map->map, 1, x, y + offset))
-			ret = 0;
-		else if ((rotation > 180 && rotation < 360) && touch_wall(cube->map->map, 1, x, y - offset) && touch_wall(cube->map->map, 1, x, y + offset) && touch_wall(cube->map->map, 1, x - offset, y) && !touch_wall(cube->map->map, 1, x + offset, y))
-			ret = 2;
-		else if ((rotation > 0 && rotation < 180) && touch_wall(cube->map->map, 1, x, y - offset) && touch_wall(cube->map->map, 1, x, y + offset) && touch_wall(cube->map->map, 1, x + offset, y) && !touch_wall(cube->map->map, 1, x - offset, y))
-			ret = 3;
-		else if ((rotation > 90 && rotation < 270) && touch_wall(cube->map->map, 1, x + offset, y) && touch_wall(cube->map->map, 1, x - offset, y) && touch_wall(cube->map->map, 1, x, y + offset) && !touch_wall(cube->map->map, 1, x, y - offset))
-			ret = 1;
-		if (ret == -1 && offset / 2)
-		{
-			offset /= 2;
-			continue ;
-		}
-		else
-			break ;
-	}
-	if (ret == -1)
-		ret = lastret;
-	lastret = ret;
-	return (ret);
-}
-
-static float	*ft_getscale(t_cube *cube, float screenx, int *i)
-{
-	static float	ret[3];
-	float			x;
-	float			y;
-
-	screenx -= (float)cube->mlx->width / 2;
-	x = cube->playerx;
-	y = cube->playery;
-	screenx /= cube->mlx->width;
-	while (!touch_wall(cube->map->map, 1, x, y))
-		step(&x, &y, cube->rotation + screenx * sqrtf(cube->mlx->width));
-	ret[1] = ft_getside(cube, x, y, cube->rotation + screenx * sqrtf(cube->mlx->width));
-	ret[0] = ((256 / hypotf(fabsf(cube->playery - (int)y), fabsf(cube->playerx - (int)x)))) * 256;
-	if (!ret[1])
-		ret[2] = (float)cube->map->walls[(int)ret[1]][i[(int)ret[1]]]->width / 32 * fmodf(x, 32);
-	else if (ret[1] == 1)
-		ret[2] = cube->map->walls[(int)ret[1]][i[(int)ret[1]]]->width - (float)cube->map->walls[(int)ret[1]][i[(int)ret[1]]]->width / 32 * fmodf(x, 32);
-	else if (ret[1] == 2)
-		ret[2] = cube->map->walls[(int)ret[1]][i[(int)ret[1]]]->width - (float)cube->map->walls[(int)ret[1]][i[(int)ret[1]]]->width / 32 * fmodf(y, 32);
-	else
-		ret[2] = (float)cube->map->walls[(int)ret[1]][i[(int)ret[1]]]->width / 32 * fmodf(y, 32);
-	return (ret);
-}
-
 static int32_t	get_pixel(mlx_image_t *img, int x, int y)
 {
 	const int32_t	offset = (y * img->width + x) * 4;
@@ -102,35 +41,42 @@ static void	ft_image(t_cube *cube)
 	}
 }
 
+static void	ft_render_loop(t_cube *cube, float x, int *i)
+{
+	float	*val;
+	int		y;
+
+	y = -1;
+	val = ft_getscale(*cube, x, i);
+	while (++y < cube->mlx->height)
+	{
+		if (y < (float)cube->mlx->height / 2 - val[0] / 2
+			|| y >= (float)cube->mlx->height / 2 + val[0] / 2)
+		{
+			if (y < cube->mlx->height / 2)
+				mlx_put_pixel(cube->render, x, y, cube->map->roof);
+			else
+				mlx_put_pixel(cube->render, x, y, cube->map->floor);
+		}
+		else
+			mlx_put_pixel(cube->render, x, y,
+				get_pixel(cube->map->walls[(int)val[1]][i[(int)val[1]]], val[2],
+					cube->map->walls[(int)val[1]][i[(int)val[1]]]->height
+					/ val[0] * (y - (cube->mlx->height - val[0]) / 2)));
+	}
+}
+
 void	ft_render(void *param)
 {
 	t_cube		*cube;
-	float		*val;
 	static int	i[4];
 	int			x;
-	int			y;
-	static unsigned	counter;
 
 	cube = param;
 	ft_image(cube);
 	x = -1;
 	while (++x < cube->mlx->width)
-	{
-		y = -1;
-		val = ft_getscale(cube, x, i);
-		while (++y < cube->mlx->height)
-		{
-			if (y < (float)cube->mlx->height / 2 - val[0] / 2 || y >= (float)cube->mlx->height / 2 + val[0] / 2)
-			{
-				if (y < cube->mlx->height / 2)
-					mlx_put_pixel(cube->render, x, y, cube->map->roof);
-				else
-					mlx_put_pixel(cube->render, x, y, cube->map->floor);
-			}
-			else
-				mlx_put_pixel(cube->render, x, y, get_pixel(cube->map->walls[(int)val[1]][i[(int)val[1]]], val[2], cube->map->walls[(int)val[1]][i[(int)val[1]]]->height / val[0] * (y - (cube->mlx->height - val[0]) / 2)));
-		}
-	}
+		ft_render_loop(cube, x, i);
 	i[0]++;
 	if (!cube->map->walls[0][i[0]])
 		i[0] = 0;
@@ -143,5 +89,4 @@ void	ft_render(void *param)
 	i[3]++;
 	if (!cube->map->walls[3][i[3]])
 		i[3] = 0;
-	printf("%d\n", counter++);
 }

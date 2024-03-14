@@ -63,6 +63,8 @@ typedef struct s_cube
 	t_minimap		*mini;
 }				t_cube;
 
+void	step_collision(float rotation, t_cube *cube, bool running);
+float	*ft_getscale(t_cube c, float screenx, int *i);
 void	step(float *x, float *y, float rotation);
 char	*whitespace_array(void);
 int		set_minimap(t_cube *cube);
