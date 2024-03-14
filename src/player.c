@@ -6,22 +6,23 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/13 13:48:30 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:11:51 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
-void draw_line(float angle, t_cube *cube)
+void	draw_line(float angle, t_cube *cube)
 {
-	float x;
-	float y;
-	int i;
+	float	x;
+	float	y;
+	int		i;
 
 	y = cube->player->height / 2;
 	x = cube->player->width / 2;
 	i = 0;
-	while (x > 0 && x < cube->player->width && y > 0 && y < cube->player->height && i < 240)
+	while (x > 0 && x < cube->player->width && y > 0
+		&& y < cube->player->height && i < 240)
 	{
 		mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 255 - i));
 		step(&x, &y, angle);
@@ -29,19 +30,32 @@ void draw_line(float angle, t_cube *cube)
 	}
 }
 
+void	draw_los(int los, t_cube *cube)
+{
+	int	i;
+
+	i = 0;
+	while (i < 60)
+	{
+		draw_line(los, cube);
+		i++;
+		los += 1;
+		if (los >= 360)
+			los = 0;
+	}
+}
+
 void	render_player(void *param)
 {
-	t_cube *cube;
+	t_cube		*cube;
 	uint32_t	x;
 	uint32_t	y;
-	int los;
-	int i;
+	int			los;
 
 	cube = param;
 	los = cube->rotation - 30;
 	if (los < 0)
 		los += 360;
-	i = 0;
 	x = 0;
 	y = 0;
 	while (x < cube->player->width)
@@ -57,12 +71,5 @@ void	render_player(void *param)
 		y = 0;
 		x++;
 	}
-	while (i < 60)
-	{
-		draw_line(los, cube);
-		i++;
-		los += 1;
-		if (los >= 360)
-			los = 0;
-	}
+	draw_los(los, cube);
 }

@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/11 14:33:39 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:32:31 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	check_map(char **map, t_cube *cube)
 		}
 		y++;
 	}
-	cube->mini->last_line = (y - 1);
+	cube->last_line = (y - 1);
 	if (!player)
 		return (error_map("Invalid player location"));
 	return (0);

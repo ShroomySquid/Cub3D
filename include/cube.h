@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/13 13:48:36 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:54:53 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,11 @@
 
 typedef struct s_minimap
 {
-	int		last_line;
-	int		max_y;
-	int		max_x;
-	int		min_y;
-	int		min_x;
-	int		x;
-	int		y;
+	char		coord;
+	int			min_y;
+	int			min_x;
+	int			x;
+	int			y;
 }				t_minimap;
 
 typedef struct s_map
@@ -60,7 +58,7 @@ typedef struct s_cube
 	t_map			*map;
 	mlx_image_t		*minimap_img;
 	int				map_nbr_line;
-	t_minimap		*mini;
+	int				last_line;
 }				t_cube;
 
 void	step(float *x, float *y, float rotation);
