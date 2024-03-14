@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/14 19:11:51 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:17:20 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	draw_line(float angle, t_cube *cube)
 	float	y;
 	int		i;
 
-	y = cube->player->height / 2;
-	x = cube->player->width / 2;
+	y = (float)cube->player->height / 2;
+	x = (float)cube->player->width / 2;
 	i = 0;
 	while (x > 0 && x < cube->player->width && y > 0
 		&& y < cube->player->height && i < 240)

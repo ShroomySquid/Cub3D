@@ -52,7 +52,7 @@ typedef struct s_cube
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;
 	mlx_image_t		*render;
-	int				rotation;
+	float			rotation;
 	mlx_image_t		*wall_img;
 	mlx_texture_t	*wall_tex;
 	t_map			*map;
@@ -61,6 +61,8 @@ typedef struct s_cube
 	int				last_line;
 }				t_cube;
 
+void	step_collision(float rotation, t_cube *cube, bool running);
+float	*ft_getscale(t_cube c, float screenx, int *i);
 void	step(float *x, float *y, float rotation);
 char	*whitespace_array(void);
 int		set_minimap(t_cube *cube);
@@ -80,7 +82,7 @@ int		check_textures(t_cube *cube);
 int		is_whitespace(char c);
 int		is_whitespace_str(char *str);
 int		is_digit_str(char *str);
-int		touch_wall(t_cube *cube, float x, float y);
+bool	touch_wall(char **map, int size, int x, int y);
 void	render_player(void *param);
 
 #endif
