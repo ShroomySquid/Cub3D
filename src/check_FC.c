@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/08 18:32:57 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:24:38 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	check_fc(int *i, char **data, t_cube *cube)
 
 	fc = 0;
 	if (ft_strnstr(data[*i - 1], "C", 2))
-	   fc = 1;	
+		fc = 1;
 	if (!data[*i])
 		return (error_map("No color provided for element"));
 	rgb = malloc(sizeof(int) * 4);

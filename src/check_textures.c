@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/11 14:03:39 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:25:58 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	innit_map_struct(t_cube *cube)
 
 void	is_map_still_invalid(int *valid_map, t_cube *cube)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cube->map->walls[i])
@@ -38,7 +38,7 @@ void	is_map_still_invalid(int *valid_map, t_cube *cube)
 
 int	array_len(char **array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!array)
@@ -59,7 +59,8 @@ int	check_cardinals(char *paths, t_cube *c)
 	split_path = ft_split(paths, ";");
 	if (!split_path)
 		return (error_func("ft_split"));
-	c->map->walls[c->map->car] = malloc((array_len(split_path) + 1) * sizeof(mlx_image_t *));
+	c->map->walls[c->map->car] = malloc((array_len(split_path) + 1)
+			* sizeof(mlx_image_t *));
 	if (!c->map->walls[c->map->car])
 		return (free_all(split_path), error_func("malloc"));
 	i = 0;
