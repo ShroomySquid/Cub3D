@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/15 11:32:08 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/15 11:35:21 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CUBE_H
 # include "../libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
-#include <math.h>
+# include <math.h>
 # include <stdio.h>
 # ifndef WIDTH
 #  define WIDTH 1024
@@ -34,9 +34,9 @@ typedef struct s_minimap
 
 typedef struct s_map
 {
-	int 		fd;
+	int			fd;
 	int			nbr_line;
-	mlx_image_t ***walls;
+	mlx_image_t	***walls;
 	int32_t		floor;
 	int32_t		roof;
 	char		**map;
