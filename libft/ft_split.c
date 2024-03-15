@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 14:39:18 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/08 14:56:46 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/15 13:34:13 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ char	**free_all(char **final_array)
 	return (0);
 }
 
-char *find_next_sep(char *str, char *sep)
+char	*find_next_sep(char *str, char *sep)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!sep || !str)

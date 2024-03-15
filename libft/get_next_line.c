@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:26:19 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/29 12:07:04 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/15 13:37:58 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	static	finish_get_line(char *temp_buf, char *temp_buf2, char **return_buf)
 	return (1);
 }
 
-void static	save_it(char *temp_buf2, 
-		char *buf_static_start, int a, char **return_buf)
+void static	save_it(char *temp_buf2,
+	char *buf_static_start, int a, char **return_buf)
 {
 	char	*temp_buf;
 
@@ -74,11 +74,11 @@ int static	get_line(int i, char **return_buf, char *buf_static, int fd)
 	a = 0;
 	if (*return_buf)
 		temp_buf2 = *return_buf;
-	while ((i + a) < BUFFER_SIZE && buf_static[i + a] 
+	while ((i + a) < BUFFER_SIZE && buf_static[i + a]
 		&& buf_static[i + a] != '\n')
 		a++;
 	if ((i + a) < BUFFER_SIZE || buf_static[i + a] == '\n')
-		return (temp_buf = ft_substr(&buf_static[i], 0, a + 1), 
+		return (temp_buf = ft_substr(&buf_static[i], 0, a + 1),
 			finish_get_line(temp_buf, temp_buf2, return_buf));
 	else
 	{
