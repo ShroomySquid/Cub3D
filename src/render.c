@@ -44,7 +44,7 @@ static void	ft_image(t_cube *cube)
 static void	ft_render_loop(t_cube *cube, float x, int *i)
 {
 	float	*val;
-	int		y;
+	float	y;
 
 	y = -1;
 	val = ft_getscale(*cube, x, i);
@@ -53,7 +53,7 @@ static void	ft_render_loop(t_cube *cube, float x, int *i)
 		if (y < (float)cube->mlx->height / 2 - val[0] / 2
 			|| y >= (float)cube->mlx->height / 2 + val[0] / 2)
 		{
-			if (y < cube->mlx->height / 2)
+			if (y < cube->mlx->height / 2.0)
 				mlx_put_pixel(cube->render, x, y, cube->map->roof);
 			else
 				mlx_put_pixel(cube->render, x, y, cube->map->floor);
@@ -70,7 +70,7 @@ void	ft_render(void *param)
 {
 	t_cube		*cube;
 	static int	i[4];
-	int			x;
+	float		x;
 
 	cube = param;
 	ft_image(cube);

@@ -57,18 +57,23 @@ static int	ft_getside(t_cube cube, float x, float y, float rotation)
 
 float	*ft_getscale(t_cube c, float screenx, int *i)
 {
+	float			hypothenuse;
+	float			opposite;
+	float			teta;
 	static float	r[3];
 	float			x;
 	float			y;
 
-	screenx = (screenx - c.mlx->width / 2.0) / c.mlx->width;
+	screenx = c.rotation - 15 + 30.0 / c.mlx->width * screenx;
 	x = c.playerx;
 	y = c.playery;
 	while (!touch_wall(c.map->map, 1, x, y))
-		step(&x, &y, c.rotation + screenx * sqrt(c.mlx->width));
-	r[1] = ft_getside(c, x, y, c.rotation + screenx * sqrt(c.mlx->width));
-	r[0] = ((256 / hypot(fabs(c.playery - (int)y), fabs(c.playerx - (int)x))))
-		* 256;
+		step(&x, &y, screenx);
+	r[1] = ft_getside(c, x, y, screenx);
+	hypothenuse = hypot(fabs((c.playery - (int)y)), fabs(c.playerx - (int)x));
+	teta = 75 + 30.0 / c.mlx->width * (c.mlx->width / 2.0);
+	opposite = sin(teta) * hypothenuse;
+	r[0] = 65536 / opposite;
 	if (!r[1])
 		r[2] = c.map->walls[(int)r[1]][i[(int)r[1]]]->width / 32.0 * fmod(x,
 				32);
