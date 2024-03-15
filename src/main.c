@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/14 16:32:15 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/15 11:32:03 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_walls(mlx_image_t ***array)
 {
-	int i;
+	int	i;
 
 	if (!array)
 		return ;
@@ -29,6 +29,7 @@ void	free_walls(mlx_image_t ***array)
 
 int	force_exit(t_cube *cube)
 {
+	cube->rotation = 1;
 	mlx_terminate(cube->mlx);
 	if (cube && cube->map && cube->map->map && cube->map->walls)
 		free_walls(cube->map->walls);
@@ -43,6 +44,7 @@ int	force_exit(t_cube *cube)
 
 int	start_cube(t_cube *cube)
 {
+	mlx_set_cursor_mode(cube->mlx, 0x00034002);
 	if (set_minimap(cube))
 		return (1);
 	mlx_loop_hook(cube->mlx, ft_general, cube);
@@ -51,6 +53,16 @@ int	start_cube(t_cube *cube)
 	mlx_loop_hook(cube->mlx, render_minimap, cube);
 	mlx_loop_hook(cube->mlx, render_player, cube);
 	mlx_loop(cube->mlx);
+	return (0);
+}
+
+int	parsing(t_cube *cube, char **argv)
+{
+	cube->map->map = parsing_map(cube, argv);
+	if (!cube->map->map)
+		return (force_exit(cube));
+	if (check_map(cube->map->map, cube))
+		return (force_exit(cube));
 	return (0);
 }
 
@@ -63,7 +75,6 @@ int	main(int argc, char **argv)
 	cube = malloc(sizeof(t_cube));
 	if (!cube)
 		return (error_func("malloc"));
-	cube->rotation = 1;
 	cube->map = malloc(sizeof(t_map));
 	if (!cube->map)
 		return (free(cube), error_func("malloc"));
@@ -73,12 +84,8 @@ int	main(int argc, char **argv)
 	cube->mlx = mlx_init(WIDTH, HEIGHT, "Cub3D\n", true);
 	if (!cube->mlx)
 		return (force_exit(cube), error_func("mlx_init"));
-	cube->map->map = parsing_map(cube, argv);
-	if (!cube->map->map)
-		return (force_exit(cube));
-	if (check_map(cube->map->map, cube))
-		return (force_exit(cube));
-	mlx_set_cursor_mode(cube->mlx, 0x00034002);
+	if (parsing(cube, argv))
+		return (1);
 	if (start_cube(cube))
 		return (force_exit(cube));
 	mlx_delete_texture(cube->wall_tex);

@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/14 16:54:53 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/15 11:32:08 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ typedef struct s_cube
 	int				last_line;
 }				t_cube;
 
+int		is_cardinal(char *str, t_cube *cube);
+int		check_cardinals(char *paths, t_cube *c);
+int		array_len(char **array);
 void	step_collision(float rotation, t_cube *cube, bool running);
 float	*ft_getscale(t_cube c, float screenx, int *i);
 void	step(float *x, float *y, float rotation);

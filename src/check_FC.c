@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/14 19:24:38 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/15 09:47:06 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,36 @@ int	extra_color(char *color, int *a)
 	}
 }
 
+int	parse_rgba(char **data, int *i, int *rgb)
+{
+	int	a;
+	int	len;
+	int	rgb_len;
+
+	a = 0;
+	rgb_len = 0;
+	while (data[*i] && rgb_len < 3)
+	{
+		if (data[*i][a] && data[*i][a] == ',')
+			a++;
+		len = check_color_len(&data[*i][a]);
+		if (len > 3 || len < 1)
+			return (error_map("Invalid color for rgb"));
+		rgb[rgb_len] = get_color(len, &data[*i][a]);
+		if (rgb[rgb_len] == -1)
+			return (1);
+		rgb_len++;
+		if (!extra_color(data[*i], &a))
+			*i += 1;
+		if (data[*i] && data[*i][0] && data[*i][0] == ',' && !data[*i][1])
+			*i += 1;
+	}
+	return (0);
+}
+
 int	check_fc(int *i, char **data, t_cube *cube)
 {
 	int		*rgb;
-	int		a;
-	int		len;
-	int		rgb_len;
 	int		fc;
 
 	fc = 0;
@@ -74,26 +98,10 @@ int	check_fc(int *i, char **data, t_cube *cube)
 	rgb = malloc(sizeof(int) * 4);
 	if (!rgb)
 		return (error_func("malloc"));
-	rgb_len = 0;
-	a = 0;
 	if (!ft_isdigit(data[*i][0]))
 		return (free(rgb), error_map("Invalid color provided for element"));
-	while (data[*i] && rgb_len < 3)
-	{
-		if (data[*i][a] && data[*i][a] == ',')
-			a++;
-		len = check_color_len(&data[*i][a]);
-		if (len > 3 || len < 1)
-			return (free(rgb), error_map("Invalid color for rgb"));
-		rgb[rgb_len] = get_color(len, &data[*i][a]);
-		if (rgb[rgb_len] == -1)
-			return (free(rgb), 1);
-		rgb_len++;
-		if (!extra_color(data[*i], &a))
-			*i += 1;
-		if (data[*i] && data[*i][0] && data[*i][0] == ',' && !data[*i][1])
-			*i += 1;
-	}
+	if (parse_rgba(data, i, rgb))
+		return (free(rgb), 1);
 	if (fc)
 		cube->map->roof = get_rgba(rgb[0], rgb[1], rgb[2], 255);
 	else

@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 08:34:36 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/11 13:54:30 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/15 10:18:56 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,16 @@ int	is_digit_str(char *str)
 	if (str[i])
 		return (0);
 	return (1);
+}
+
+int	array_len(char **array)
+{
+	int	i;
+
+	i = 0;
+	if (!array)
+		return (0);
+	while (array[i])
+		i++;
+	return (i);
 }
