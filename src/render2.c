@@ -12,7 +12,7 @@
 
 #include "../include/cube.h"
 
-int	ft_getside(float x, float y, t_cube *c)
+static int	ft_getside(float x, float y, t_cube *c)
 {
 	static int	last;
 	int			cur_x;
@@ -47,6 +47,7 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	float			y;
 
 	angle = c.rotation - FOV / 2.0 + (float)FOV / c.mlx->width * screenx;
+	angle = fmodf(angle, 360) + (angle < 0) * 360;
 	x = c.playerx;
 	y = c.playery;
 	while (!touch_wall(c.map->map, 1, x, y))
@@ -55,7 +56,7 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	hypothenuse = hypot(fabs((c.playery - (int)y)), fabs(c.playerx - (int)x));
 	teta = -(FOV / 2.0) + (float)FOV / c.mlx->width * screenx;
 	opposite = cos(teta * (M_PI / 180)) * hypothenuse;
-	r[0] = 32 * c.mlx->width / opposite;
+	r[0] = 32768 / opposite;
 	if (c.map->map[(int)y / 32][(int)x / 32] == 'D')
 	{
 		if (!r[1])

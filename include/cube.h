@@ -48,6 +48,8 @@ typedef struct s_map
 
 typedef struct s_cube
 {
+	mlx_texture_t	*lock_tex;
+	mlx_image_t		*lock_img;
 	mlx_t			*mlx;
 	mlx_image_t		*player;
 	float			playerx;
@@ -68,7 +70,6 @@ typedef struct s_cube
 	int				last_x;
 }				t_cube;
 
-//int		ft_getside(float x, float y);
 int		is_cardinal(char *str, t_cube *cube);
 int		check_cardinals(char *paths, t_cube *c);
 int		array_len(char **array);
