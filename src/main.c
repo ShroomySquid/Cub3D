@@ -78,7 +78,7 @@ int	main(int argc, char **argv)
 	cube->map = malloc(sizeof(t_map));
 	if (!cube->map)
 		return (free(cube), error_func("malloc"));
-	cube->map->walls = malloc(5 * sizeof(mlx_image_t **));
+	cube->map->walls = malloc(6 * sizeof(mlx_image_t **));
 	if (!cube->map->walls)
 		return (error_func("malloc"), force_exit(cube));
 	cube->mlx = mlx_init(WIDTH, HEIGHT, "Cub3D\n", true);

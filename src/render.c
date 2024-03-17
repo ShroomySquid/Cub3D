@@ -22,23 +22,31 @@ static int32_t	get_pixel(mlx_image_t *img, int x, int y)
 
 static void	ft_image(t_cube *cube)
 {
-	static bool		exists;
+	static bool		first = true;
 	static int32_t	height;
 	static int32_t	width;
 
+	if (first)
+	{
+		cube->pointer_tex = mlx_load_png("./png/radicle.png");
+		cube->pointer = mlx_texture_to_image(cube->mlx, cube->pointer_tex);
+		mlx_image_to_window(cube->mlx, cube->pointer, cube->mlx->width / 2 - 16,
+			cube->mlx->height / 2 - 16);
+	}
 	if (height != cube->mlx->height || width != cube->mlx->width)
 	{
 		height = cube->mlx->height;
 		width = cube->mlx->width;
-		if (exists)
+		if (!first)
 			mlx_delete_image(cube->mlx, cube->render);
-		else
-			exists = true;
 		cube->render = mlx_new_image(cube->mlx, cube->mlx->width,
 				cube->mlx->height);
+		cube->pointer->instances[0].x = cube->mlx->width / 2 - 16;
+		cube->pointer->instances[0].y = cube->mlx->height / 2 - 16;
 		mlx_image_to_window(cube->mlx, cube->render, 0, 0);
 		mlx_set_instance_depth(&cube->render->instances[0], 0);
 	}
+	first = false;
 }
 
 static void	ft_render_loop(t_cube *cube, float x, int *i)
@@ -69,7 +77,7 @@ static void	ft_render_loop(t_cube *cube, float x, int *i)
 void	ft_render(void *param)
 {
 	t_cube		*cube;
-	static int	i[4];
+	static int	i[5];
 	float		x;
 
 	cube = param;
@@ -89,4 +97,7 @@ void	ft_render(void *param)
 	i[3]++;
 	if (!cube->map->walls[3][i[3]])
 		i[3] = 0;
+	i[4]++;
+	if (!cube->map->walls[4][i[4]])
+		i[4] = 0;
 }

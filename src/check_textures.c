@@ -19,6 +19,7 @@ void	innit_map_struct(t_cube *cube)
 	cube->map->walls[2] = NULL;
 	cube->map->walls[3] = NULL;
 	cube->map->walls[4] = NULL;
+	cube->map->walls[5] = NULL;
 	cube->map->floor = -1;
 	cube->map->roof = -1;
 }
@@ -30,7 +31,7 @@ void	is_map_still_invalid(int *valid_map, t_cube *cube)
 	i = 0;
 	while (cube->map->walls[i])
 		i++;
-	if (i != 4)
+	if (i != 5)
 		return ;
 	if (cube->map->roof != -1 && cube->map->floor != -1)
 		*valid_map = 1;

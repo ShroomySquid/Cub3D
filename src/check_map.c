@@ -37,7 +37,7 @@ int	check_valid_floor(char **map, int x, int y)
 
 int	is_valid_symbol(char **map, int y, int x)
 {
-	if (is_whitespace(map[y][x]) || ft_strchr("NSWE01", map[y][x]))
+	if (is_whitespace(map[y][x]) || ft_strchr("NSWE0D1", map[y][x]))
 		return (0);
 	return (1);
 }
@@ -81,7 +81,7 @@ int	check_map(char **map, t_cube *cube)
 				return (error_map("Invalid symbol on map"));
 			else if (check_player(&player, cube, y, x))
 				return (1);
-			else if (map[y][x] == '0' && check_valid_floor(map, x, y))
+			else if ((map[y][x] == '0' || map[y][x] == 'D') && check_valid_floor(map, x, y))
 				return (error_map("Invalid floor location"));
 			x++;
 		}

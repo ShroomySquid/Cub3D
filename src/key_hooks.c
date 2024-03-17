@@ -66,14 +66,28 @@ static void	ft_movement(bool running, t_cube *cube)
 void	ft_player(void *param)
 {
 	t_cube	*cube;
+	float	x;
+	float	y;
 
 	cube = param;
+	x = cube->playerx;
+	y = cube->playery;
 	ft_mouse(cube);
 	ft_movement(mlx_is_key_down(cube->mlx, MLX_KEY_LEFT_SHIFT), cube);
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
 		cube->rotation++;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT))
 		cube->rotation--;
+	if (mlx_is_mouse_down(cube->mlx, MLX_MOUSE_BUTTON_LEFT)
+		|| mlx_is_key_down(cube->mlx, MLX_KEY_E))
+	{
+		while (!touch_wall(cube->map->map, 1, x, y))
+			step(&x, &y, cube->rotation);
+		if (hypot(fabs((cube->playery - (int)y)), fabs(cube->playerx
+					- (int)x)) < 128 && cube->map->map[(int)y / 32][(int)x
+			/ 32] == 'D')
+			cube->map->map[(int)y / 32][(int)x / 32] = '0';
+	}
 	cube->rotation = fmodf(cube->rotation, 360) + (cube->rotation < 0) * 360;
 }
 

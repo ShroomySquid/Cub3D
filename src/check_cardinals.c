@@ -64,6 +64,8 @@ int	is_cardinal(char *str, t_cube *cube)
 		cube->map->car = 2;
 	else if (!ft_strncmp(str, "EA", 3))
 		cube->map->car = 3;
+	else if (!ft_strncmp(str, "DO", 3))
+		cube->map->car = 4;
 	else
 		cube->map->car = -1;
 	return (cube->map->car);

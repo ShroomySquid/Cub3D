@@ -15,18 +15,16 @@
 bool	touch_wall(char **map, int size, int x, int y)
 {
 	if (size == 1)
-		return (map[y / 32][x / 32] == '1');
+		return (ft_strchr("1D", map[y / 32][x / 32]));
 	x -= size / 2;
 	y -= size / 2;
-	if (map[y / 32][x / 32] == '1')
+	if (ft_strchr("1D", map[y / 32][x / 32]))
 		return (true);
-	if (map[(y + size - 1) / 32][x / 32] == '1')
+	if (ft_strchr("1D", map[(y + size - 1) / 32][x / 32]))
 		return (true);
-	if (map[y / 32][(x + size - 1) / 32] == '1')
+	if (ft_strchr("1D", map[y / 32][(x + size - 1) / 32]))
 		return (true);
-	if (map[(y + size - 1) / 32][(x + size - 1) / 32] == '1')
-		return (true);
-	return (false);
+	return (ft_strchr("1D", map[(y + size - 1) / 32][(x + size - 1) / 32]));
 }
 
 void	step_collision(float rotation, t_cube *cube, bool running)
