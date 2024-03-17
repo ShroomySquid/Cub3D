@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 16:10:03 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/14 16:10:03 by lcouturi         ###   ########.fr       */
+/*   Updated: 2024/03/17 11:54:19 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 bool	touch_wall(char **map, int size, int x, int y)
 {
+	//pourquoi size?
 	if (size == 1)
 		return (map[y / 32][x / 32] == '1');
 	x -= size / 2;

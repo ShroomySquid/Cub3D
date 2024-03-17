@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/15 11:35:21 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/17 15:09:11 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,17 @@ typedef struct s_cube
 	mlx_image_t		*minimap_img;
 	int				map_nbr_line;
 	int				last_line;
+	int				last_y;
+	int				last_x;
 }				t_cube;
 
+//int		ft_getside(float x, float y);
 int		is_cardinal(char *str, t_cube *cube);
 int		check_cardinals(char *paths, t_cube *c);
 int		array_len(char **array);
 void	step_collision(float rotation, t_cube *cube, bool running);
 float	*ft_getscale(t_cube c, float screenx, int *i);
-void	step(float *x, float *y, float rotation);
+void	step(float *x, float *y, float rotation, t_cube *c);
 char	*whitespace_array(void);
 int		set_minimap(t_cube *cube);
 void	ft_player(void *param);

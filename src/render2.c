@@ -6,74 +6,68 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/06 10:31:55 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/17 15:41:40 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
-static int	ft_getside_loop(t_cube c, float r, float x, float y)
+int	ft_getside(float x, float y, t_cube *c)
 {
-	float	o;
+	static int	last;
+	int			cur_x;
+	int			cur_y;
 
-	o = 2;
-	while (o / 2)
+	cur_x = (x / 32);
+	cur_y = (y / 32);
+	if (cur_y != c->last_y && cur_x != c->last_x)
+		return (last);
+	if (cur_y == c->last_y)
 	{
-		if ((r > 270 || r < 90) && touch_wall(c.map->map, 1, x + o, y)
-			&& touch_wall(c.map->map, 1, x - o, y) && touch_wall(c.map->map, 1,
-				x, y - o) && !touch_wall(c.map->map, 1, x, y + o))
-			return (0);
-		else if ((r > 180 && r < 360) && touch_wall(c.map->map, 1, x, y - o)
-			&& touch_wall(c.map->map, 1, x, y + o) && touch_wall(c.map->map, 1,
-				x - o, y) && !touch_wall(c.map->map, 1, x + o, y))
-			return (2);
-		else if ((r > 0 && r < 180) && touch_wall(c.map->map, 1, x, y - o)
-			&& touch_wall(c.map->map, 1, x, y + o) && touch_wall(c.map->map, 1,
-				x + o, y) && !touch_wall(c.map->map, 1, x - o, y))
+		if (cur_x > c->last_x)
+		{
+			last = 3;
 			return (3);
-		else if ((r > 90 && r < 270) && touch_wall(c.map->map, 1, x + o, y)
-			&& touch_wall(c.map->map, 1, x - o, y) && touch_wall(c.map->map, 1,
-				x, y + o) && !touch_wall(c.map->map, 1, x, y - o))
-			return (1);
-		o /= 2;
+		}
+		else
+		{
+			last = 2;
+			return (2);
+		}
 	}
-	return (-1);
-}
-
-static int	ft_getside(t_cube cube, float x, float y, float rotation)
-{
-	static int	lastret;
-	float		offset;
-	int			ret;
-
-	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
-	offset = 2;
-	ret = ft_getside_loop(cube, rotation, x, y);
-	if (ret == -1)
-		ret = lastret;
-	lastret = ret;
-	return (ret);
+	else if (cur_y < c->last_y)
+	{
+		last = 0;
+		return (0);
+	}
+	last = 1;
+	return (1);
 }
 
 float	*ft_getscale(t_cube c, float screenx, int *i)
 {
 	float			hypothenuse;
 	float			opposite;
+	float			angle;
 	float			teta;
 	static float	r[3];
 	float			x;
 	float			y;
 
-	screenx = c.rotation - 15 + 30.0 / c.mlx->width * screenx;
+	angle = c.rotation - 30 + (60.0 / c.mlx->width * screenx);
+	if (angle < 0)
+		angle += 360.0;
+	else if (angle >= 360)
+		angle -= 360.0;
 	x = c.playerx;
 	y = c.playery;
 	while (!touch_wall(c.map->map, 1, x, y))
-		step(&x, &y, screenx);
-	r[1] = ft_getside(c, x, y, screenx);
+		step(&x, &y, angle, &c);
+	r[1] = ft_getside(x, y, &c);
 	hypothenuse = hypot(fabs((c.playery - (int)y)), fabs(c.playerx - (int)x));
-	teta = 75 + 30.0 / c.mlx->width * (c.mlx->width / 2.0);
-	opposite = sin(teta) * hypothenuse;
-	r[0] = 65536 / opposite;
+	teta = (60.0 / c.mlx->width * screenx) - 30;
+	opposite = cos(fabs(teta) * (M_PI /180)) * hypothenuse;
+	r[0] = 32 * c.mlx->width / opposite;
 	if (!r[1])
 		r[2] = c.map->walls[(int)r[1]][i[(int)r[1]]]->width / 32.0 * fmod(x,
 				32);
@@ -94,9 +88,10 @@ int32_t	get_rgba(int r, int g, int b, int a)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void	step(float *x, float *y, float rotation)
+void	step(float *x, float *y, float rotation, t_cube *c)
 {
-	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
+	c->last_y = (int)(*y / 32);
+	c->last_x = (int)(*x / 32);
 	if (rotation < 90.0)
 	{
 		*y -= 1.0 / 90.0 * (90.0 - rotation);

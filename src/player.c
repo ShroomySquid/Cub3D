@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/14 19:17:20 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/17 15:06:12 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	draw_line(float angle, t_cube *cube)
 		&& y < cube->player->height && i < 240)
 	{
 		mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 255 - i));
-		step(&x, &y, angle);
+		step(&x, &y, angle, cube);
 		i += 12;
 	}
 }
