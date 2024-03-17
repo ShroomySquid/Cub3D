@@ -23,6 +23,8 @@ int32_t	get_color_mini(t_minimap *mini, t_cube *c)
 		/ 32][(mini->x + mini->min_x) / 32];
 	if (is_whitespace(mini->coord) || mini->coord == '1')
 		img = c->wall_img;
+	else if (mini->coord == 'D')
+		img = c->lock_img;
 	else
 		img = c->floor_img;
 	y_img = (mini->y + mini->min_y) % 32;

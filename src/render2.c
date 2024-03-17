@@ -6,13 +6,13 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/17 17:07:32 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/17 17:09:47 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
-int	ft_getside(float x, float y, t_cube *c)
+static int	ft_getside(float x, float y, t_cube *c)
 {
 	static int	last;
 	int			cur_x;

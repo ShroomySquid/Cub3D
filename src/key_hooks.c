@@ -26,6 +26,8 @@ static void	ft_mouse(t_cube *c)
 		return ;
 	}
 	mlx_get_mouse_pos(c->mlx, &x, &y);
+	if (x < 0 || x > c->mlx->width || y < 0 || y > c->mlx->height)
+		return ;
 	if (x - (float)c->mlx->width / 2)
 		move = sqrtf(fabsf(x - (float)c->mlx->width / 2)) - 1;
 	if (x - (float)c->mlx->width / 2 < 0)
@@ -78,6 +80,7 @@ void	ft_player(void *param)
 		cube->rotation++;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT))
 		cube->rotation--;
+	cube->rotation = fmodf(cube->rotation, 360) + (cube->rotation < 0) * 360;
 	if (mlx_is_mouse_down(cube->mlx, MLX_MOUSE_BUTTON_LEFT)
 		|| mlx_is_key_down(cube->mlx, MLX_KEY_E))
 	{
@@ -88,7 +91,6 @@ void	ft_player(void *param)
 			/ 32] == 'D')
 			cube->map->map[(int)y / 32][(int)x / 32] = '0';
 	}
-	cube->rotation = fmodf(cube->rotation, 360) + (cube->rotation < 0) * 360;
 }
 
 void	ft_general(void *param)
