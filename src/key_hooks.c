@@ -85,11 +85,11 @@ void	ft_player(void *param)
 		|| mlx_is_key_down(cube->mlx, MLX_KEY_E))
 	{
 		while (!touch_wall(cube->map->map, 1, x, y))
-			step(&x, &y, cube->rotation, cube);
+			step(&x, &y, cube->rotation, cube, 1);
 		if (hypotf(fabsf((cube->playery - (int)y)), fabsf(cube->playerx
-					- (int)x)) < 113 && cube->map->map[(int)y / 32][(int)x
-			/ 32] == 'D')
-			cube->map->map[(int)y / 32][(int)x / 32] = '0';
+					- (int)x)) < 113 && cube->map->map[(int)y / SIZE][(int)x
+			/ SIZE] == 'D')
+			cube->map->map[(int)y / SIZE][(int)x / SIZE] = '0';
 	}
 }
 

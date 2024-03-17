@@ -16,6 +16,9 @@
 # include "../MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 # include <stdio.h>
+#ifndef SIZE
+#  define SIZE 32
+#endif
 # ifndef FOV
 #  define FOV 60
 # endif
@@ -75,7 +78,7 @@ int		check_cardinals(char *paths, t_cube *c);
 int		array_len(char **array);
 void	step_collision(float rotation, t_cube *cube, bool running);
 float	*ft_getscale(t_cube c, float screenx, int *i);
-void	step(float *x, float *y, float rotation, t_cube *c);
+void	step(float *x, float *y, float rotation, t_cube *c, float distance);
 char	*whitespace_array(void);
 int		set_minimap(t_cube *cube);
 void	ft_player(void *param);

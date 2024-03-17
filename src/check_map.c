@@ -57,8 +57,8 @@ int	check_player(int *player, t_cube *cube, int y, int x)
 	if (*player)
 		return (error_map("More than 1 player"));
 	*player = 1;
-	cube->playerx = (32 * x) + 5;
-	cube->playery = (32 * y) + 5;
+	cube->playerx = (SIZE * x) + 5;
+	cube->playery = (SIZE * y) + 5;
 	if (check_valid_floor(cube->map->map, x, y))
 		return (error_map("Invalid player location"));
 	return (0);

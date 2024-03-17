@@ -18,8 +18,8 @@ static int	ft_getside(float x, float y, t_cube *c)
 	int			cur_x;
 	int			cur_y;
 
-	cur_x = (x / 32);
-	cur_y = (y / 32);
+	cur_x = (x / SIZE);
+	cur_y = (y / SIZE);
 	if (cur_y != c->last_y && cur_x != c->last_x)
 		return (last);
 	if (cur_y == c->last_y)
@@ -36,6 +36,18 @@ static int	ft_getside(float x, float y, t_cube *c)
 	return (last);
 }
 
+static void	ft_send(float *x, float *y, float rotation, t_cube *cube)
+{
+	while (!touch_wall(cube->map->map, 1, *x, *y))
+		step(x, y, rotation, cube, 1);
+	while (touch_wall(cube->map->map, 1, *x, *y))
+		step(x, y, rotation + 180, cube, 0.1);
+	step(x, y, rotation, cube, 0.1);
+	while (touch_wall(cube->map->map, 1, *x, *y))
+		step(x, y, rotation + 180, cube, 0.01);
+	step(x, y, rotation, cube, 0.01);
+}
+
 float	*ft_getscale(t_cube c, float screenx, int *i)
 {
 	float			angle;
@@ -50,35 +62,34 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	angle = fmodf(angle, 360) + (angle < 0) * 360;
 	x = c.playerx;
 	y = c.playery;
-	while (!touch_wall(c.map->map, 1, x, y))
-		step(&x, &y, angle, &c);
+	ft_send(&x, &y, angle, &c);
 	r[1] = ft_getside(x, y, &c);
-	hypothenuse = hypot(fabs((c.playery - (int)y)), fabs(c.playerx - (int)x));
+	hypothenuse = hypot(c.playery - y, c.playerx - x);
 	teta = -(FOV / 2.0) + (float)FOV / c.mlx->width * screenx;
-	opposite = cos(teta * (M_PI / 180)) * hypothenuse;
-	r[0] = 32768 / opposite;
-	if (c.map->map[(int)y / 32][(int)x / 32] == 'D')
+	opposite = cos(fabs(teta) * (M_PI / 180)) * hypothenuse;
+	r[0] = (float)SIZE * c.mlx->width / opposite;
+	if (c.map->map[(int)y / SIZE][(int)x / SIZE] == 'D')
 	{
 		if (!r[1])
-			r[2] = c.map->walls[4][i[4]]->width / 32.0 * fmod(x, 32);
+			r[2] = (float)c.map->walls[4][i[4]]->width / SIZE * fmod(x, SIZE);
 		else if (r[1] == 1)
-			r[2] = c.map->walls[4][i[4]]->width - c.map->walls[(int)r[1]][i[4]]->width / 32.0 * fmod(x, 32);
+			r[2] = c.map->walls[4][i[4]]->width - (float)c.map->walls[4][i[4]]->width / SIZE * fmod(x, SIZE);
 		else if (r[1] == 2)
-			r[2] = c.map->walls[4][i[4]]->width - c.map->walls[(int)r[1]][i[4]]->width / 32.0 * fmod(y, 32);
+			r[2] = c.map->walls[4][i[4]]->width - (float)c.map->walls[4][i[4]]->width / SIZE * fmod(y, SIZE);
 		else
-			r[2] = c.map->walls[4][i[4]]->width / 32.0 * fmod(y, 32);
+			r[2] = (float)c.map->walls[4][i[4]]->width / SIZE * fmod(y, SIZE);
 		r[1] = 4;
 	}
 	else
 	{
 		if (!r[1])
-			r[2] = c.map->walls[(int)r[1]][i[(int)r[1]]]->width / 32.0 * fmod(x, 32);
+			r[2] = (float)c.map->walls[(int)r[1]][i[(int)r[1]]]->width / SIZE * fmod(x, SIZE);
 		else if (r[1] == 1)
-			r[2] = c.map->walls[(int)r[1]][i[(int)r[1]]]->width - c.map->walls[(int)r[1]][i[(int)r[1]]]->width / 32.0 * fmod(x, 32);
+			r[2] = c.map->walls[(int)r[1]][i[(int)r[1]]]->width - (float)c.map->walls[(int)r[1]][i[(int)r[1]]]->width / SIZE * fmod(x, SIZE);
 		else if (r[1] == 2)
-			r[2] = c.map->walls[(int)r[1]][i[(int)r[1]]]->width - c.map->walls[(int)r[1]][i[(int)r[1]]]->width / 32.0 * fmod(y, 32);
+			r[2] = c.map->walls[(int)r[1]][i[(int)r[1]]]->width - (float)c.map->walls[(int)r[1]][i[(int)r[1]]]->width / SIZE * fmod(y, SIZE);
 		else
-			r[2] = c.map->walls[(int)r[1]][i[(int)r[1]]]->width / 32.0 * fmod(y, 32);
+			r[2] = (float)c.map->walls[(int)r[1]][i[(int)r[1]]]->width / SIZE * fmod(y, SIZE);
 	}
 	return (r);
 }
@@ -88,28 +99,29 @@ int32_t	get_rgba(int r, int g, int b, int a)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void	step(float *x, float *y, float rotation, t_cube *c)
+void	step(float *x, float *y, float rotation, t_cube *c, float distance)
 {
-	c->last_y = (int)(*y / 32);
-	c->last_x = (int)(*x / 32);
+	c->last_y = (int)(*y / SIZE);
+	c->last_x = (int)(*x / SIZE);
+	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
 	if (rotation < 90.0)
 	{
-		*y -= 1.0 / 90.0 * (90.0 - rotation);
-		*x += 1.0 / 90.0 * rotation;
+		*y -= distance / 90.0 * (90.0 - rotation);
+		*x += distance / 90.0 * rotation;
 	}
 	else if (rotation < 180.0)
 	{
-		*y += (1.0 / 90.0 * rotation) - 1.0;
-		*x += 2.0 - (1.0 / 90.0 * rotation);
+		*y += (distance / 90.0 * rotation) - distance;
+		*x += distance * 2 - (distance / 90.0 * rotation);
 	}
 	else if (rotation < 270.0)
 	{
-		*y += (1.0 / 90.0 * (90.0 - rotation - 180.0)) + 4.0;
-		*x -= 1.0 / 90.0 * (rotation - 180.0);
+		*y += (distance / 90.0 * (90.0 - rotation - 180.0)) + 4 * distance;
+		*x -= distance / 90.0 * (rotation - 180.0);
 	}
 	else
 	{
-		*y -= (1.0 / 90.0 * (rotation - 180.0)) - 1.0;
-		*x -= 2.0 - (1.0 / 90.0 * (rotation - 180.0));
+		*y -= (distance / 90.0 * (rotation - 180.0)) - distance;
+		*x -= 2 * distance - (distance / 90.0 * (rotation - 180.0));
 	}
 }

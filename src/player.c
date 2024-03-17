@@ -25,7 +25,8 @@ void	draw_line(float angle, t_cube *cube)
 		&& y < cube->player->height && i < 240)
 	{
 		mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 255 - i));
-		step(&x, &y, angle, cube);
+		step(&x, &y, angle, cube, 1);
+		(void)angle;
 		i += 12;
 	}
 }
