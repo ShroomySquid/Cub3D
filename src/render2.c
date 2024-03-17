@@ -74,28 +74,17 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	r[0] = (float)SIZE * c.mlx->width / opposite;
 	wall_width = c.map->walls[(int)r[1]][i[(int)r[1]]]->width;
 	if (c.map->map[(int)y / SIZE][(int)x / SIZE] == 'D')
-	{
-		if (!r[1])
-			r[2] = (float)c.map->walls[4][i[4]]->width / SIZE * fmod(x, SIZE);
-		else if (r[1] == 1)
-			r[2] = c.map->walls[4][i[4]]->width - (float)c.map->walls[4][i[4]]->width / SIZE * fmod(x, SIZE);
-		else if (r[1] == 2)
-			r[2] = c.map->walls[4][i[4]]->width - (float)c.map->walls[4][i[4]]->width / SIZE * fmod(y, SIZE);
-		else
-			r[2] = (float)c.map->walls[4][i[4]]->width / SIZE * fmod(y, SIZE);
-		r[1] = 4;
-	}
+		wall_width = c.map->walls[4][i[4]]->width;
+	if (!r[1])
+		r[2] = (float)wall_width / SIZE * fmod(x, SIZE);
+	else if (r[1] == 1)
+		r[2] = wall_width - (float)wall_width / SIZE * fmod(x, SIZE);
+	else if (r[1] == 2)
+		r[2] = wall_width - (float)wall_width / SIZE * fmod(y, SIZE);
 	else
-	{
-		if (!r[1])
-			r[2] = wall_width / 32.0 * fmod(x, 32);
-		else if (r[1] == 1)
-			r[2] = wall_width - wall_width / 32.0 * fmod(x, 32);
-		else if (r[1] == 2)
-			r[2] = wall_width - wall_width / 32.0 * fmod(y, 32);
-		else
-			r[2] = wall_width / 32.0 * fmod(y, 32);
-	}
+		r[2] = (float)wall_width / SIZE * fmod(y, SIZE);
+	if (c.map->map[(int)y / SIZE][(int)x / SIZE] == 'D')
+		r[1] = 4;
 	return (r);
 }
 
