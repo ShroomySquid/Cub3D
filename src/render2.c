@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/17 15:47:42 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/17 17:09:47 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,13 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	static float	r[3];
 	float			x;
 	float			y;
+	int				wall_width;
 
 	angle = c.rotation - FOV / 2.0 + (float)FOV / c.mlx->width * screenx;
-	angle = fmodf(angle, 360) + (angle < 0) * 360;
+	if (angle < 0)
+		angle += 360;
+	else if (angle >= 360)
+		angle -= 360;
 	x = c.playerx;
 	y = c.playery;
 	ft_send(&x, &y, angle, &c);
@@ -68,6 +72,7 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	teta = -(FOV / 2.0) + (float)FOV / c.mlx->width * screenx;
 	opposite = cos(fabs(teta) * (M_PI / 180)) * hypothenuse;
 	r[0] = (float)SIZE * c.mlx->width / opposite;
+	wall_width = c.map->walls[(int)r[1]][i[(int)r[1]]]->width;
 	if (c.map->map[(int)y / SIZE][(int)x / SIZE] == 'D')
 	{
 		if (!r[1])
@@ -83,13 +88,13 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	else
 	{
 		if (!r[1])
-			r[2] = (float)c.map->walls[(int)r[1]][i[(int)r[1]]]->width / SIZE * fmod(x, SIZE);
+			r[2] = wall_width / 32.0 * fmod(x, 32);
 		else if (r[1] == 1)
-			r[2] = c.map->walls[(int)r[1]][i[(int)r[1]]]->width - (float)c.map->walls[(int)r[1]][i[(int)r[1]]]->width / SIZE * fmod(x, SIZE);
+			r[2] = wall_width - wall_width / 32.0 * fmod(x, 32);
 		else if (r[1] == 2)
-			r[2] = c.map->walls[(int)r[1]][i[(int)r[1]]]->width - (float)c.map->walls[(int)r[1]][i[(int)r[1]]]->width / SIZE * fmod(y, SIZE);
+			r[2] = wall_width - wall_width / 32.0 * fmod(y, 32);
 		else
-			r[2] = (float)c.map->walls[(int)r[1]][i[(int)r[1]]]->width / SIZE * fmod(y, SIZE);
+			r[2] = wall_width / 32.0 * fmod(y, 32);
 	}
 	return (r);
 }
