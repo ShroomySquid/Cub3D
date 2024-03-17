@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/17 15:41:40 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/17 15:47:42 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,15 @@ int	ft_getside(float x, float y, t_cube *c)
 	if (cur_y == c->last_y)
 	{
 		if (cur_x > c->last_x)
-		{
 			last = 3;
-			return (3);
-		}
 		else
-		{
 			last = 2;
-			return (2);
-		}
 	}
 	else if (cur_y < c->last_y)
-	{
 		last = 0;
-		return (0);
-	}
-	last = 1;
-	return (1);
+	else
+		last = 1;
+	return (last);
 }
 
 float	*ft_getscale(t_cube c, float screenx, int *i)
