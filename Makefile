@@ -6,7 +6,7 @@
 #    By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/30 09:59:24 by fbarrett          #+#    #+#              #
-#    Updated: 2024/03/17 15:30:47 by fbarrett         ###   ########.fr        #
+#    Updated: 2024/03/18 07:06:03 by fbarrett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,6 +74,8 @@ $(O_DIRECT)%.o:	src/%.c
 $(O_DIRECT):
 	mkdir -p -m 777 $(O_DIRECT)
 
-re:		fclean $(NAME)
+re:		clean $(NAME)
+
+fre:	fclean $(NAME)
 
 .PHONY:	all clean fclean re test debug
