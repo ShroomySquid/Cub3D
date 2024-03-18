@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 17:19:53 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:49:10 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,15 @@ void	free_walls(mlx_image_t ***array)
 	if (!array)
 		return ;
 	i = 0;
-	a = 0;
 	while (array[i])
 	{
+		a = 0;
 		while (array[i][a])
 		{
+			printf("i: %d a: %d\n", i, a);
 			free(array[i][a]);
 			a++;
 		}
-		i++;
-	}
-	i = 0;
-	while (array[i])
-	{
 		free(array[i]);
 		i++;
 	}

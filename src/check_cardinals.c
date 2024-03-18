@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 16:46:50 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:49:01 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	check_each_path(char **split_path, t_cube *c, int *i)
 		mlx_delete_texture(texture);
 		*i += 1;
 	}
+	c->map->walls[c->map->car][*i] = 0;
 	return (0);
 }
 
