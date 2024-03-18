@@ -45,16 +45,16 @@ void	draw_line(float angle, t_cube *c)
 	}
 }
 
-void	draw_los(int los, t_cube *cube)
+void	draw_los(float los, t_cube *cube)
 {
-	int	i;
+	float	i;
 
 	i = 0;
 	while (!is_mini_down(cube) && i < FOV)
 	{
 		draw_line(los, cube);
-		i++;
-		los += 1;
+		i += (1.0 / 3);
+		los += (1.0 / 3);
 		if (los >= 360)
 			los = 0;
 	}
@@ -68,7 +68,7 @@ void	render_player(void *param)
 	int			los;
 
 	cube = param;
-	los = cube->rotation - (FOV / 2);
+	los = cube->rotation - (FOV / 2.0);
 	if (los < 0)
 		los += 360;
 	x = 0;

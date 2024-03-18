@@ -12,19 +12,34 @@
 
 #include "../include/cube.h"
 
+static bool	ft_collision(char **map, int x, int y)
+{
+	if (map[y / SIZE][x / SIZE] == '1')
+		return (true);
+	if (map[y / SIZE][x / SIZE] == 'D')
+	{
+		if (map[y / SIZE][(x / SIZE) - 1] == '1' || map[y / SIZE][(x / SIZE) + 1] == '1')
+			return (y % SIZE > SIZE / 2 - SIZE / 8 && y % SIZE < SIZE / 2 + SIZE / 8);
+		if (map[(y / SIZE) - 1][x / SIZE] == '1' || map[(y / SIZE) + 1][x / SIZE] == '1')
+			return (x % SIZE > SIZE / 2 - SIZE / 8 && x % SIZE < SIZE / 2 + SIZE / 8);
+		return (true);
+	}
+	return (false);
+}
+
 bool	touch_wall(char **map, int size, int x, int y)
 {
 	if (size == 1)
-		return (ft_strchr("1D", map[y / SIZE][x / SIZE]));
+		return (ft_collision(map, x, y));
 	x -= size / 2;
 	y -= size / 2;
-	if (ft_strchr("1D", map[y / SIZE][x / SIZE]))
+	if (ft_collision(map, x, y))
 		return (true);
-	if (ft_strchr("1D", map[(y + size - 1) / SIZE][x / SIZE]))
+	if (ft_collision(map, x, y + size - 1))
 		return (true);
-	if (ft_strchr("1D", map[y / SIZE][(x + size - 1) / SIZE]))
+	if (ft_collision(map, x + size - 1, y))
 		return (true);
-	return (ft_strchr("1D", map[(y + size - 1) / SIZE][(x + size - 1) / SIZE]));
+	return (ft_collision(map, x + size - 1, y + size - 1));
 }
 
 void	step_collision(float rotation, t_cube *cube, bool running)
