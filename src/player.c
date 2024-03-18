@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 13:31:00 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 14:09:53 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	is_max_length(t_cube *c, int y, int x)
 	player_y = (float)c->player->height / 2;
 	player_x = (float)c->player->width / 2;
 	hypo = hypot(player_y - y, player_x - x);
-	if (hypo >= (player_x - 1))
+	if (hypo >= (player_x))
 		return (1);
 	return (0);
 }

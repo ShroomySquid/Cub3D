@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/18 10:20:22 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 14:09:54 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,44 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 
 void	step(float *x, float *y, float rotation, t_cube *c, float distance)
 {
-	c->last_y = (int)(*y / SIZE);
-	c->last_x = (int)(*x / SIZE);
+	if (distance == 1)
+	{
+		c->last_y = (int)(*y / SIZE);
+		c->last_x = (int)(*x / SIZE);
+	}
+	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
+	if (rotation < 90.0)
+	{
+		*y -= distance / 90.0 * (90.0 - rotation);
+		*x += distance / 90.0 * rotation;
+	}
+	else if (rotation < 180.0)
+	{
+		rotation -= 90;
+		*y += distance / 90.0 * rotation;
+		*x += distance / 90.0 * (90 - rotation);
+	}
+	else if (rotation < 270.0)
+	{
+		rotation -= 180;
+		*y += distance / 90.0 * (90.0 - rotation);
+		*x -= distance / 90.0 * rotation;
+	}
+	else
+	{
+		rotation -= 270;
+		*y -= distance / 90.0 * rotation;
+		*x -= distance / 90.0 * (90 - rotation);
+	}
+}
+/*
+void	step(float *x, float *y, float rotation, t_cube *c, float distance)
+{
+	if (distance == 1)
+	{
+		c->last_y = (int)(*y / SIZE);
+		c->last_x = (int)(*x / SIZE);
+	}
 	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
 	if (rotation < 90.0)
 	{
@@ -116,3 +152,4 @@ void	step(float *x, float *y, float rotation, t_cube *c, float distance)
 		*x -= 2 * distance - (distance / 90.0 * (rotation - 180.0));
 	}
 }
+*/
