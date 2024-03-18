@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/17 15:06:12 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 07:29:14 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	draw_los(int los, t_cube *cube)
 	int	i;
 
 	i = 0;
-	while (i < 60)
+	while (!is_mini_down(cube) && i < 60)
 	{
 		draw_line(los, cube);
 		i++;
@@ -63,7 +63,7 @@ void	render_player(void *param)
 	{
 		while (y < cube->player->height)
 		{
-			if (y > 12 && y < 18 && x > 12 && x < 18)
+			if (!is_mini_down(cube) && y > 12 && y < 18 && x > 12 && x < 18)
 				mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 255));
 			else
 				mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 0));

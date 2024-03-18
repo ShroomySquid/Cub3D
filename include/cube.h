@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 07:08:28 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 08:11:56 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_cube
 	int				last_line;
 	int				last_y;
 	int				last_x;
+	int				is_mini_active;
 }				t_cube;
 
 int		is_cardinal(char *str, t_cube *cube);
@@ -82,7 +83,7 @@ void	step(float *x, float *y, float rotation, t_cube *c, float distance);
 char	*whitespace_array(void);
 int		set_minimap(t_cube *cube);
 void	ft_player(void *param);
-void	ft_general(void *param);
+void	ft_general(mlx_key_data_t data, void *param);
 int		check_fc(int *i, char **data, t_cube *cube);
 void	is_map_still_invalid(int *valid_map, t_cube *cube);
 void	ft_render(void *param);
@@ -99,5 +100,6 @@ int		is_whitespace_str(char *str);
 int		is_digit_str(char *str);
 bool	touch_wall(char **map, int size, int x, int y);
 void	render_player(void *param);
+int		is_mini_down(t_cube *c);
 
 #endif

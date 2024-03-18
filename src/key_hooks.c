@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 13:25:29 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 07:56:34 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,21 @@ void	ft_player(void *param)
 	}
 }
 
-void	ft_general(void *param)
+void	ft_general(mlx_key_data_t data, void *param)
 {
 	t_cube	*cube;
 
 	cube = param;
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(cube->mlx);
+	if (data.action == MLX_PRESS)
+	{
+		if (mlx_is_key_down(cube->mlx, MLX_KEY_M))
+		{
+			if (cube->is_mini_active)
+				cube->is_mini_active = 0;
+			else
+				cube->is_mini_active = 1;
+		}
+	}
 }

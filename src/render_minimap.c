@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/15 11:02:59 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 08:11:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int32_t	get_color_mini(t_minimap *mini, t_cube *c)
 
 	mini->coord = c->map->map[(mini->y + mini->min_y)
 		/ 32][(mini->x + mini->min_x) / 32];
+	if (is_whitespace(mini->coord))
+		return (get_rgba(32, 32, 32, 255));
 	if (is_whitespace(mini->coord) || mini->coord == '1')
 		img = c->wall_img;
 	else if (mini->coord == 'D')
@@ -74,14 +76,14 @@ void	render_minimap(void *param)
 	{
 		while (mini.x < 224)
 		{
-			if (is_outside_map(mini, c))
-			{
+			if (is_mini_down(c))
+				mlx_put_pixel(c->minimap_img, mini.x, mini.y,
+					get_rgba(32, 32, 32, 0));
+			else if (is_outside_map(mini, c))
 				mlx_put_pixel(c->minimap_img, mini.x, mini.y,
 					get_rgba(32, 32, 32, 255));
-				mini.x += 1;
-				continue ;
-			}
-			mlx_put_pixel(c->minimap_img, mini.x, mini.y,
+			else
+				mlx_put_pixel(c->minimap_img, mini.x, mini.y,
 				get_color_mini(&mini, c));
 			mini.x += 1;
 		}
