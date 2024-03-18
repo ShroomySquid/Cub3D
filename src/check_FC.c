@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 17:20:33 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:34:10 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	check_fc(int *i, char **data, t_cube *cube)
 	fc = 0;
 	if (ft_strnstr(data[*i - 1], "C", 2))
 		fc = 1;
-	if ((fc && cube->map->roof != 1) || (!fc && cube->map->floor))
+	if ((fc && cube->map->roof != -1) || (!fc && cube->map->floor != -1))
 		return (error_map("Multiple color provided for same element"));
 	if (!data[*i])
 		return (error_map("No color provided for element"));
