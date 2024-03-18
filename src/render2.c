@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/18 14:09:54 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 15:20:38 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	r[1] = ft_getside(scale.x, scale.y, &c);
 	scale.hypo = hypot(c.playery - scale.y, c.playerx - scale.x);
 	scale.teta = (float)FOV / c.mlx->width * screenx - (FOV / 2.0);
-	scale.oppo = cos(fabs(scale.teta) * (M_PI / 180)) * scale.hypo;
-	r[0] = (float)SIZE * c.mlx->width / scale.oppo;
-	//r[0] = (float)SIZE * c.mlx->width / hypothenuse;
+	scale.oppo = cos(fabs(scale.teta) * (3.1416 / 180)) * scale.hypo;
+	//r[0] = (float)SIZE * c.mlx->width / scale.oppo;
+	r[0] = (float)SIZE * c.mlx->width / scale.hypo;
 	wall_width = c.map->walls[(int)r[1]][i[(int)r[1]]]->width;
 	if (c.map->map[(int)scale.y / SIZE][(int)scale.x / SIZE] == 'D')
 		wall_width = c.map->walls[4][i[4]]->width;

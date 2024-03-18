@@ -3,7 +3,8 @@ C 200 ,00, 200
 NO ./png/motif.png;./png/motif.png
 SO ./png/planks.png
 WE ./png/planks.png
-EA ./png/planks.png 
+EA ./png/planks.png
+DO ./png/door.png 
 1111111111111
 1001000000001
 1000011111001
