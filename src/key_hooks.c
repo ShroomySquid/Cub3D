@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 07:56:34 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 13:22:45 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,13 @@ void	ft_general(mlx_key_data_t data, void *param)
 		mlx_close_window(cube->mlx);
 	if (data.action == MLX_PRESS)
 	{
+		if (mlx_is_key_down(cube->mlx, MLX_KEY_F))
+		{
+			if (cube->is_light_active)
+				cube->is_light_active = 0;
+			else
+				cube->is_light_active = 1;
+		}
 		if (mlx_is_key_down(cube->mlx, MLX_KEY_M))
 		{
 			if (cube->is_mini_active)

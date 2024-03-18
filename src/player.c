@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 10:21:10 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 13:31:00 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	is_max_length(t_cube *c, int y, int x)
 	player_y = (float)c->player->height / 2;
 	player_x = (float)c->player->width / 2;
 	hypo = hypot(player_y - y, player_x - x);
-	if (hypo >= (player_x - 7.5))
+	if (hypo >= (player_x - 1))
 		return (1);
 	return (0);
 }
@@ -49,7 +49,7 @@ void	draw_line(float angle, t_cube *c)
 		mlx_put_pixel(c->player, x, y, get_rgba(255, 255, 255, 240 - i));
 		step(&map_x, &map_y, angle, c, 1);
 		step(&x, &y, angle, c, 1);
-		i += 6;
+		i += 1;
 	}
 }
 
@@ -85,7 +85,7 @@ void	render_player(void *param)
 	{
 		while (y < cube->player->height)
 		{
-			if (!is_mini_down(cube) && y > 28 && y < 34 && x > 28 && x < 34)
+			if (!is_mini_down(cube) && y > 109 && y < 115 && x > 109 && x < 115)
 				mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 255));
 			else
 				mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 0));
@@ -94,5 +94,6 @@ void	render_player(void *param)
 		y = 0;
 		x++;
 	}
-	draw_los(los, cube);
+	if (cube->is_light_active)
+		draw_los(los, cube);
 }

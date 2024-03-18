@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 09:48:27 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 13:19:34 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_cube
 	int				last_y;
 	int				last_x;
 	int				is_mini_active;
+	int				is_light_active;
 }				t_cube;
 
 int		is_cardinal(char *str, t_cube *cube);
