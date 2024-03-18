@@ -6,28 +6,39 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 07:29:14 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 10:00:22 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
 
-void	draw_line(float angle, t_cube *cube)
+int	is_max_length(void)
+{
+	printf("yo");
+	return (0);
+}
+
+void	draw_line(float angle, t_cube *c)
 {
 	float	x;
 	float	y;
+	float	map_x;
+	float	map_y;
 	int		i;
 
-	y = (float)cube->player->height / 2;
-	x = (float)cube->player->width / 2;
+	y = (float)c->player->height / 2;
+	x = (float)c->player->width / 2;
 	i = 0;
-	while (x > 0 && x < cube->player->width && y > 0
-		&& y < cube->player->height && i < 240)
+	map_x = c->playerx;
+	map_y = c->playery;
+	while (x > 0 && x < c->player->width && y > 0
+		&& y < c->player->height && i < 240
+		&& !touch_wall(c->map->map, 1, map_x, map_y)) 
 	{
-		mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 255 - i));
-		step(&x, &y, angle, cube, 1);
-		(void)angle;
-		i += 12;
+		mlx_put_pixel(c->player, x, y, get_rgba(255, 255, 255, 240 - i));
+		step(&map_x, &map_y, angle, c, 1);
+		step(&x, &y, angle, c, 1);
+		i += 6;
 	}
 }
 
@@ -36,7 +47,7 @@ void	draw_los(int los, t_cube *cube)
 	int	i;
 
 	i = 0;
-	while (!is_mini_down(cube) && i < 60)
+	while (!is_mini_down(cube) && i < FOV)
 	{
 		draw_line(los, cube);
 		i++;
@@ -54,7 +65,7 @@ void	render_player(void *param)
 	int			los;
 
 	cube = param;
-	los = cube->rotation - 30;
+	los = cube->rotation - (FOV / 2);
 	if (los < 0)
 		los += 360;
 	x = 0;
@@ -63,7 +74,7 @@ void	render_player(void *param)
 	{
 		while (y < cube->player->height)
 		{
-			if (!is_mini_down(cube) && y > 12 && y < 18 && x > 12 && x < 18)
+			if (!is_mini_down(cube) && y > 28 && y < 34 && x > 28 && x < 34)
 				mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 255));
 			else
 				mlx_put_pixel(cube->player, x, y, get_rgba(255, 255, 255, 0));
