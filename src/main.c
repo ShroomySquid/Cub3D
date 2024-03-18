@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 07:58:10 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 08:35:55 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ int	force_exit(t_cube *cube)
 int	start_cube(t_cube *cube)
 {
 	mlx_set_cursor_mode(cube->mlx, 0x00034002);
-	cube->is_mini_active = 1;
+	if (cube->mlx->width < 512 || cube->mlx->height < 512)
+		cube->is_mini_active = 0;
+	else
+		cube->is_mini_active = 1;
 	if (set_minimap(cube))
 		return (1);
 	mlx_key_hook(cube->mlx, ft_general, cube);
@@ -62,7 +65,7 @@ int	parsing(t_cube *cube, char **argv)
 	cube->map->map = parsing_map(cube, argv);
 	if (!cube->map->map)
 		return (force_exit(cube));
-	if (check_map(cube->map->map, cube))
+	if (check_map(cube->map->map, cube, 0, 0))
 		return (force_exit(cube));
 	return (0);
 }

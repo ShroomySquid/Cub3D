@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/14 16:32:31 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 08:35:15 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,8 @@ int	check_player(int *player, t_cube *cube, int y, int x)
 	return (0);
 }
 
-int	check_map(char **map, t_cube *cube)
+int	check_map(char **map, t_cube *cube, int x, int y)
 {
-	int	x;
-	int	y;
 	int	player;
 
 	y = 0;
@@ -81,7 +79,8 @@ int	check_map(char **map, t_cube *cube)
 				return (error_map("Invalid symbol on map"));
 			else if (check_player(&player, cube, y, x))
 				return (1);
-			else if ((map[y][x] == '0' || map[y][x] == 'D') && check_valid_floor(map, x, y))
+			else if ((map[y][x] == '0' || map[y][x] == 'D')
+				&& check_valid_floor(map, x, y))
 				return (error_map("Invalid floor location"));
 			x++;
 		}

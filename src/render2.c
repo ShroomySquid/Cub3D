@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/18 08:09:49 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 09:07:26 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,62 +36,58 @@ static int	ft_getside(float x, float y, t_cube *c)
 	return (last);
 }
 
-static void	ft_send(float *x, float *y, float rotation, t_cube *cube)
+static void	ft_send(t_scale *scale, t_cube *cube)
 {
-	while (!touch_wall(cube->map->map, 1, *x, *y))
-		step(x, y, rotation, cube, 1);
-	while (touch_wall(cube->map->map, 1, *x, *y))
-		step(x, y, rotation + 180, cube, 0.1);
-	step(x, y, rotation, cube, 0.1);
-	while (touch_wall(cube->map->map, 1, *x, *y))
-		step(x, y, rotation + 180, cube, 0.01);
-	step(x, y, rotation, cube, 0.01);
+	while (!touch_wall(cube->map->map, 1, scale->x, scale->y))
+		step(&scale->x, &scale->y, scale->angle, cube, 1);
+	while (touch_wall(cube->map->map, 1, scale->x, scale->y))
+		step(&scale->x, &scale->y, scale->angle + 180, cube, 0.1);
+	step(&scale->x, &scale->y, scale->angle, cube, 0.1);
+	while (touch_wall(cube->map->map, 1, scale->x, scale->y))
+		step(&scale->x, &scale->y, scale->angle + 180, cube, 0.01);
+	step(&scale->x, &scale->y, scale->angle, cube, 0.01);
+}
+
+void	innit_scale(t_scale *scale, t_cube c, float screenx)
+{
+	scale->angle = c.rotation - (FOV / 2.0);
+	scale->angle += (float)FOV / c.mlx->width * screenx;
+	if (scale->angle < 0)
+		scale->angle += 360;
+	else if (scale->angle >= 360)
+		scale->angle -= 360;
+	scale->x = c.playerx;
+	scale->y = c.playery;
 }
 
 float	*ft_getscale(t_cube c, float screenx, int *i)
 {
-	float			angle;
-	float			hypothenuse;
-	float			opposite;
-	float			teta;
 	static float	r[3];
-	float			x;
-	float			y;
+	t_scale			scale;
 	float			wall_width;
 
-	angle = c.rotation - FOV / 2.0 + (float)FOV / c.mlx->width * screenx;
-	if (angle < 0)
-		angle += 360;
-	else if (angle >= 360)
-		angle -= 360;
-	x = c.playerx;
-	y = c.playery;
-	ft_send(&x, &y, angle, &c);
-	r[1] = ft_getside(x, y, &c);
-	hypothenuse = hypot(c.playery - y, c.playerx - x);
-	teta = -(FOV / 2.0) + (float)FOV / c.mlx->width * screenx;
-	opposite = cos(fabs(teta) * (M_PI / 180)) * hypothenuse;
-	r[0] = (float)SIZE * c.mlx->width / opposite;
+	innit_scale(&scale, c, screenx);
+	ft_send(&scale, &c);
+	r[1] = ft_getside(scale.x, scale.y, &c);
+	scale.hypo = hypot(c.playery - scale.y, c.playerx - scale.x);
+	scale.teta = (float)FOV / c.mlx->width * screenx - (FOV / 2.0);
+	scale.oppo = cos(fabs(scale.teta) * (M_PI / 180)) * scale.hypo;
+	r[0] = (float)SIZE * c.mlx->width / scale.oppo;
 	//r[0] = (float)SIZE * c.mlx->width / hypothenuse;
 	wall_width = c.map->walls[(int)r[1]][i[(int)r[1]]]->width;
-	if (c.map->map[(int)y / SIZE][(int)x / SIZE] == 'D')
+	if (c.map->map[(int)scale.y / SIZE][(int)scale.x / SIZE] == 'D')
 		wall_width = c.map->walls[4][i[4]]->width;
 	if (!r[1])
-		r[2] = wall_width / SIZE * fmod(x, SIZE);
+		r[2] = wall_width / SIZE * fmod(scale.x, SIZE);
 	else if (r[1] == 1)
-		r[2] = wall_width - wall_width / SIZE * fmod(x, SIZE);
+		r[2] = wall_width - wall_width / SIZE * fmod(scale.x, SIZE);
 	else if (r[1] == 2)
-		r[2] = wall_width - wall_width / SIZE * fmod(y, SIZE);
+		r[2] = wall_width - wall_width / SIZE * fmod(scale.y, SIZE);
 	else
-		r[2] = wall_width / SIZE * fmod(y, SIZE);
-	if (c.map->map[(int)y / SIZE][(int)x / SIZE] == 'D')
+		r[2] = wall_width / SIZE * fmod(scale.y, SIZE);
+	if (c.map->map[(int)scale.y / SIZE][(int)scale.x / SIZE] == 'D')
 		r[1] = 4;
 	return (r);
-}
-
-int32_t	get_rgba(int r, int g, int b, int a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
 }
 
 void	step(float *x, float *y, float rotation, t_cube *c, float distance)

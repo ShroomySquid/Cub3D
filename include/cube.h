@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 08:11:56 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 09:12:38 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 # include "../MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 # include <stdio.h>
-#ifndef SIZE
+# ifndef SIZE
 #  define SIZE 32
-#endif
+# endif
 # ifndef FOV
 #  define FOV 60
 # endif
@@ -28,6 +28,16 @@
 # ifndef HEIGHT
 #  define HEIGHT 1024
 # endif
+
+typedef struct s_scale
+{
+	float	angle;
+	float	hypo;
+	float	oppo;
+	float	teta;
+	float	x;
+	float	y;
+}				t_scale;
 
 typedef struct s_minimap
 {
@@ -90,7 +100,7 @@ void	ft_render(void *param);
 int32_t	get_rgba(int r, int g, int b, int a);
 char	**parsing_map(t_cube *c, char **argv);
 void	render_minimap(void *param);
-int		check_map(char **map, t_cube *cube);
+int		check_map(char **map, t_cube *cube, int x, int y);
 int		error_func(char *failed_func);
 int		error_argc(void);
 int		error_map(char *str);

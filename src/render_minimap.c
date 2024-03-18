@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/18 08:11:23 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 09:08:09 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	render_minimap(void *param)
 					get_rgba(32, 32, 32, 255));
 			else
 				mlx_put_pixel(c->minimap_img, mini.x, mini.y,
-				get_color_mini(&mini, c));
+					get_color_mini(&mini, c));
 			mini.x += 1;
 		}
 		mini.y += 1;

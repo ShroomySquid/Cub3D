@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 07:26:42 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 08:27:38 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 int	is_mini_down(t_cube *c)
 {
 	if (!c->is_mini_active)
-		return (1);
-	if (c->mlx->width < 512 || c->mlx->height < 512)
 		return (1);
 	return (0);
 }
