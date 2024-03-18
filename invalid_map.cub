@@ -1,7 +1,8 @@
 NO ./png/motif.png;./png/motif.png
 SO ./png/planks.png
 WE ./png/planks.png
-EA ./png/planks.png 
+EA ./png/planks.png
+DO ./png/planks.png 
 F 200,4,200
 C 200,00,200
 C 200,00,100
