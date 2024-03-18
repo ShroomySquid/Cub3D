@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 14:09:53 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:32:08 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,9 @@
 
 int	is_max_length(t_cube *c, int y, int x)
 {
-	float	player_x;
-	float	player_y;
-	float	hypo;
-
-	if (y < 0 && y >= (int)c->player->height)
+	if (y < 0 || y >= (int)c->player->height - 1)
 		return (1);
-	if (x < 0 && x >= (int)c->player->width)
-		return (1);
-	player_y = (float)c->player->height / 2;
-	player_x = (float)c->player->width / 2;
-	hypo = hypot(player_y - y, player_x - x);
-	if (hypo >= (player_x))
+	if (x < 0 || x >= (int)c->player->width - 1)
 		return (1);
 	return (0);
 }
@@ -43,13 +34,14 @@ void	draw_line(float angle, t_cube *c)
 	i = 0;
 	map_x = c->playerx;
 	map_y = c->playery;
-	while (!is_max_length(c, y, x) && i < 240
-		&& !touch_wall(c->map->map, 1, map_x, map_y))
+	while (!is_max_length(c, y, x) && i < 224)
 	{
 		mlx_put_pixel(c->player, x, y, get_rgba(255, 255, 255, 240 - i));
 		step(&map_x, &map_y, angle, c, 1);
 		step(&x, &y, angle, c, 1);
 		i += 1;
+		if (touch_wall(c->map->map, 1, map_x, map_y))
+			return ;
 	}
 }
 
