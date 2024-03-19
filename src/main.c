@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/19 10:33:52 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/19 12:58:55 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void	free_walls(mlx_image_t ***array)
 
 int	force_exit(t_cube *cube)
 {
-	cube->rotation = 1;
+	//mlx_delete_texture(cube->floor_tex);
+	//mlx_delete_texture(cube->wall_tex);
+	mlx_delete_texture(cube->lock_tex);
 	mlx_terminate(cube->mlx);
 	if (cube && cube->map && cube->map->walls)
 		free_walls(cube->map->walls);
