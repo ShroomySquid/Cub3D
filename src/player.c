@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 16:32:08 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/19 10:27:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ void	draw_line(float angle, t_cube *c)
 	i = 0;
 	map_x = c->playerx;
 	map_y = c->playery;
+	calculate_step(angle, c);
 	while (!is_max_length(c, y, x) && i < 224)
 	{
 		mlx_put_pixel(c->player, x, y, get_rgba(255, 255, 255, 240 - i));
-		step(&map_x, &map_y, angle, c, 1);
-		step(&x, &y, angle, c, 1);
+		step(&map_x, &map_y, c, 1);
+		step(&x, &y, c, 1);
 		i += 1;
 		if (touch_wall(c->map->map, 1, map_x, map_y))
 			return ;

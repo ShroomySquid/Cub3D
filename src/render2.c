@@ -6,11 +6,33 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/18 16:16:30 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/19 10:31:48 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
+
+void	step(float *x, float *y, t_cube *c, float distance)
+{
+	if (distance == 1)
+	{
+		c->last_y = *y;
+		c->last_x = *x;
+	}
+	*x += c->step_x * distance;
+	*y += c->step_y * distance;
+}
+
+void	reverse_step(float *x, float *y, t_cube *c, float distance)
+{
+	if (distance == 1)
+	{
+		c->last_y = *y;
+		c->last_x = *x;
+	}
+	*x -= c->step_x * distance;
+	*y -= c->step_y * distance;
+}
 
 static int	ft_getside(float x, float y, t_cube *c)
 {
@@ -39,13 +61,13 @@ static int	ft_getside(float x, float y, t_cube *c)
 static void	ft_send(t_scale *scale, t_cube *cube)
 {
 	while (!touch_wall(cube->map->map, 1, scale->x, scale->y))
-		step(&scale->x, &scale->y, scale->angle, cube, 1);
-	//while (touch_wall(cube->map->map, 1, scale->x, scale->y))
-	//	step(&scale->x, &scale->y, scale->angle + 180, cube, 0.1);
-	//step(&scale->x, &scale->y, scale->angle, cube, 0.1);
-	//while (touch_wall(cube->map->map, 1, scale->x, scale->y))
-	//	step(&scale->x, &scale->y, scale->angle + 180, cube, 0.01);
-	//step(&scale->x, &scale->y, scale->angle, cube, 0.01);
+		step(&scale->x, &scale->y, cube, 1);
+	while (touch_wall(cube->map->map, 1, scale->x, scale->y))
+		reverse_step(&scale->x, &scale->y, cube, 0.1);
+	step(&scale->x, &scale->y, cube, 0.1);
+	while (touch_wall(cube->map->map, 1, scale->x, scale->y))
+		reverse_step(&scale->x, &scale->y, cube, 0.01);
+	step(&scale->x, &scale->y, cube, 0.01);
 }
 
 void	innit_scale(t_scale *scale, t_cube c, float screenx)
@@ -67,6 +89,7 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	float			wall_width;
 
 	innit_scale(&scale, c, screenx);
+	calculate_step(scale.angle, &c);
 	ft_send(&scale, &c);
 	r[1] = ft_getside(scale.x, scale.y, &c);
 	scale.hypo = hypot(c.playery - scale.y, c.playerx - scale.x);
@@ -90,45 +113,51 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	return (r);
 }
 
-void	step(float *x, float *y, float rotation, t_cube *c, float distance)
+void	calculate_step(float rotation, t_cube *c)
 {
-	if (distance == 1)
-	{
-		c->last_y = (int)(*y / SIZE);
-		c->last_x = (int)(*x / SIZE);
-	}
-	//printf("hello\n");
 	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
 	if (rotation == 90.0)
-		*x += 1;
+	{
+		c->step_x = 1.0;
+		c->step_y = 0.0;
+	}
 	else if (rotation == 0.0 || rotation == 360.0)
-		*y -= 1;
+	{
+		c->step_x = 0.0;
+		c->step_y = -1.0;
+	}
 	else if (rotation == 180.0)
-		*y += 1;
+	{
+		c->step_x = 0.0;
+		c->step_y = 1;
+	}
 	else if (rotation == 270.0)
-		*x -= 1;
+	{
+		c->step_x = -1.0;
+		c->step_y = 0.0;
+	}
 	else if (rotation < 90.0)
 	{
-		*y -= distance - (cos(rotation * (M_PI / 180)) * distance);
-		*x += sin(rotation * (M_PI / 180)) * distance;
+		c->step_y = -1 * cos(rotation * (M_PI / 180));
+		c->step_x = sin(rotation * (M_PI / 180));
 	}
 	else if (rotation < 180.0)
 	{
 		rotation -= 90.0;
-		*x += (cos(rotation * (M_PI / 180)) * distance);
-		*y += distance - (sin(rotation * (M_PI / 180)) * distance);
+		c->step_x = cos(rotation * (M_PI / 180));
+		c->step_y = sin(rotation * (M_PI / 180));
 	}
 	else if (rotation < 270.0)
 	{
 		rotation -= 180.0;
-		*y += distance - (cos(rotation * (M_PI / 180)) * distance);
-		*x -= sin(rotation * (M_PI / 180)) * distance;
+		c->step_y = cos(rotation * (M_PI / 180));
+		c->step_x = -1 * sin(rotation * (M_PI / 180));
 	}
 	else
 	{
 		rotation -= 270.0;
-		*x -= (cos(rotation * (M_PI / 180)) * distance);
-		*y -= distance - (sin(rotation * (M_PI / 180)) * distance);
+		c->step_x = -1 * cos(rotation * (M_PI / 180));
+		c->step_y = -1 * sin(rotation * (M_PI / 180));
 	}
 }
 

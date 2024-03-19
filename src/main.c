@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 17:49:10 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/19 10:18:12 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	start_cube(t_cube *cube)
 {
 	mlx_set_cursor_mode(cube->mlx, 0x00034002);
 	cube->is_light_active = 1;
+	cube->step_x = 0.0;
+	cube->step_y = 0.0;
 	if (cube->mlx->width < 512 || cube->mlx->height < 512)
 		cube->is_mini_active = 0;
 	else

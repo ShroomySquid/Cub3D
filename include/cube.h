@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 16:30:33 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/19 10:29:50 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ typedef struct s_cube
 	mlx_image_t		*minimap_img;
 	int				map_nbr_line;
 	int				last_line;
-	int				last_y;
-	int				last_x;
+	float			last_y;
+	float			last_x;
+	float			step_x;
+	float			step_y;
 	int				is_mini_active;
 	int				is_light_active;
 }				t_cube;
@@ -90,7 +92,7 @@ int		check_cardinals(char *paths, t_cube *c);
 int		array_len(char **array);
 void	step_collision(float rotation, t_cube *cube, bool running);
 float	*ft_getscale(t_cube c, float screenx, int *i);
-void	step(float *x, float *y, float rotation, t_cube *c, float distance);
+void	step(float *x, float *y, t_cube *c, float distance);
 char	*whitespace_array(void);
 int		set_minimap(t_cube *cube);
 void	ft_player(void *param);
@@ -112,5 +114,6 @@ int		is_digit_str(char *str);
 bool	touch_wall(char **map, int size, int x, int y);
 void	render_player(void *param);
 int		is_mini_down(t_cube *c);
+void	calculate_step(float rotation, t_cube *c);
 
 #endif

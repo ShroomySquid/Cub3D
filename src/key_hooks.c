@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 13:22:45 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/19 10:31:51 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_player(void *param)
 		|| mlx_is_key_down(cube->mlx, MLX_KEY_E))
 	{
 		while (!touch_wall(cube->map->map, 1, x, y))
-			step(&x, &y, cube->rotation, cube, 1);
+			step(&x, &y, cube, 1);
 		if (hypotf(fabsf((cube->playery - (int)y)), fabsf(cube->playerx
 					- (int)x)) < 113 && cube->map->map[(int)y / SIZE][(int)x
 			/ SIZE] == 'D')
