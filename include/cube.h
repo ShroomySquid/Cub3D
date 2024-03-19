@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/19 10:29:50 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/19 11:20:54 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ typedef struct s_cube
 	mlx_image_t		*minimap_img;
 	int				map_nbr_line;
 	int				last_line;
-	float			last_y;
-	float			last_x;
 	float			step_x;
 	float			step_y;
 	int				is_mini_active;

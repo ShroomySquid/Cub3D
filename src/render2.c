@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/19 10:31:48 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/19 11:39:40 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,50 @@
 
 void	step(float *x, float *y, t_cube *c, float distance)
 {
-	if (distance == 1)
-	{
-		c->last_y = *y;
-		c->last_x = *x;
-	}
 	*x += c->step_x * distance;
 	*y += c->step_y * distance;
 }
 
 void	reverse_step(float *x, float *y, t_cube *c, float distance)
 {
-	if (distance == 1)
-	{
-		c->last_y = *y;
-		c->last_x = *x;
-	}
 	*x -= c->step_x * distance;
 	*y -= c->step_y * distance;
 }
 
+/*
+void	reverse_step_int(int *x, int *y, t_cube *c)
+{
+	*x += -1 * (int)c->step_x;
+	*y += -1 * (int)c->step_y;
+	printf("step_x: %f, step_y: %f, x: %d, y: %d\n", c->step_x, c->step_y, *x, *y);
+}
+*/
+
 static int	ft_getside(float x, float y, t_cube *c)
 {
 	static int	last;
-	int			cur_x;
-	int			cur_y;
+	float		last_x;
+	float		last_y;
+	int			coord[2];
+	int			last_coord[2];
 
-	cur_x = (x / SIZE);
-	cur_y = (y / SIZE);
-	if (cur_y != c->last_y && cur_x != c->last_x)
+	last_x = x;
+	last_y = y;
+	reverse_step(&last_x, &last_y, c, 1);
+	coord[0] =  (int)(y / 32);
+	coord[1] =  (int)(x / 32);
+	last_coord[0] =  (int)(last_y / 32);
+	last_coord[1] =  (int)(last_x / 32);
+	if (coord[0] != last_coord[0] && coord[1] != last_coord[1])
 		return (last);
-	if (cur_y == c->last_y)
+	if (coord[0] == last_coord[0])
 	{
-		if (cur_x > c->last_x)
+		if (coord[1] > last_coord[1])
 			last = 3;
 		else
 			last = 2;
 	}
-	else if (cur_y < c->last_y)
+	else if (coord[0] < last_coord[0])
 		last = 0;
 	else
 		last = 1;
@@ -96,7 +102,6 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	scale.teta = (float)FOV / c.mlx->width * screenx - (FOV / 2.0);
 	scale.oppo = cos(scale.teta * (M_PI / 180)) * scale.hypo;
 	r[0] = (float)SIZE * c.mlx->width / scale.oppo;
-	//r[0] = (float)SIZE * c.mlx->width / scale.hypo;
 	wall_width = c.map->walls[(int)r[1]][i[(int)r[1]]]->width;
 	if (c.map->map[(int)scale.y / SIZE][(int)scale.x / SIZE] == 'D')
 		wall_width = c.map->walls[4][i[4]]->width;
