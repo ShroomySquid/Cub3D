@@ -40,12 +40,12 @@ static void	ft_send(t_scale *scale, t_cube *cube)
 {
 	while (!touch_wall(cube->map->map, 1, scale->x, scale->y))
 		step(&scale->x, &scale->y, scale->angle, cube, 1);
-	while (touch_wall(cube->map->map, 1, scale->x, scale->y))
-		step(&scale->x, &scale->y, scale->angle + 180, cube, 0.1);
-	step(&scale->x, &scale->y, scale->angle, cube, 0.1);
-	while (touch_wall(cube->map->map, 1, scale->x, scale->y))
-		step(&scale->x, &scale->y, scale->angle + 180, cube, 0.01);
-	step(&scale->x, &scale->y, scale->angle, cube, 0.01);
+	//while (touch_wall(cube->map->map, 1, scale->x, scale->y))
+	//	step(&scale->x, &scale->y, scale->angle + 180, cube, 0.1);
+	//step(&scale->x, &scale->y, scale->angle, cube, 0.1);
+	//while (touch_wall(cube->map->map, 1, scale->x, scale->y))
+	//	step(&scale->x, &scale->y, scale->angle + 180, cube, 0.01);
+	//step(&scale->x, &scale->y, scale->angle, cube, 0.01);
 }
 
 void	innit_scale(t_scale *scale, t_cube c, float screenx)
@@ -97,29 +97,38 @@ void	step(float *x, float *y, float rotation, t_cube *c, float distance)
 		c->last_y = (int)(*y / SIZE);
 		c->last_x = (int)(*x / SIZE);
 	}
+	//printf("hello\n");
 	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
-	if (rotation < 90.0)
+	if (rotation == 90.0)
+		*x += 1;
+	else if (rotation == 0.0 || rotation == 360.0)
+		*y -= 1;
+	else if (rotation == 180.0)
+		*y += 1;
+	else if (rotation == 270.0)
+		*x -= 1;
+	else if (rotation < 90.0)
 	{
-		*y -= distance / 90.0 * (90.0 - rotation);
-		*x += distance / 90.0 * rotation;
+		*y -= distance - (cos(rotation * (M_PI / 180)) * distance);
+		*x += sin(rotation * (M_PI / 180)) * distance;
 	}
 	else if (rotation < 180.0)
 	{
-		rotation -= 90;
-		*y += distance / 90.0 * rotation;
-		*x += distance / 90.0 * (90 - rotation);
+		rotation -= 90.0;
+		*x += (cos(rotation * (M_PI / 180)) * distance);
+		*y += distance - (sin(rotation * (M_PI / 180)) * distance);
 	}
 	else if (rotation < 270.0)
 	{
-		rotation -= 180;
-		*y += distance / 90.0 * (90.0 - rotation);
-		*x -= distance / 90.0 * rotation;
+		rotation -= 180.0;
+		*y += distance - (cos(rotation * (M_PI / 180)) * distance);
+		*x -= sin(rotation * (M_PI / 180)) * distance;
 	}
 	else
 	{
-		rotation -= 270;
-		*y -= distance / 90.0 * rotation;
-		*x -= distance / 90.0 * (90 - rotation);
+		rotation -= 270.0;
+		*x -= (cos(rotation * (M_PI / 180)) * distance);
+		*y -= distance - (sin(rotation * (M_PI / 180)) * distance);
 	}
 }
 
