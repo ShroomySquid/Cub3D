@@ -27,10 +27,12 @@ int	set_minimap(t_cube *cube)
 	cube->minimap_img = mlx_new_image(cube->mlx, 224, 224);
 	if (!cube->minimap_img)
 		return (error_func("mlx_new_image"));
-	cube->lock_tex = mlx_load_png("./png/lock.png");
+	cube->lockh_tex = mlx_load_png("./png/lock.png");
+	cube->lockv_tex = mlx_load_png("./png/lock2.png");
 	cube->wall_tex = mlx_load_png("./png/wall_mini.png");
 	cube->floor_tex = mlx_load_png("./png/floor_mini.png");
-	cube->lock_img = mlx_texture_to_image(cube->mlx, cube->lock_tex);
+	cube->lockh_img = mlx_texture_to_image(cube->mlx, cube->lockh_tex);
+	cube->lockv_img = mlx_texture_to_image(cube->mlx, cube->lockv_tex);
 	cube->wall_img = mlx_texture_to_image(cube->mlx, cube->wall_tex);
 	cube->floor_img = mlx_texture_to_image(cube->mlx, cube->floor_tex);
 	mlx_image_to_window(cube->mlx, cube->minimap_img, 20, 20);

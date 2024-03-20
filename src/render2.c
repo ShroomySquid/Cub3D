@@ -112,27 +112,7 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 void	calculate_step(float rotation, t_cube *c)
 {
 	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
-	if (rotation == 90.0)
-	{
-		c->step_x = 1.0;
-		c->step_y = 0.0;
-	}
-	else if (rotation == 0.0 || rotation == 360.0)
-	{
-		c->step_x = 0.0;
-		c->step_y = -1.0;
-	}
-	else if (rotation == 180.0)
-	{
-		c->step_x = 0.0;
-		c->step_y = 1;
-	}
-	else if (rotation == 270.0)
-	{
-		c->step_x = -1.0;
-		c->step_y = 0.0;
-	}
-	else if (rotation < 90.0)
+	if (rotation < 90.0)
 	{
 		c->step_y = -1 * cos(rotation * (M_PI / 180));
 		c->step_x = sin(rotation * (M_PI / 180));

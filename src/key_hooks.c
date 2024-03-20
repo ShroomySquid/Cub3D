@@ -84,6 +84,7 @@ void	ft_player(void *param)
 	if (mlx_is_mouse_down(cube->mlx, MLX_MOUSE_BUTTON_LEFT)
 		|| mlx_is_key_down(cube->mlx, MLX_KEY_E))
 	{
+		calculate_step(cube->rotation, cube);
 		while (!touch_wall(cube->map->map, 1, x, y))
 			step(&x, &y, cube, 1);
 		if (hypotf(fabsf((cube->playery - (int)y)), fabsf(cube->playerx

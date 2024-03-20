@@ -23,10 +23,17 @@ int32_t	get_color_mini(t_minimap *mini, t_cube *c)
 		/ 32][(mini->x + mini->min_x) / 32];
 	if (is_whitespace(mini->coord))
 		return (get_rgba(32, 32, 32, 255));
-	if (is_whitespace(mini->coord) || mini->coord == '1')
+	if (mini->coord == '1')
 		img = c->wall_img;
 	else if (mini->coord == 'D')
-		img = c->lock_img;
+	{
+		if (c->map->map[(mini->y + mini->min_y) / 32][(mini->x + mini->min_x) / 32 - 1] == '1' && c->map->map[(mini->y + mini->min_y) / 32][(mini->x + mini->min_x) / 32 + 1] == '1')
+			img = c->lockh_img;
+		else if (c->map->map[(mini->y + mini->min_y) / 32 - 1][(mini->x + mini->min_x) / 32] == '1' && c->map->map[(mini->y + mini->min_y) / 32 + 1][(mini->x + mini->min_x) / 32] == '1')
+			img = c->lockv_img;
+		else
+			img = c->wall_img;
+	}
 	else
 		img = c->floor_img;
 	y_img = (mini->y + mini->min_y) % 32;

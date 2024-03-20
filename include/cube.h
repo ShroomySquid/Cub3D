@@ -61,8 +61,10 @@ typedef struct s_map
 
 typedef struct s_cube
 {
-	mlx_texture_t	*lock_tex;
-	mlx_image_t		*lock_img;
+	mlx_texture_t	*lockh_tex;
+	mlx_image_t		*lockh_img;
+	mlx_texture_t	*lockv_tex;
+	mlx_image_t		*lockv_img;
 	mlx_t			*mlx;
 	mlx_image_t		*player;
 	float			playerx;
