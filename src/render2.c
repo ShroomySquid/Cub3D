@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/19 11:39:40 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/20 08:56:15 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,6 @@ void	reverse_step(float *x, float *y, t_cube *c, float distance)
 	*y -= c->step_y * distance;
 }
 
-/*
-void	reverse_step_int(int *x, int *y, t_cube *c)
-{
-	*x += -1 * (int)c->step_x;
-	*y += -1 * (int)c->step_y;
-	printf("step_x: %f, step_y: %f, x: %d, y: %d\n", c->step_x, c->step_y, *x, *y);
-}
-*/
-
 static int	ft_getside(float x, float y, t_cube *c)
 {
 	static int	last;
@@ -43,7 +34,7 @@ static int	ft_getside(float x, float y, t_cube *c)
 
 	last_x = x;
 	last_y = y;
-	reverse_step(&last_x, &last_y, c, 1);
+	reverse_step(&last_x, &last_y, c, 0.1);
 	coord[0] =  (int)(y / 32);
 	coord[1] =  (int)(x / 32);
 	last_coord[0] =  (int)(last_y / 32);

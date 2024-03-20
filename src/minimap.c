@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/18 16:41:11 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/19 13:19:57 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	set_minimap(t_cube *cube)
 	if (!cube->minimap_img)
 		return (error_func("mlx_new_image"));
 	cube->lock_tex = mlx_load_png("./png/lock.png");
-	cube->wall_tex = mlx_load_png("./png/square-32(1).png");
-	cube->floor_tex = mlx_load_png("./png/square-32.png");
+	cube->wall_tex = mlx_load_png("./png/wall_mini.png");
+	cube->floor_tex = mlx_load_png("./png/floor_mini.png");
 	cube->lock_img = mlx_texture_to_image(cube->mlx, cube->lock_tex);
 	cube->wall_img = mlx_texture_to_image(cube->mlx, cube->wall_tex);
 	cube->floor_img = mlx_texture_to_image(cube->mlx, cube->floor_tex);
