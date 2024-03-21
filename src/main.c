@@ -43,6 +43,7 @@ int	force_exit(t_cube *cube)
 	mlx_delete_texture(cube->wall_tex);
 	mlx_delete_texture(cube->lockh_tex);
 	mlx_delete_texture(cube->lockv_tex);
+	mlx_delete_texture(cube->pointer_tex);
 	mlx_terminate(cube->mlx);
 	if (cube && cube->map && cube->map->walls)
 		free_walls(cube->map->walls);
