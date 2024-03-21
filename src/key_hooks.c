@@ -81,7 +81,7 @@ void	ft_player(void *param)
 	x = cube->playerx;
 	y = cube->playery;
 	ft_mouse(cube);
-	ft_movement(mlx_is_key_down(cube->mlx, MLX_KEY_LEFT_SHIFT), cube);
+	ft_movement(mlx_is_key_down(cube->mlx, MLX_KEY_LEFT_SHIFT) || mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT_SHIFT), cube);
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
 	{
 		cube->rotation += cube->mlx->delta_time * 60;
