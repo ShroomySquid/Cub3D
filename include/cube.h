@@ -70,6 +70,7 @@ typedef struct s_cube
 	float			playerx;
 	float			playery;
 	float			precalc;
+	int				samemap;
 	int				samepos;
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;

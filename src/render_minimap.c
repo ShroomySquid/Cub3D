@@ -78,7 +78,7 @@ void	render_minimap(void *param)
 	t_minimap	mini;
 
 	c = param;
-	if (c->samepos)
+	if (c->samemap)
 		return ;
 	innit_minimap(c, &mini);
 	while (mini.y < 224)

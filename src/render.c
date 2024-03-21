@@ -146,6 +146,7 @@ void	ft_render(void *param)
 	cube = param;
 	ft_framerate(cube);
 	cube->samepos = (protation == cube->rotation && px == cube->playerx && py == cube->playery && cube->samepos != 2);
+	cube->samemap = (px == cube->playerx && py == cube->playery && cube->samepos != 2);
 	ft_image(cube);
 	x = -1;
 	while (++x < cube->mlx->width)
