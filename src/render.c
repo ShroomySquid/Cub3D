@@ -79,6 +79,16 @@ static void	ft_render_loop(t_cube *cube, float x, int *i)
 	}
 }
 
+static int	len(mlx_image_t **img)
+{
+	int	i;
+
+	i = 0;
+	while (img[i])
+		i++;
+	return (i);
+}
+
 void	ft_render(void *param)
 {
 	static float	protation;
@@ -106,16 +116,21 @@ void	ft_render(void *param)
 	i[0] += cube->mlx->delta_time * 60;
 	if (!cube->map->walls[0][(int)i[0]])
 		i[0] = 0;
+	i[0] = fmodf(i[0], len(cube->map->walls[0]));
 	i[1] += cube->mlx->delta_time * 60;
 	if (!cube->map->walls[1][(int)i[1]])
 		i[1] = 0;
+	i[1] = fmodf(i[1], len(cube->map->walls[1]));
 	i[2] += cube->mlx->delta_time * 60;
 	if (!cube->map->walls[2][(int)i[2]])
 		i[2] = 0;
+	i[2] = fmodf(i[2], len(cube->map->walls[2]));
 	i[3] += cube->mlx->delta_time * 60;
 	if (!cube->map->walls[3][(int)i[3]])
 		i[3] = 0;
+	i[3] = fmodf(i[3], len(cube->map->walls[3]));
 	i[4] += cube->mlx->delta_time * 60;
 	if (!cube->map->walls[4][(int)i[4]])
 		i[4] = 0;
+	i[4] = fmodf(i[4], len(cube->map->walls[4]));
 }

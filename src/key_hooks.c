@@ -29,7 +29,7 @@ static void	ft_mouse(t_cube *c)
 	if (x < 0 || x > c->mlx->width || y < 0 || y > c->mlx->height)
 		return ;
 	if (x - (float)c->mlx->width / 2)
-		move = sqrtf(fabsf(x - (float)c->mlx->width / 2)) - 1;
+		move = (sqrtf(fabsf(x - (float)c->mlx->width / 2)) - 1) * c->mlx->delta_time * 60;
 	if (x - (float)c->mlx->width / 2 < 0)
 		move = -move;
 	if (move)
