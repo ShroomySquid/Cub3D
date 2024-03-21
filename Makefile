@@ -20,7 +20,7 @@ MY_LIBRARY	=	./libft/
 
 MLX_LIBRARY	=	./MLX42/
 
-MY_FILES	=	collision.c main.c check_map.c render_minimap.c error_msg.c check_textures.c render.c render2.c cube_utils2.c cube_utils.c parsing_map.c check_FC.c key_hooks.c minimap.c player.c	check_cardinals.c
+MY_FILES	=	collision.c main.c check_map.c render_minimap.c error_msg.c check_textures.c render.c render2.c cube_utils2.c cube_utils.c parsing_map.c check_FC.c key_hooks.c minimap.c player.c check_cardinals.c
 
 MY_SOURCES	=	$(addprefix $(SRC_DIRECT), $(MY_FILES))
 
@@ -37,7 +37,7 @@ LIBFLAGS	= -L$(MY_LIBRARY) -lft -I.
 
 MLXLIBFLAGS	=	-L./MLX42/build/ -lmlx42 -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib" -I. -framework Cocoa -framework OpenGL -framework IOKit
 
-CCFLAGS		=	-Wall -Wextra -Werror -g
+CCFLAGS		=	-Wall -Wextra -Werror
 
 DEBUG_FLAGS	=	-fsanitize=address
 

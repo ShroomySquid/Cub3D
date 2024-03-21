@@ -89,30 +89,23 @@ static int	len(mlx_image_t **img)
 	return (i);
 }
 
-void	ft_render(void *param)
+static void	ft_framerate(t_cube *cube)
 {
-	static float	protation;
-	static float	px;
-	static float	py;
-	t_cube			*cube;
-	static float	i[5];
-	int				j[5];
-	float			x;
+	static mlx_image_t	*counter;
+	char				*str;
+	char				*str2;
 
-	j[0] = i[0];
-	j[1] = i[1];
-	j[2] = i[2];
-	j[3] = i[3];
-	j[4] = i[4];
-	cube = param;
-	cube->samepos = (protation == cube->rotation && px == cube->playerx && py == cube->playery && cube->samepos != 2);
-	ft_image(cube);
-	x = -1;
-	while (++x < cube->mlx->width)
-		ft_render_loop(cube, x, j);
-	protation = cube->rotation;
-	px = cube->playerx;
-	py = cube->playery;
+	str = ft_itoa(1 / cube->mlx->delta_time);
+	str2 = ft_strjoin(str, "fps");
+	free(str);
+	if (counter)
+		mlx_delete_image(cube->mlx, counter);
+	counter = mlx_put_string(cube->mlx, str2, 0, 0);
+	free(str2);
+}
+
+static void	ft_animloop(float *i, t_cube *cube)
+{
 	i[0] += cube->mlx->delta_time * 60;
 	if (!cube->map->walls[0][(int)i[0]])
 		i[0] = 0;
@@ -133,4 +126,32 @@ void	ft_render(void *param)
 	if (!cube->map->walls[4][(int)i[4]])
 		i[4] = 0;
 	i[4] = fmodf(i[4], len(cube->map->walls[4]));
+}
+
+void	ft_render(void *param)
+{
+	static float	protation;
+	static float	px;
+	static float	py;
+	t_cube			*cube;
+	static float	i[5];
+	int				j[5];
+	float			x;
+
+	j[0] = i[0];
+	j[1] = i[1];
+	j[2] = i[2];
+	j[3] = i[3];
+	j[4] = i[4];
+	cube = param;
+	ft_framerate(cube);
+	cube->samepos = (protation == cube->rotation && px == cube->playerx && py == cube->playery && cube->samepos != 2);
+	ft_image(cube);
+	x = -1;
+	while (++x < cube->mlx->width)
+		ft_render_loop(cube, x, j);
+	protation = cube->rotation;
+	px = cube->playerx;
+	py = cube->playery;
+	ft_animloop(i, cube);
 }
