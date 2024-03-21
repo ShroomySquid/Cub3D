@@ -39,8 +39,8 @@ void	free_walls(mlx_image_t ***array)
 
 int	force_exit(t_cube *cube)
 {
-	//mlx_delete_texture(cube->floor_tex);
-	//mlx_delete_texture(cube->wall_tex);
+	mlx_delete_texture(cube->floor_tex);
+	mlx_delete_texture(cube->wall_tex);
 	mlx_delete_texture(cube->lockh_tex);
 	mlx_delete_texture(cube->lockv_tex);
 	mlx_terminate(cube->mlx);
@@ -93,6 +93,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (error_argc());
 	cube = malloc(sizeof(t_cube));
+	cube->precalc = M_PI / 180;
 	if (!cube)
 		return (error_func("malloc"));
 	cube->map = malloc(sizeof(t_map));
@@ -108,7 +109,5 @@ int	main(int argc, char **argv)
 		return (1);
 	if (start_cube(cube))
 		return (force_exit(cube));
-	mlx_delete_texture(cube->wall_tex);
-	mlx_delete_texture(cube->floor_tex);
 	return (force_exit(cube), 0);
 }

@@ -69,6 +69,8 @@ typedef struct s_cube
 	mlx_image_t		*player;
 	float			playerx;
 	float			playery;
+	float			precalc;
+	int				samepos;
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;
 	mlx_image_t		*pointer;
@@ -90,7 +92,7 @@ typedef struct s_cube
 int		is_cardinal(char *str, t_cube *cube);
 int		check_cardinals(char *paths, t_cube *c);
 int		array_len(char **array);
-void	step_collision(float rotation, t_cube *cube, bool running);
+void	step_collision(float rotation, t_cube *cube, float speed);
 float	*ft_getscale(t_cube c, float screenx, int *i);
 void	step(float *x, float *y, t_cube *c, float distance);
 char	*whitespace_array(void);

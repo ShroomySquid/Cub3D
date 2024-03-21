@@ -12,13 +12,9 @@
 
 #include "../include/cube.h"
 
-int	is_max_length(t_cube *c, int y, int x)
+int	is_max_length(t_cube *c, unsigned int y, unsigned int x)
 {
-	if (y < 0 || y >= (int)c->player->height - 1)
-		return (1);
-	if (x < 0 || x >= (int)c->player->width - 1)
-		return (1);
-	return (0);
+	return (y < 0 || y >= c->player->height || x < 0 || x >= c->player->width);
 }
 
 void	draw_line(float angle, t_cube *c)
@@ -54,8 +50,8 @@ void	draw_los(float los, t_cube *cube)
 	while (!is_mini_down(cube) && i < FOV)
 	{
 		draw_line(los, cube);
-		i += (1.0 / 3);
-		los += (1.0 / 3);
+		i += (1.0 / 6);
+		los += (1.0 / 6);
 		if (los >= 360)
 			los = 0;
 	}
@@ -69,6 +65,8 @@ void	render_player(void *param)
 	int			los;
 
 	cube = param;
+	if (cube->samepos)
+		return ;
 	los = cube->rotation - (FOV / 2.0);
 	if (los < 0)
 		los += 360;

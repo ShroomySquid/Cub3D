@@ -46,23 +46,27 @@ static void	ft_movement(bool running, t_cube *cube)
 	const bool	right = mlx_is_key_down(cube->mlx, MLX_KEY_D);
 	const bool	up = (mlx_is_key_down(cube->mlx, MLX_KEY_UP)
 			|| mlx_is_key_down(cube->mlx, MLX_KEY_W));
+	float		speed;
 
+	speed = cube->mlx->delta_time * 60;
+	if (running)
+		speed *= 2;
 	if ((up && !left && !down && !right) || (up && left && !down && right))
-		step_collision(fmodf(cube->rotation, 360), cube, running);
+		step_collision(fmodf(cube->rotation, 360), cube, speed);
 	else if (up && !left && !down && right)
-		step_collision(fmodf(cube->rotation + 45, 360), cube, running);
+		step_collision(fmodf(cube->rotation + 45, 360), cube, speed);
 	else if ((!up && !left && !down && right) || (up && !left && down && right))
-		step_collision(fmodf(cube->rotation + 90, 360), cube, running);
+		step_collision(fmodf(cube->rotation + 90, 360), cube, speed);
 	else if (!up && !left && down && right)
-		step_collision(fmodf(cube->rotation + 135, 360), cube, running);
+		step_collision(fmodf(cube->rotation + 135, 360), cube, speed);
 	else if ((!up && !left && down && !right) || (!up && left && down && right))
-		step_collision(fmodf(cube->rotation + 180, 360), cube, running);
+		step_collision(fmodf(cube->rotation + 180, 360), cube, speed);
 	else if (!up && left && down && !right)
-		step_collision(fmodf(cube->rotation + 225, 360), cube, running);
+		step_collision(fmodf(cube->rotation + 225, 360), cube, speed);
 	else if ((!up && left && !down && !right) || (up && left && down && !right))
-		step_collision(fmodf(cube->rotation + 270, 360), cube, running);
+		step_collision(fmodf(cube->rotation + 270, 360), cube, speed);
 	else if (up && left && !down && !right)
-		step_collision(fmodf(cube->rotation + 315, 360), cube, running);
+		step_collision(fmodf(cube->rotation + 315, 360), cube, speed);
 }
 
 void	ft_player(void *param)
@@ -90,7 +94,10 @@ void	ft_player(void *param)
 		if (hypotf(fabsf((cube->playery - (int)y)), fabsf(cube->playerx
 					- (int)x)) < 113 && cube->map->map[(int)y / SIZE][(int)x
 			/ SIZE] == 'D')
+		{
 			cube->map->map[(int)y / SIZE][(int)x / SIZE] = '0';
+			cube->samepos = 2;
+		}
 	}
 }
 
@@ -109,6 +116,7 @@ void	ft_general(mlx_key_data_t data, void *param)
 				cube->is_light_active = 0;
 			else
 				cube->is_light_active = 1;
+			cube->samepos = 2;
 		}
 		if (mlx_is_key_down(cube->mlx, MLX_KEY_M))
 		{
@@ -116,6 +124,7 @@ void	ft_general(mlx_key_data_t data, void *param)
 				cube->is_mini_active = 0;
 			else
 				cube->is_mini_active = 1;
+			cube->samepos = 2;
 		}
 	}
 }

@@ -35,6 +35,7 @@ static void	ft_image(t_cube *cube)
 	}
 	if (height != cube->mlx->height || width != cube->mlx->width)
 	{
+		cube->samepos = 2;
 		height = cube->mlx->height;
 		width = cube->mlx->width;
 		if (!first)
@@ -54,14 +55,18 @@ static void	ft_render_loop(t_cube *cube, float x, int *i)
 	float	*val;
 	float	y;
 
-	y = -1;
 	val = ft_getscale(*cube, x, i);
+	if (!val)
+		return ;
+	y = -1;
 	while (++y < cube->mlx->height)
 	{
 		if (y < (float)cube->mlx->height / 2 - val[0] / 2
 			|| y >= (float)cube->mlx->height / 2 + val[0] / 2)
 		{
-			if (y < cube->mlx->height / 2.0)
+			if (cube->samepos)
+				continue ;
+			else if (y < cube->mlx->height / 2.0)
 				mlx_put_pixel(cube->render, x, y, cube->map->roof);
 			else
 				mlx_put_pixel(cube->render, x, y, cube->map->floor);
@@ -76,28 +81,41 @@ static void	ft_render_loop(t_cube *cube, float x, int *i)
 
 void	ft_render(void *param)
 {
-	t_cube		*cube;
-	static int	i[5];
-	float		x;
+	static float	protation;
+	static float	px;
+	static float	py;
+	t_cube			*cube;
+	static float	i[5];
+	int				j[5];
+	float			x;
 
+	j[0] = i[0];
+	j[1] = i[1];
+	j[2] = i[2];
+	j[3] = i[3];
+	j[4] = i[4];
 	cube = param;
+	cube->samepos = (protation == cube->rotation && px == cube->playerx && py == cube->playery && cube->samepos != 2);
 	ft_image(cube);
 	x = -1;
 	while (++x < cube->mlx->width)
-		ft_render_loop(cube, x, i);
-	i[0]++;
-	if (!cube->map->walls[0][i[0]])
+		ft_render_loop(cube, x, j);
+	protation = cube->rotation;
+	px = cube->playerx;
+	py = cube->playery;
+	i[0] += cube->mlx->delta_time * 60;
+	if (!cube->map->walls[0][(int)i[0]])
 		i[0] = 0;
-	i[1]++;
-	if (!cube->map->walls[1][i[1]])
+	i[1] += cube->mlx->delta_time * 60;
+	if (!cube->map->walls[1][(int)i[1]])
 		i[1] = 0;
-	i[2]++;
-	if (!cube->map->walls[2][i[2]])
+	i[2] += cube->mlx->delta_time * 60;
+	if (!cube->map->walls[2][(int)i[2]])
 		i[2] = 0;
-	i[3]++;
-	if (!cube->map->walls[3][i[3]])
+	i[3] += cube->mlx->delta_time * 60;
+	if (!cube->map->walls[3][(int)i[3]])
 		i[3] = 0;
-	i[4]++;
-	if (!cube->map->walls[4][i[4]])
+	i[4] += cube->mlx->delta_time * 60;
+	if (!cube->map->walls[4][(int)i[4]])
 		i[4] = 0;
 }
