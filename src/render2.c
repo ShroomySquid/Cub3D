@@ -61,13 +61,13 @@ static void	ft_send(t_scale *scale, t_cube *cube, float size)
 		reverse_step(&scale->x, &scale->y, cube, size);
 	while (!touch_wall(cube->map->map, 1, scale->x, scale->y))
 		step(&scale->x, &scale->y, cube, size);
-	if (size > 0.1)
+	if (size > 0.01)
 		ft_send(scale, cube, size / 2);
 }
 
 void	innit_scale(t_scale *scale, t_cube c, float screenx)
 {
-	scale->angle = c.rotation - (FOV / 2.0);
+	scale->angle = c.rotation - FOV / 2.0;
 	scale->angle += (float)FOV / c.mlx->width * screenx;
 	if (scale->angle < 0)
 		scale->angle += 360;
@@ -82,7 +82,6 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	static float	r[3];
 	t_scale			scale;
 	float			wall_width;
-	float			wall_width_div;
 	int				x_div;
 	int				y_div;
 
@@ -100,22 +99,21 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 			return (0);
 	}
 	scale.hypo = hypotf(c.playery - scale.y, c.playerx - scale.x);
-	scale.teta = (float)FOV / c.mlx->width * screenx - (FOV / 2.0);
+	scale.teta = (float)FOV / c.mlx->width * screenx - FOV / 2.0;
 	scale.oppo = cosf(scale.teta * c.precalc) * scale.hypo;
 	r[0] = SIZE * c.mlx->width / scale.oppo;
 	if (c.map->map[y_div][x_div] != 'D')
 		wall_width = c.map->walls[(int)r[1]][i[(int)r[1]]]->width;
 	else
 		wall_width = c.map->walls[4][i[4]]->width;
-	wall_width_div = wall_width / SIZE;
 	if (!r[1])
-		r[2] = wall_width_div * fmodf(scale.x, SIZE);
+		r[2] = wall_width / SIZE * fmodf(scale.x, SIZE);
 	else if (r[1] == 1)
-		r[2] = wall_width - wall_width_div * fmodf(scale.x, SIZE);
+		r[2] = wall_width - wall_width / SIZE * fmodf(scale.x, SIZE);
 	else if (r[1] == 2)
-		r[2] = wall_width - wall_width_div * fmodf(scale.y, SIZE);
+		r[2] = wall_width - wall_width / SIZE * fmodf(scale.y, SIZE);
 	else
-		r[2] = wall_width_div * fmodf(scale.y, SIZE);
+		r[2] = wall_width / SIZE * fmodf(scale.y, SIZE);
 	if (c.map->map[y_div][x_div] == 'D')
 		r[1] = 4;
 	return (r);

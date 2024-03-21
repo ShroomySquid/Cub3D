@@ -26,8 +26,10 @@ static void	ft_mouse(t_cube *c)
 		return ;
 	}
 	mlx_get_mouse_pos(c->mlx, &x, &y);
-	if (x < 0 || x > c->mlx->width || y < 0 || y > c->mlx->height)
+	if ((x == c->mlx->width / 2 && y == c->mlx->height / 2) || x < 0 || x > c->mlx->width || y < 0 || y > c->mlx->height)
 		return ;
+	c->draw_screen = true;
+	c->draw_player = true;
 	if (x - (float)c->mlx->width / 2)
 		move = (sqrtf(fabsf(x - (float)c->mlx->width / 2)) - 1) * c->mlx->delta_time * 60;
 	if (x - (float)c->mlx->width / 2 < 0)
@@ -81,9 +83,17 @@ void	ft_player(void *param)
 	ft_mouse(cube);
 	ft_movement(mlx_is_key_down(cube->mlx, MLX_KEY_LEFT_SHIFT), cube);
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_RIGHT))
-		cube->rotation++;
+	{
+		cube->rotation += cube->mlx->delta_time * 60;
+		cube->draw_player = true;
+		cube->draw_screen = true;
+	}
 	if (mlx_is_key_down(cube->mlx, MLX_KEY_LEFT))
-		cube->rotation--;
+	{
+		cube->rotation -= cube->mlx->delta_time * 60;
+		cube->draw_player = true;
+		cube->draw_screen = true;
+	}
 	cube->rotation = fmodf(cube->rotation, 360) + (cube->rotation < 0) * 360;
 	if (mlx_is_mouse_down(cube->mlx, MLX_MOUSE_BUTTON_LEFT)
 		|| mlx_is_key_down(cube->mlx, MLX_KEY_E))

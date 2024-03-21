@@ -18,18 +18,21 @@ int32_t	get_color_mini(t_minimap *mini, t_cube *c)
 	int			y_img;
 	int			x_img;
 	mlx_image_t	*img;
+	int			div_x;
+	int			div_y;
 
-	mini->coord = c->map->map[(mini->y + mini->min_y)
-		/ 32][(mini->x + mini->min_x) / 32];
+	div_x = (mini->x + mini->min_x) / 32;
+	div_y = (mini->y + mini->min_y) / 32;
+	mini->coord = c->map->map[div_y][div_x];
 	if (is_whitespace(mini->coord))
 		return (get_rgba(32, 32, 32, 255));
 	if (mini->coord == '1')
 		img = c->wall_img;
 	else if (mini->coord == 'D')
 	{
-		if (c->map->map[(mini->y + mini->min_y) / 32][(mini->x + mini->min_x) / 32 - 1] == '1' && c->map->map[(mini->y + mini->min_y) / 32][(mini->x + mini->min_x) / 32 + 1] == '1')
+		if (c->map->map[div_y][div_x] == '1' && c->map->map[div_y][div_x + 1] == '1')
 			img = c->lockh_img;
-		else if (c->map->map[(mini->y + mini->min_y) / 32 - 1][(mini->x + mini->min_x) / 32] == '1' && c->map->map[(mini->y + mini->min_y) / 32 + 1][(mini->x + mini->min_x) / 32] == '1')
+		else if (c->map->map[div_y - 1][div_x] == '1' && c->map->map[div_y + 1][div_x] == '1')
 			img = c->lockv_img;
 		else
 			img = c->wall_img;
@@ -55,12 +58,10 @@ int	get_last_x(int y, t_cube *cube)
 
 int	is_outside_map(t_minimap mini, t_cube *c)
 {
-	if (mini.y + mini.min_y < 0 || (mini.y + mini.min_y) / 32 > c->last_line
-		|| mini.x + mini.min_x < 0 || (mini.x + mini.min_x) / 32
-		>= get_last_x((mini.y + mini.min_y) / 32, c))
-	{
+	const int	div_y = (mini.y + mini.min_y) / 32;
+
+	if (mini.y + mini.min_y < 0 || div_y > c->last_line || mini.x + mini.min_x < 0 || (mini.x + mini.min_x) / 32 >= get_last_x(div_y, c))
 		return (1);
-	}
 	return (0);
 }
 

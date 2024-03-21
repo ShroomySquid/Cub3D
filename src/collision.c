@@ -14,14 +14,19 @@
 
 static bool	ft_collision(char **map, int x, int y)
 {
-	if (map[y / SIZE][x / SIZE] == '1')
+	const int	y_div = y / SIZE;
+	const int	x_div = x / SIZE;
+	const int	size_div = SIZE / 2;
+	const int	size_div2 = SIZE / 8;
+
+	if (map[y_div][x_div] == '1')
 		return (true);
-	if (map[y / SIZE][x / SIZE] == 'D')
+	if (map[y_div][x_div] == 'D')
 	{
-		if (map[y / SIZE][(x / SIZE) - 1] == '1' || map[y / SIZE][(x / SIZE) + 1] == '1')
-			return (y % SIZE > SIZE / 2 - SIZE / 8 && y % SIZE < SIZE / 2 + SIZE / 8);
-		if (map[(y / SIZE) - 1][x / SIZE] == '1' || map[(y / SIZE) + 1][x / SIZE] == '1')
-			return (x % SIZE > SIZE / 2 - SIZE / 8 && x % SIZE < SIZE / 2 + SIZE / 8);
+		if (map[y_div][x_div - 1] == '1' || map[y_div][x_div + 1] == '1')
+			return (y % SIZE > size_div - size_div2 && y % SIZE < size_div + size_div2);
+		if (map[y_div - 1][x_div] == '1' || map[y_div + 1][x_div] == '1')
+			return (x % SIZE > size_div - size_div2 && x % SIZE < size_div + size_div2);
 		return (true);
 	}
 	return (false);
@@ -29,10 +34,12 @@ static bool	ft_collision(char **map, int x, int y)
 
 bool	touch_wall(char **map, int size, int x, int y)
 {
+	const int	size_div = size / 2;
+
 	if (size == 1)
 		return (ft_collision(map, x, y));
-	x -= size / 2;
-	y -= size / 2;
+	x -= size_div;
+	y -= size_div;
 	if (ft_collision(map, x, y))
 		return (true);
 	if (ft_collision(map, x, y + size - 1))
@@ -51,7 +58,19 @@ void	step_collision(float rotation, t_cube *cube, float speed)
 	cube->playerx += cube->step_x * speed;
 	if (touch_wall(cube->map->map, 5, cube->playerx, cube->playery))
 		cube->playerx = oldx;
+	else
+	{
+		cube->draw_map = true;
+		cube->draw_player = true;
+		cube->draw_screen = true;
+	}
 	cube->playery += cube->step_y * speed;
 	if (touch_wall(cube->map->map, 5, cube->playerx, cube->playery))
 		cube->playery = oldy;
+	else
+	{
+		cube->draw_map = true;
+		cube->draw_player = true;
+		cube->draw_screen = true;
+	}
 }

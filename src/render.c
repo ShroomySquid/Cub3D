@@ -54,21 +54,23 @@ static void	ft_image(t_cube *cube)
 
 static void	ft_render_loop(t_cube *cube, float x, int *i)
 {
-	float	*val;
-	float	y;
+	const float	height_div = cube->mlx->height / 2.0;
+	float		*val;
+	float		val_div;
+	float		y;
 
 	val = ft_getscale(*cube, x, i);
 	if (!val)
 		return ;
+	val_div = val[0] / 2;
 	y = -1;
 	while (++y < cube->mlx->height)
 	{
-		if (y < (float)cube->mlx->height / 2 - val[0] / 2
-			|| y >= (float)cube->mlx->height / 2 + val[0] / 2)
+		if (y < height_div - val_div || y >= height_div + val_div)
 		{
 			if (!cube->draw_screen)
 				continue ;
-			else if (y < cube->mlx->height / 2.0)
+			else if (y < height_div)
 				mlx_put_pixel(cube->render, x, y, cube->map->roof);
 			else
 				mlx_put_pixel(cube->render, x, y, cube->map->floor);
@@ -147,17 +149,6 @@ void	ft_render(void *param)
 	j[4] = i[4];
 	cube = param;
 	ft_framerate(cube);
-	if (px != cube->playerx || py != cube->playery)
-	{
-		cube->draw_screen = true;
-		cube->draw_map = true;
-		cube->draw_player = true;
-	}
-	if (protation != cube->rotation)
-	{
-		cube->draw_screen = true;
-		cube->draw_player = true;
-	}
 	ft_image(cube);
 	x = -1;
 	while (++x < cube->mlx->width)
