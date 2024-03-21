@@ -34,9 +34,26 @@ static int	ft_getside(float x, float y, t_cube *c)
 
 	last_x = x;
 	last_y = y;
-	reverse_step(&last_x, &last_y, c, 0.1);
 	coord[0] =  y / 32;
 	coord[1] =  x / 32;
+	if (c->map->map[coord[0]][coord[1]] == 'D')
+	{
+		if (c->map->map[coord[0]][coord[1] - 1] == '1' && c->map->map[coord[0]][coord[1] + 1] == '1')
+		{
+			if ((int)y % 32 == 19)
+				return (0);
+			if ((int)y % 32 == 13)
+				return (1);
+		}
+		if (c->map->map[coord[0] - 1][coord[1]] == '1' && c->map->map[coord[0] + 1][coord[1]] == '1')
+		{
+			if ((int)x % 32 == 19)
+				return (2);
+			if ((int)x % 32 == 13)
+				return (3);
+		}
+	}
+	reverse_step(&last_x, &last_y, c, 0.1);
 	last_coord[0] =  last_y / 32;
 	last_coord[1] =  last_x / 32;
 	if (coord[0] != last_coord[0] && coord[1] != last_coord[1])
