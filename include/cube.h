@@ -61,6 +61,9 @@ typedef struct s_map
 
 typedef struct s_cube
 {
+	bool			draw_map;
+	bool			draw_player;
+	bool			draw_screen;
 	mlx_texture_t	*lockh_tex;
 	mlx_image_t		*lockh_img;
 	mlx_texture_t	*lockv_tex;
@@ -70,8 +73,6 @@ typedef struct s_cube
 	float			playerx;
 	float			playery;
 	float			precalc;
-	int				samemap;
-	int				samepos;
 	mlx_image_t		*floor_img;
 	mlx_texture_t	*floor_tex;
 	mlx_image_t		*pointer;

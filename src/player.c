@@ -65,7 +65,7 @@ void	render_player(void *param)
 	int			los;
 
 	cube = param;
-	if (cube->samepos)
+	if (!cube->draw_player)
 		return ;
 	los = cube->rotation - (FOV / 2.0);
 	if (los < 0)
@@ -87,4 +87,5 @@ void	render_player(void *param)
 	}
 	if (cube->is_light_active)
 		draw_los(los, cube);
+	cube->draw_player = false;
 }

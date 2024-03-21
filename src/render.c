@@ -35,7 +35,9 @@ static void	ft_image(t_cube *cube)
 	}
 	if (height != cube->mlx->height || width != cube->mlx->width)
 	{
-		cube->samepos = 2;
+		cube->draw_map = true;
+		cube->draw_player = true;
+		cube->draw_screen = true;
 		height = cube->mlx->height;
 		width = cube->mlx->width;
 		if (!first)
@@ -64,7 +66,7 @@ static void	ft_render_loop(t_cube *cube, float x, int *i)
 		if (y < (float)cube->mlx->height / 2 - val[0] / 2
 			|| y >= (float)cube->mlx->height / 2 + val[0] / 2)
 		{
-			if (cube->samepos)
+			if (!cube->draw_screen)
 				continue ;
 			else if (y < cube->mlx->height / 2.0)
 				mlx_put_pixel(cube->render, x, y, cube->map->roof);
@@ -145,8 +147,17 @@ void	ft_render(void *param)
 	j[4] = i[4];
 	cube = param;
 	ft_framerate(cube);
-	cube->samepos = (protation == cube->rotation && px == cube->playerx && py == cube->playery && cube->samepos != 2);
-	cube->samemap = (px == cube->playerx && py == cube->playery && cube->samepos != 2);
+	if (px != cube->playerx || py != cube->playery)
+	{
+		cube->draw_screen = true;
+		cube->draw_map = true;
+		cube->draw_player = true;
+	}
+	if (protation != cube->rotation)
+	{
+		cube->draw_screen = true;
+		cube->draw_player = true;
+	}
 	ft_image(cube);
 	x = -1;
 	while (++x < cube->mlx->width)
@@ -155,4 +166,5 @@ void	ft_render(void *param)
 	px = cube->playerx;
 	py = cube->playery;
 	ft_animloop(i, cube);
+	cube->draw_screen = false;
 }

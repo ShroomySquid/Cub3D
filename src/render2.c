@@ -92,7 +92,7 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	r[1] = ft_getside(scale.x, scale.y, &c);
 	x_div = scale.x / SIZE;
 	y_div = scale.y / SIZE;
-	if (c.samepos)
+	if (!c.draw_screen)
 	{
 		if (!i[(int)r[1]] && !c.map->walls[(int)r[1]][i[(int)r[1]] + 1])
 			return (0);

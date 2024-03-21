@@ -96,7 +96,9 @@ void	ft_player(void *param)
 			/ SIZE] == 'D')
 		{
 			cube->map->map[(int)y / SIZE][(int)x / SIZE] = '0';
-			cube->samepos = 2;
+			cube->draw_map = true;
+			cube->draw_player = true;
+			cube->draw_screen = true;
 		}
 	}
 }
@@ -116,7 +118,7 @@ void	ft_general(mlx_key_data_t data, void *param)
 				cube->is_light_active = 0;
 			else
 				cube->is_light_active = 1;
-			cube->samepos = 2;
+			cube->draw_player = true;
 		}
 		if (mlx_is_key_down(cube->mlx, MLX_KEY_M))
 		{
@@ -124,7 +126,8 @@ void	ft_general(mlx_key_data_t data, void *param)
 				cube->is_mini_active = 0;
 			else
 				cube->is_mini_active = 1;
-			cube->samepos = 2;
+			cube->draw_player = true;
+			cube->draw_map = true;
 		}
 	}
 }
