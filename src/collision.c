@@ -58,7 +58,7 @@ void	step_collision(float rotation, t_cube *cube, float speed)
 	cube->playerx += cube->step_x * speed;
 	if (touch_wall(cube->map->map, 5, cube->playerx, cube->playery))
 		cube->playerx = oldx;
-	else
+	else if (cube->playerx != oldx)
 	{
 		cube->draw_map = true;
 		cube->draw_player = true;
@@ -67,7 +67,7 @@ void	step_collision(float rotation, t_cube *cube, float speed)
 	cube->playery += cube->step_y * speed;
 	if (touch_wall(cube->map->map, 5, cube->playerx, cube->playery))
 		cube->playery = oldy;
-	else
+	else if (cube->playery != oldy)
 	{
 		cube->draw_map = true;
 		cube->draw_player = true;
