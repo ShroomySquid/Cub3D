@@ -66,7 +66,7 @@ void	ft_render(void *param)
 	t_cube			*cube;
 	static float	i[5];
 	int				j[5];
-	float			x;
+	int				x;
 
 	j[0] = i[0];
 	j[1] = i[1];

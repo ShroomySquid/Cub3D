@@ -46,7 +46,7 @@ float	*getscale_next(t_cube c, int *i, t_scale scale, float *r)
 	return (r);
 }
 
-float	*ft_getscale(t_cube c, float screenx, int *i)
+float	*ft_getscale(t_cube c, int screenx, int *i)
 {
 	float			*r;
 	t_scale			scale;
@@ -56,7 +56,7 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 		return (NULL);
 	innit_scale(&scale, c, screenx);
 	calculate_step(scale.angle, &c);
-	ft_send(&scale, &c, 1);
+	ft_send(&scale, &c, 7);
 	scale.x_div = scale.x / SIZE;
 	scale.y_div = scale.y / SIZE;
 	if (!c.draw_screen && c.map->map[scale.y_div][scale.x_div] == 'D'
