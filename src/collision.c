@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 16:10:03 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/19 11:20:52 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:22:56 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ static bool	ft_collision(char **map, int x, int y)
 	if (map[y_div][x_div] == 'D')
 	{
 		if (map[y_div][x_div - 1] == '1' || map[y_div][x_div + 1] == '1')
-			return (y % SIZE > size_div - size_div2 && y % SIZE < size_div + size_div2);
+			return (y % SIZE > size_div - size_div2
+				&& y % SIZE < size_div + size_div2);
 		if (map[y_div - 1][x_div] == '1' || map[y_div + 1][x_div] == '1')
-			return (x % SIZE > size_div - size_div2 && x % SIZE < size_div + size_div2);
+			return (x % SIZE > size_div - size_div2
+				&& x % SIZE < size_div + size_div2);
 		return (true);
 	}
 	return (false);

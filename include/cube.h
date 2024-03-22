@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/19 11:20:54 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/22 19:24:37 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,23 @@
 #  define HEIGHT 1024
 # endif
 
+typedef struct s_side
+{
+	float	last_x;
+	float	last_y;
+	int		coord[2];
+	int		last_coord[2];	
+}				t_side;
+
+typedef struct s_mov
+{
+	bool down;
+	bool left;
+	bool right;
+	bool up;
+	float speed;
+}				t_mov;
+
 typedef struct s_scale
 {
 	float	angle;
@@ -37,6 +54,8 @@ typedef struct s_scale
 	float	teta;
 	float	x;
 	float	y;
+	int		x_div;
+	int		y_div;
 }				t_scale;
 
 typedef struct s_minimap
@@ -92,6 +111,10 @@ typedef struct s_cube
 	int				is_light_active;
 }				t_cube;
 
+void	ft_send(t_scale *scale, t_cube *cube, float size);
+void	ft_mouse(t_cube *c);
+void	ft_movement(bool running, t_cube *cube);
+int		force_exit(t_cube *cube);
 int		check_extension(char **argv);
 int		is_cardinal(char *str, t_cube *cube);
 int		check_cardinals(char *paths, t_cube *c);
@@ -99,6 +122,7 @@ int		array_len(char **array);
 void	step_collision(float rotation, t_cube *cube, float speed);
 float	*ft_getscale(t_cube c, float screenx, int *i);
 void	step(float *x, float *y, t_cube *c, float distance);
+void	reverse_step(float *x, float *y, t_cube *c, float distance);
 char	*whitespace_array(void);
 int		set_minimap(t_cube *cube);
 void	ft_player(void *param);
@@ -121,5 +145,10 @@ bool	touch_wall(char **map, int size, int x, int y);
 void	render_player(void *param);
 int		is_mini_down(t_cube *c);
 void	calculate_step(float rotation, t_cube *c);
+int32_t get_pixel(mlx_image_t *img, int x, int y);
+void	ft_image(t_cube *cube);
+void	ft_render_loop(t_cube *cube, float x, int *i);
+int		ft_getside(float x, float y, t_cube *c);
+int32_t	get_color_mini(t_minimap *mini, t_cube *c);
 
 #endif

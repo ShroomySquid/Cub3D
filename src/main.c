@@ -6,51 +6,11 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/19 12:58:55 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:26:48 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube.h"
-
-void	free_walls(mlx_image_t ***array)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
-int	force_exit(t_cube *cube)
-{
-	if (!cube)
-		return (1);
-	if (cube->floor_tex)
-		mlx_delete_texture(cube->floor_tex);
-	if (cube->wall_tex)
-		mlx_delete_texture(cube->wall_tex);
-	if (cube->lockh_tex)
-		mlx_delete_texture(cube->lockh_tex);
-	if (cube->lockv_tex)
-		mlx_delete_texture(cube->lockv_tex);
-	if (cube->pointer_tex)
-		mlx_delete_texture(cube->pointer_tex);
-	mlx_terminate(cube->mlx);
-	if (cube->map && cube->map->walls)
-		free_walls(cube->map->walls);
-	if (cube->map && cube->map->map)
-		free_all(cube->map->map);
-	if (cube->map)
-		free(cube->map);
-	free(cube);
-	return (1);
-}
 
 int	start_cube(t_cube *cube)
 {
@@ -83,6 +43,17 @@ int	parsing(t_cube *cube, char **argv)
 	return (0);
 }
 
+void	innit_cube(t_cube *cube)
+{
+	cube->floor_tex = NULL;
+	cube->lockh_tex = NULL;
+	cube->lockv_tex = NULL;
+	cube->wall_tex = NULL;
+	cube->pointer_tex = NULL;
+	cube->precalc = M_PI / 180;
+	cube->precalc2 = FOV / 2.0;
+}
+
 int	main(int argc, char **argv)
 {
 	t_cube	*cube;
@@ -92,15 +63,9 @@ int	main(int argc, char **argv)
 	if (check_extension(argv))
 		return (error_map("Invalid extension"));
 	cube = malloc(sizeof(t_cube));
-	cube->floor_tex = NULL;
-	cube->lockh_tex = NULL;
-	cube->lockv_tex = NULL;
-	cube->wall_tex = NULL;
-	cube->pointer_tex = NULL;
-	cube->precalc = M_PI / 180;
-	cube->precalc2 = FOV / 2.0;
 	if (!cube)
 		return (error_func("malloc"));
+	innit_cube(cube);
 	cube->map = malloc(sizeof(t_map));
 	if (!cube->map)
 		return (free(cube), error_func("malloc"));
