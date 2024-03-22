@@ -110,7 +110,7 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	if (!c.draw_screen && c.map->map[y_div][x_div] == 'D' && !i[4] && !c.map->walls[(int)r[1]][i[4] + 1])
 		return (0);
 	r[1] = ft_getside(scale.x, scale.y, &c);
-	if (!c.draw_screen && !i[(int)r[1]] && !c.map->walls[(int)r[1]][i[(int)r[1]] + 1])
+	if (!c.draw_screen && c.map->map[y_div][x_div] != 'D' && !i[(int)r[1]] && !c.map->walls[(int)r[1]][i[(int)r[1]] + 1])
 		return (0);
 	scale.hypo = hypotf(c.playery - scale.y, c.playerx - scale.x);
 	scale.teta = (float)FOV / c.mlx->width * screenx - c.precalc2;
