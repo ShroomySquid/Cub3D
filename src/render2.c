@@ -74,10 +74,46 @@ static int	ft_getside(float x, float y, t_cube *c)
 
 static void	ft_send(t_scale *scale, t_cube *cube, float size)
 {
+	int	div_x;
+	int	div_y;
+	int	last_x;
+	int	last_y;
+
+	last_x = scale->x / 32;
+	last_y = scale->y / 32;
 	while (touch_wall(cube->map->map, 1, scale->x, scale->y))
 		reverse_step(&scale->x, &scale->y, cube, size);
-	while (!touch_wall(cube->map->map, 1, scale->x, scale->y))
+	if (!touch_wall(cube->map->map, 1, scale->x, scale->y))
 		step(&scale->x, &scale->y, cube, size);
+	while (!touch_wall(cube->map->map, 1, scale->x, scale->y))
+	{
+		div_x = scale->x / 32;
+		div_y = scale->y / 32;
+		if (div_x != last_x && div_y != last_y && cube->map->map[div_y][div_x] == '0')
+		{
+			if (last_x > div_x && last_y > div_y && cube->map->map[div_y + 1][div_x] == '1' && cube->map->map[div_y][div_x + 1] == '1' && cube->map->map[div_y + 1][div_x + 1] == '0')
+			{
+				reverse_step(&scale->x, &scale->y, cube, size);
+				break ;
+			}
+			if (last_x < div_x && last_y > div_y && cube->map->map[div_y + 1][div_x] == '1' && cube->map->map[div_y][div_x - 1] == '1' && cube->map->map[div_y + 1][div_x - 1] == '0')
+			{
+				reverse_step(&scale->x, &scale->y, cube, size);
+				break ;
+			}
+			if (last_x < div_x && last_y < div_y && cube->map->map[div_y - 1][div_x] == '1' && cube->map->map[div_y][div_x - 1] == '1' && cube->map->map[div_y - 1][div_x - 1] == '0')
+			{
+				reverse_step(&scale->x, &scale->y, cube, size);
+				break ;
+			}
+			if (last_x > div_x && last_y < div_y && cube->map->map[div_y - 1][div_x] == '1' && cube->map->map[div_y][div_x + 1] == '1' && cube->map->map[div_y - 1][div_x + 1] == '0')
+			{
+				reverse_step(&scale->x, &scale->y, cube, size);
+				break ;
+			}
+		}
+		step(&scale->x, &scale->y, cube, size);
+	}
 	if (size > 0.01)
 		ft_send(scale, cube, size / 2);
 }
