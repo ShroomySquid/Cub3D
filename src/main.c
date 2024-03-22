@@ -15,22 +15,12 @@
 void	free_walls(mlx_image_t ***array)
 {
 	int	i;
-//	int	a;
 
 	if (!array)
 		return ;
 	i = 0;
 	while (array[i])
 	{
-		/*
-		a = 0;
-		while (array[i][a])
-		{
-			printf("i: %d a: %d\n", i, a);
-			free(array[i][a]);
-			a++;
-		}
-		*/
 		free(array[i]);
 		i++;
 	}
@@ -95,6 +85,7 @@ int	main(int argc, char **argv)
 		return (error_argc());
 	cube = malloc(sizeof(t_cube));
 	cube->precalc = M_PI / 180;
+	cube->precalc2 = FOV / 2.0;
 	if (!cube)
 		return (error_func("malloc"));
 	cube->map = malloc(sizeof(t_map));
