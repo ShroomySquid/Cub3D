@@ -92,6 +92,7 @@ typedef struct s_cube
 	int				is_light_active;
 }				t_cube;
 
+int		check_extension(char **argv);
 int		is_cardinal(char *str, t_cube *cube);
 int		check_cardinals(char *paths, t_cube *c);
 int		array_len(char **array);

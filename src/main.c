@@ -29,20 +29,26 @@ void	free_walls(mlx_image_t ***array)
 
 int	force_exit(t_cube *cube)
 {
-	mlx_delete_texture(cube->floor_tex);
-	mlx_delete_texture(cube->wall_tex);
-	mlx_delete_texture(cube->lockh_tex);
-	mlx_delete_texture(cube->lockv_tex);
-	mlx_delete_texture(cube->pointer_tex);
+	if (!cube)
+		return (1);
+	if (cube->floor_tex)
+		mlx_delete_texture(cube->floor_tex);
+	if (cube->wall_tex)
+		mlx_delete_texture(cube->wall_tex);
+	if (cube->lockh_tex)
+		mlx_delete_texture(cube->lockh_tex);
+	if (cube->lockv_tex)
+		mlx_delete_texture(cube->lockv_tex);
+	if (cube->pointer_tex)
+		mlx_delete_texture(cube->pointer_tex);
 	mlx_terminate(cube->mlx);
-	if (cube && cube->map && cube->map->walls)
+	if (cube->map && cube->map->walls)
 		free_walls(cube->map->walls);
-	if (cube && cube->map && cube->map->map)
+	if (cube->map && cube->map->map)
 		free_all(cube->map->map);
-	if (cube && cube->map)
+	if (cube->map)
 		free(cube->map);
-	if (cube)
-		free(cube);
+	free(cube);
 	return (1);
 }
 
@@ -83,7 +89,14 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (error_argc());
+	if (check_extension(argv))
+		return (error_map("Invalid extension"));
 	cube = malloc(sizeof(t_cube));
+	cube->floor_tex = NULL;
+	cube->lockh_tex = NULL;
+	cube->lockv_tex = NULL;
+	cube->wall_tex = NULL;
+	cube->pointer_tex = NULL;
 	cube->precalc = M_PI / 180;
 	cube->precalc2 = FOV / 2.0;
 	if (!cube)
@@ -92,6 +105,7 @@ int	main(int argc, char **argv)
 	if (!cube->map)
 		return (free(cube), error_func("malloc"));
 	cube->map->walls = malloc(6 * sizeof(mlx_image_t **));
+	cube->map->walls[0] = NULL;
 	if (!cube->map->walls)
 		return (error_func("malloc"), force_exit(cube));
 	cube->mlx = mlx_init(WIDTH, HEIGHT, "Cub3D\n", true);

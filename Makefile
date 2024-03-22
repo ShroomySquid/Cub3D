@@ -37,7 +37,7 @@ LIBFLAGS	= -L$(MY_LIBRARY) -lft -I.
 
 MLXLIBFLAGS	=	-L./MLX42/build/ -lmlx42 -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib" -I. -framework Cocoa -framework OpenGL -framework IOKit
 
-CCFLAGS		=	-Wall -Wextra -Werror
+CCFLAGS		=	-Wall -Wextra -Werror -g
 
 DEBUG_FLAGS	=	-fsanitize=address
 

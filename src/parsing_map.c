@@ -74,23 +74,14 @@ int	check_extension(char **argv)
 	return (0);
 }
 
-int	initial_checks(t_cube *c, char **argv)
-{
-	if (check_extension(argv))
-		return (error_map("Invalid extension"));
-	c->map->nbr_line = check_map_len(c, argv);
-	if (c->map->nbr_line == -1)
-		return (1);
-	return (0);
-}
-
 char	**parsing_map(t_cube *c, char **argv)
 {
 	int		i;
 	char	**map;
 
 	i = 0;
-	if (initial_checks(c, argv))
+	c->map->nbr_line = check_map_len(c, argv);
+	if (c->map->nbr_line == -1)
 		return (NULL);
 	c->map->fd = open(argv[1], O_RDONLY);
 	if (c->map->fd == -1)
