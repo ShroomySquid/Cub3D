@@ -35,6 +35,9 @@ static void	ft_image(t_cube *cube)
 	}
 	if (height != cube->mlx->height || width != cube->mlx->width)
 	{
+		cube->precalc3 = (float)FOV / cube->mlx->width;
+		cube->width_div = cube->mlx->width / 2.0;
+		cube->height_div = cube->mlx->height / 2.0;
 		cube->draw_map = true;
 		cube->draw_player = true;
 		cube->draw_screen = true;
@@ -44,20 +47,19 @@ static void	ft_image(t_cube *cube)
 			mlx_delete_image(cube->mlx, cube->render);
 		cube->render = mlx_new_image(cube->mlx, cube->mlx->width,
 				cube->mlx->height);
-		cube->pointer->instances[0].x = cube->mlx->width / 2 - 16;
-		cube->pointer->instances[0].y = cube->mlx->height / 2 - 16;
+		cube->pointer->instances[0].x = cube->width_div - 16;
+		cube->pointer->instances[0].y = cube->height_div - 16;
 		mlx_image_to_window(cube->mlx, cube->render, 0, 0);
 		mlx_set_instance_depth(&cube->render->instances[0], 0);
 	}
 	first = false;
 }
 
-static void	ft_render_loop(t_cube *cube, float x, int *i)
+static void	ft_render_loop(t_cube *cube, int x, int *i)
 {
-	const float	height_div = cube->mlx->height / 2.0;
-	float		*val;
-	float		val_div;
-	float		y;
+	float	*val;
+	int		val_div;
+	int		y;
 
 	val = ft_getscale(*cube, x, i);
 	if (!val)
@@ -66,11 +68,11 @@ static void	ft_render_loop(t_cube *cube, float x, int *i)
 	y = -1;
 	while (++y < cube->mlx->height)
 	{
-		if (y < height_div - val_div || y >= height_div + val_div)
+		if (y < cube->height_div - val_div || y >= cube->height_div + val_div)
 		{
 			if (!cube->draw_screen)
 				continue ;
-			else if (y < height_div)
+			else if (y < cube->height_div)
 				mlx_put_pixel(cube->render, x, y, cube->map->roof);
 			else
 				mlx_put_pixel(cube->render, x, y, cube->map->floor);
@@ -134,13 +136,10 @@ static void	ft_animloop(float *i, t_cube *cube)
 
 void	ft_render(void *param)
 {
-	static float	protation;
-	static float	px;
-	static float	py;
 	t_cube			*cube;
 	static float	i[5];
 	int				j[5];
-	float			x;
+	int				x;
 
 	j[0] = i[0];
 	j[1] = i[1];
@@ -153,9 +152,6 @@ void	ft_render(void *param)
 	x = -1;
 	while (++x < cube->mlx->width)
 		ft_render_loop(cube, x, j);
-	protation = cube->rotation;
-	px = cube->playerx;
-	py = cube->playery;
 	ft_animloop(i, cube);
 	cube->draw_screen = false;
 }

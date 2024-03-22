@@ -89,24 +89,24 @@ static void	ft_send(t_scale *scale, t_cube *cube, float size)
 	{
 		div_x = scale->x / 32;
 		div_y = scale->y / 32;
-		if (div_x != last_x && div_y != last_y && cube->map->map[div_y][div_x] == '0')
+		if (div_x != last_x && div_y != last_y)
 		{
-			if (last_x > div_x && last_y > div_y && cube->map->map[div_y + 1][div_x] == '1' && cube->map->map[div_y][div_x + 1] == '1' && cube->map->map[div_y + 1][div_x + 1] == '0')
+			if (last_x > div_x && last_y > div_y && (cube->map->map[div_y + 1][div_x] == '1' || cube->map->map[div_y][div_x + 1] == '1'))
 			{
 				reverse_step(&scale->x, &scale->y, cube, size);
 				break ;
 			}
-			if (last_x < div_x && last_y > div_y && cube->map->map[div_y + 1][div_x] == '1' && cube->map->map[div_y][div_x - 1] == '1' && cube->map->map[div_y + 1][div_x - 1] == '0')
+			if (last_x < div_x && last_y > div_y && (cube->map->map[div_y + 1][div_x] == '1' || cube->map->map[div_y][div_x - 1] == '1'))
 			{
 				reverse_step(&scale->x, &scale->y, cube, size);
 				break ;
 			}
-			if (last_x < div_x && last_y < div_y && cube->map->map[div_y - 1][div_x] == '1' && cube->map->map[div_y][div_x - 1] == '1' && cube->map->map[div_y - 1][div_x - 1] == '0')
+			if (last_x < div_x && last_y < div_y && (cube->map->map[div_y - 1][div_x] == '1' || cube->map->map[div_y][div_x - 1] == '1'))
 			{
 				reverse_step(&scale->x, &scale->y, cube, size);
 				break ;
 			}
-			if (last_x > div_x && last_y < div_y && cube->map->map[div_y - 1][div_x] == '1' && cube->map->map[div_y][div_x + 1] == '1' && cube->map->map[div_y - 1][div_x + 1] == '0')
+			if (last_x > div_x && last_y < div_y && (cube->map->map[div_y - 1][div_x] == '1' || cube->map->map[div_y][div_x + 1] == '1'))
 			{
 				reverse_step(&scale->x, &scale->y, cube, size);
 				break ;
@@ -118,10 +118,10 @@ static void	ft_send(t_scale *scale, t_cube *cube, float size)
 		ft_send(scale, cube, size / 2);
 }
 
-void	innit_scale(t_scale *scale, t_cube c, float screenx)
+static void	innit_scale(t_scale *scale, t_cube c, int screenx)
 {
 	scale->angle = c.rotation - c.precalc2;
-	scale->angle += (float)FOV / c.mlx->width * screenx;
+	scale->angle += c.precalc3 * screenx;
 	if (scale->angle < 0)
 		scale->angle += 360;
 	else if (scale->angle >= 360)
@@ -130,7 +130,7 @@ void	innit_scale(t_scale *scale, t_cube c, float screenx)
 	scale->y = c.playery;
 }
 
-float	*ft_getscale(t_cube c, float screenx, int *i)
+float	*ft_getscale(t_cube c, int screenx, int *i)
 {
 	static float	r[3];
 	t_scale			scale;
@@ -140,7 +140,7 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 
 	innit_scale(&scale, c, screenx);
 	calculate_step(scale.angle, &c);
-	ft_send(&scale, &c, 1);
+	ft_send(&scale, &c, 7);
 	x_div = scale.x / SIZE;
 	y_div = scale.y / SIZE;
 	if (!c.draw_screen && c.map->map[y_div][x_div] == 'D' && !i[4] && !c.map->walls[(int)r[1]][i[4] + 1])
@@ -149,7 +149,7 @@ float	*ft_getscale(t_cube c, float screenx, int *i)
 	if (!c.draw_screen && c.map->map[y_div][x_div] != 'D' && !i[(int)r[1]] && !c.map->walls[(int)r[1]][i[(int)r[1]] + 1])
 		return (0);
 	scale.hypo = hypotf(c.playery - scale.y, c.playerx - scale.x);
-	scale.teta = (float)FOV / c.mlx->width * screenx - c.precalc2;
+	scale.teta = c.precalc3 * screenx - c.precalc2;
 	scale.oppo = cosf(scale.teta * c.precalc) * scale.hypo;
 	r[0] = SIZE * c.mlx->width / scale.oppo;
 	if (c.map->map[y_div][x_div] != 'D')

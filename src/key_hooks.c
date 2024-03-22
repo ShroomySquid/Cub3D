@@ -21,23 +21,22 @@ static void	ft_mouse(t_cube *c)
 
 	if (init)
 	{
-		mlx_set_mouse_pos(c->mlx, c->mlx->width / 2, c->mlx->height / 2);
+		mlx_set_mouse_pos(c->mlx, c->width_div, c->height_div);
 		init--;
 		return ;
 	}
 	mlx_get_mouse_pos(c->mlx, &x, &y);
-	if ((x == c->mlx->width / 2 && y == c->mlx->height / 2) || x < 0 || x > c->mlx->width || y < 0 || y > c->mlx->height)
+	if ((x == c->width_div && y == c->height_div) || x < 0 || x > c->mlx->width || y < 0 || y > c->mlx->height)
 		return ;
 	c->draw_screen = true;
 	c->draw_player = true;
-	if (x - (float)c->mlx->width / 2)
-		move = (sqrtf(fabsf(x - (float)c->mlx->width / 2)) - 1) * c->mlx->delta_time * 60;
-	if (x - (float)c->mlx->width / 2 < 0)
+	if (x - c->width_div)
+		move = (sqrtf(abs(x - c->width_div)) - 1) * c->mlx->delta_time * 60;
+	if (x - c->width_div < 0)
 		move = -move;
 	if (move)
 		c->rotation += move;
-	c->rotation = fmodf(c->rotation, 360) + (c->rotation < 0) * 360;
-	mlx_set_mouse_pos(c->mlx, c->mlx->width / 2, c->mlx->height / 2);
+	mlx_set_mouse_pos(c->mlx, c->width_div, c->height_div);
 }
 
 static void	ft_movement(bool running, t_cube *cube)
