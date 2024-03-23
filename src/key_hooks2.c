@@ -16,15 +16,15 @@ static void	ft_mouse_next(t_cube *c, int x)
 {
 	float	move;
 
-	if (x - (float)c->mlx->width / 2)
-		move = (sqrtf(fabsf(x - (float)c->mlx->width / 2)) - 1)
-			* c->mlx->delta_time * 60;
-	if (x - (float)c->mlx->width / 2 < 0)
-		move = -move;
+	move = 0;
+	if (x - c->width_div)
+		move = (sqrtf(abs(x - c->width_div)) - 1) * c->mlx->delta_time * 60;
+	if (x - c->width_div < 0)
+		move *= -1;
 	if (move)
 		c->rotation += move;
+	mlx_set_mouse_pos(c->mlx, c->width_div, c->height_div);
 	c->rotation = fmodf(c->rotation, 360) + (c->rotation < 0) * 360;
-	mlx_set_mouse_pos(c->mlx, c->mlx->width / 2, c->mlx->height / 2);
 }
 
 void	ft_mouse(t_cube *c)
@@ -35,13 +35,13 @@ void	ft_mouse(t_cube *c)
 
 	if (init)
 	{
-		mlx_set_mouse_pos(c->mlx, c->mlx->width / 2, c->mlx->height / 2);
+		mlx_set_mouse_pos(c->mlx, c->width_div, c->height_div);
 		init--;
 		return ;
 	}
 	mlx_get_mouse_pos(c->mlx, &x, &y);
-	if ((x == c->mlx->width / 2 && y == c->mlx->height / 2) || x < 0
-		|| x > c->mlx->width || y < 0 || y > c->mlx->height)
+	if ((x == c->width_div && y == c->height_div) || x < 0 || x > c->mlx->width
+		|| y < 0 || y > c->mlx->height)
 		return ;
 	c->draw_screen = true;
 	c->draw_player = true;
@@ -66,23 +66,23 @@ void	ft_movement(bool running, t_cube *cube)
 	t_mov	m;
 
 	ft_movement_innit(&m, running, cube);
-	if ((m.up && !m.left && !m.down && !m.right)
-		|| (m.up && m.left && !m.down && m.right))
+	if ((m.up && !m.left && !m.down && !m.right) || (m.up && m.left && !m.down
+			&& m.right))
 		step_collision(fmodf(cube->rotation, 360), cube, m.speed);
 	else if (m.up && !m.left && !m.down && m.right)
 		step_collision(fmodf(cube->rotation + 45, 360), cube, m.speed);
-	else if ((!m.up && !m.left && !m.down && m.right)
-		|| (m.up && !m.left && m.down && m.right))
+	else if ((!m.up && !m.left && !m.down && m.right) || (m.up && !m.left
+			&& m.down && m.right))
 		step_collision(fmodf(cube->rotation + 90, 360), cube, m.speed);
 	else if (!m.up && !m.left && m.down && m.right)
 		step_collision(fmodf(cube->rotation + 135, 360), cube, m.speed);
-	else if ((!m.up && !m.left && m.down && !m.right)
-		|| (!m.up && m.left && m.down && m.right))
+	else if ((!m.up && !m.left && m.down && !m.right) || (!m.up && m.left
+			&& m.down && m.right))
 		step_collision(fmodf(cube->rotation + 180, 360), cube, m.speed);
 	else if (!m.up && m.left && m.down && !m.right)
 		step_collision(fmodf(cube->rotation + 225, 360), cube, m.speed);
-	else if ((!m.up && m.left && !m.down && !m.right)
-		|| (m.up && m.left && m.down && !m.right))
+	else if ((!m.up && m.left && !m.down && !m.right) || (m.up && m.left
+			&& m.down && !m.right))
 		step_collision(fmodf(cube->rotation + 270, 360), cube, m.speed);
 	else if (m.up && m.left && !m.down && !m.right)
 		step_collision(fmodf(cube->rotation + 315, 360), cube, m.speed);

@@ -39,7 +39,7 @@ MLXLIBFLAGS	=	-L./MLX42/build/ -lmlx42 -lglfw -L"/Users/$(USER)/.brew/opt/glfw/l
 
 CCFLAGS		=	-Wall -Wextra -Werror -g
 
-DEBUG_FLAGS	=	-fsanitize=address
+DEBUG_FLAGS	=	-fsanitize=undefined
 
 all:		$(NAME)
 

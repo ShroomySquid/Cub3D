@@ -59,10 +59,10 @@ float	*ft_getscale(t_cube c, int screenx, int *i)
 	ft_send(&scale, &c, 7);
 	scale.x_div = scale.x / SIZE;
 	scale.y_div = scale.y / SIZE;
+	r[1] = ft_getside(scale.x, scale.y, &c);
 	if (!c.draw_screen && c.map->map[scale.y_div][scale.x_div] == 'D'
 		&& !i[4] && !c.map->walls[(int)r[1]][i[4] + 1])
 		return (free(r), NULL);
-	r[1] = ft_getside(scale.x, scale.y, &c);
 	if (!c.draw_screen && !i[(int)r[1]]
 		&& !c.map->walls[(int)r[1]][i[(int)r[1]] + 1])
 		return (free(r), NULL);

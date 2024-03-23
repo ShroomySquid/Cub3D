@@ -38,6 +38,8 @@ void	ft_image(t_cube *cube)
 		put_radicle(cube);
 	if (height != cube->mlx->height || width != cube->mlx->width)
 	{
+		cube->height_div = cube->mlx->height / 2;
+		cube->width_div = cube->mlx->width / 2;
 		cube->draw_map = true;
 		cube->draw_player = true;
 		cube->draw_screen = true;
@@ -55,9 +57,8 @@ void	ft_image(t_cube *cube)
 	first = false;
 }
 
-void	ft_render_loop(t_cube *cube, float x, int *i)
+void	ft_render_loop(t_cube *cube, int x, int *i)
 {
-	const float	height_div = cube->mlx->height / 2.0;
 	float		*val;
 	float		val_div;
 	float		y;
@@ -69,11 +70,11 @@ void	ft_render_loop(t_cube *cube, float x, int *i)
 	y = -1;
 	while (++y < cube->mlx->height)
 	{
-		if (y < height_div - val_div || y >= height_div + val_div)
+		if (y < cube->height_div - val_div || y >= cube->height_div + val_div)
 		{
 			if (!cube->draw_screen)
 				continue ;
-			else if (y < height_div)
+			else if (y < cube->height_div)
 				mlx_put_pixel(cube->render, x, y, cube->map->roof);
 			else
 				mlx_put_pixel(cube->render, x, y, cube->map->floor);

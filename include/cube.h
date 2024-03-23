@@ -39,11 +39,11 @@ typedef struct s_side
 
 typedef struct s_mov
 {
-	bool down;
-	bool left;
-	bool right;
-	bool up;
-	float speed;
+	bool	down;
+	bool	left;
+	bool	right;
+	bool	up;
+	float	speed;
 }				t_mov;
 
 typedef struct s_scale
@@ -148,9 +148,9 @@ bool	touch_wall(char **map, int size, int x, int y);
 void	render_player(void *param);
 int		is_mini_down(t_cube *c);
 void	calculate_step(float rotation, t_cube *c);
-int32_t get_pixel(mlx_image_t *img, int x, int y);
+int32_t	get_pixel(mlx_image_t *img, int x, int y);
 void	ft_image(t_cube *cube);
-void	ft_render_loop(t_cube *cube, float x, int *i);
+void	ft_render_loop(t_cube *cube, int x, int *i);
 int		ft_getside(float x, float y, t_cube *c);
 int32_t	get_color_mini(t_minimap *mini, t_cube *c);
 
