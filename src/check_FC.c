@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/24 10:18:18 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/24 10:33:10 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,9 @@ int	check_color_len(char *line)
 	int	len;
 
 	len = 0;
-	if (line[0] == ',')
+	while (line[len] && ft_isdigit(line[len]))
 		len++;
-	while (line[len] && ft_isdigit(line[len]) && len < 4)
-		len++;
-	if (!ft_isdigit(line[len]) && line[len] != ',')
+	if (line[len] && !ft_isdigit(line[len]) && line[len] != ',')
 		return (0);
 	return (len);
 }

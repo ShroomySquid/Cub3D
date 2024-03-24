@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/22 16:26:48 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/24 10:25:26 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	innit_cube(t_cube *cube)
 	cube->pointer_tex = NULL;
 	cube->precalc = M_PI / 180;
 	cube->precalc2 = FOV / 2.0;
+	cube->first = true;
 }
 
 int	main(int argc, char **argv)

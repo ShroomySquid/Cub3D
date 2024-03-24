@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 16:25:28 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/22 18:07:14 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/24 10:26:37 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ void	put_radicle(t_cube *cube)
 	cube->pointer = mlx_texture_to_image(cube->mlx, cube->pointer_tex);
 	mlx_image_to_window(cube->mlx, cube->pointer, cube->width_div - 16,
 		cube->height_div - 16);
+	cube->first = false;
 }
 
 void	ft_image(t_cube *cube)
 {
-	static bool		first = true;
 	static int32_t	height;
 	static int32_t	width;
 
-	if (first)
+	if (cube->first)
 		put_radicle(cube);
 	if (height != cube->mlx->height || width != cube->mlx->width)
 	{
@@ -45,7 +45,7 @@ void	ft_image(t_cube *cube)
 		cube->draw_screen = true;
 		height = cube->mlx->height;
 		width = cube->mlx->width;
-		if (!first)
+		if (!cube->first)
 			mlx_delete_image(cube->mlx, cube->render);
 		cube->render = mlx_new_image(cube->mlx, cube->mlx->width,
 				cube->mlx->height);
@@ -54,7 +54,6 @@ void	ft_image(t_cube *cube)
 		mlx_image_to_window(cube->mlx, cube->render, 0, 0);
 		mlx_set_instance_depth(&cube->render->instances[0], 0);
 	}
-	first = false;
 }
 
 void	ft_render_loop(t_cube *cube, int x, int *i)

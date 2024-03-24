@@ -1,5 +1,5 @@
-F 200 , 4, 200
-C 200 ,00, 200 
+F 200 ,4      , 		200
+C 200 , 00 , 200 
 NO ./png/motif.png;
 SO ./png/planks.png
 WE ./png/wolfenstein_bricks.png

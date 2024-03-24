@@ -4,7 +4,7 @@ WE ./png/planks.png
 EA ./png/planks.png
 DO ./png/planks.png
 F 2002,0,200
-C benoit
+C 200,,200,200
 1111111111111
 1001000000001
 1000011111001
