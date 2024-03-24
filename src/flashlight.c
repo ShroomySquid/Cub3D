@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 08:18:09 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/24 09:34:31 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/24 09:46:11 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ static	int	check_corners_mini(t_cube *c, float last_x, float last_y)
 	m_y = (int)(last_y / 32);
 	if (x != m_x && y != m_y)
 	{
-		if (m_x < x && m_y < y && (c->map->map[m_y + 1][m_x] == '1'
-			|| c->map->map[m_y][m_x + 1] == '1'))
-			return (1);
-		if (m_x < x && m_y > y && (c->map->map[m_y - 1][m_x] == '1'
-			|| c->map->map[m_y][m_x + 1] == '1'))
+		if ((m_x < x && m_y < y && (c->map->map[m_y + 1][m_x] == '1'
+				|| c->map->map[m_y][m_x + 1] == '1')) || (m_x < x && m_y > y
+			&& (c->map->map[m_y - 1][m_x] == '1'
+			|| c->map->map[m_y][m_x + 1] == '1')))
 			return (1);
 		if (m_x > x && m_y > y && (c->map->map[m_y - 1][m_x] == '1'
 			|| c->map->map[m_y][m_x - 1] == '1'))
@@ -61,7 +60,7 @@ static void	draw_line(float angle, t_cube *c)
 	map_x = c->playerx;
 	map_y = c->playery;
 	calculate_step(angle, c);
-	while (!is_max_length(c, y, x) && i < 240)
+	while (!is_max_length(c, y, x))
 	{
 		mlx_put_pixel(c->player, x, y, get_rgba(255, 255, 255, 240 - i));
 		step(&map_x, &map_y, c, 1);
