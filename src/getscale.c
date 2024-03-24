@@ -12,7 +12,7 @@
 
 #include "../include/cube.h"
 
-void	innit_scale(t_scale *scale, t_cube c, float screenx)
+void	innit_scale(t_scale *scale, t_cube c, int screenx)
 {
 	scale->angle = c.rotation - c.precalc2;
 	scale->angle += (float)FOV / c.mlx->width * screenx;
@@ -20,6 +20,7 @@ void	innit_scale(t_scale *scale, t_cube c, float screenx)
 		scale->angle += 360;
 	else if (scale->angle >= 360)
 		scale->angle -= 360;
+	scale->size = 7;
 	scale->x = c.playerx;
 	scale->y = c.playery;
 }
@@ -48,15 +49,15 @@ float	*getscale_next(t_cube c, int *i, t_scale scale, float *r)
 
 float	*ft_getscale(t_cube c, int screenx, int *i)
 {
-	float			*r;
-	t_scale			scale;
+	float	*r;
+	t_scale	scale;
 
 	r = malloc(sizeof(float) * 4);
 	if (!r)
 		return (NULL);
 	innit_scale(&scale, c, screenx);
 	calculate_step(scale.angle, &c);
-	ft_send(&scale, &c, 7);
+	ft_send(&scale, &c);
 	scale.x_div = scale.x / SIZE;
 	scale.y_div = scale.y / SIZE;
 	r[1] = ft_getside(scale.x, scale.y, &c);

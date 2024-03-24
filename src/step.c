@@ -24,50 +24,54 @@ void	reverse_step(float *x, float *y, t_cube *c, float distance)
 	*y -= c->step_y * distance;
 }
 
-void	ft_send(t_scale *scale, t_cube *cube, float size)
+static int	check_corners(t_scale *scale, t_cube *cube, int last_x, int last_y)
 {
 	int	div_x;
 	int	div_y;
+
+	div_x = scale->x / 32;
+	div_y = scale->y / 32;
+	if (div_x != last_x && div_y != last_y)
+	{
+		if (last_x > div_x && last_y > div_y
+			&& (cube->map->map[div_y + 1][div_x] == '1'
+			|| cube->map->map[div_y][div_x + 1] == '1'))
+			return (reverse_step(&scale->x, &scale->y, cube, scale->size), 1);
+		if (last_x < div_x && last_y > div_y
+			&& (cube->map->map[div_y + 1][div_x] == '1'
+			|| cube->map->map[div_y][div_x - 1] == '1'))
+			return (reverse_step(&scale->x, &scale->y, cube, scale->size), 1);
+		if (last_x < div_x && last_y < div_y
+			&& (cube->map->map[div_y - 1][div_x] == '1'
+			|| cube->map->map[div_y][div_x - 1] == '1'))
+			return (reverse_step(&scale->x, &scale->y, cube, scale->size), 1);
+		if (last_x > div_x && last_y < div_y
+			&& (cube->map->map[div_y - 1][div_x] == '1'
+			|| cube->map->map[div_y][div_x + 1] == '1'))
+			return (reverse_step(&scale->x, &scale->y, cube, scale->size), 1);
+	}
+	return (step(&scale->x, &scale->y, cube, scale->size), 0);
+}
+
+void	ft_send(t_scale *scale, t_cube *cube)
+{
 	int	last_x;
 	int	last_y;
 
 	last_x = scale->x / 32;
 	last_y = scale->y / 32;
 	while (touch_wall(cube->map->map, 1, scale->x, scale->y))
-		reverse_step(&scale->x, &scale->y, cube, size);
+		reverse_step(&scale->x, &scale->y, cube, scale->size);
 	if (!touch_wall(cube->map->map, 1, scale->x, scale->y))
-		step(&scale->x, &scale->y, cube, size);
+		step(&scale->x, &scale->y, cube, scale->size);
 	while (!touch_wall(cube->map->map, 1, scale->x, scale->y))
+		if (check_corners(scale, cube, last_x, last_y))
+			break ;
+	if (scale->size > 0.01)
 	{
-		div_x = scale->x / 32;
-		div_y = scale->y / 32;
-		if (div_x != last_x && div_y != last_y)
-		{
-			if (last_x > div_x && last_y > div_y && (cube->map->map[div_y + 1][div_x] == '1' || cube->map->map[div_y][div_x + 1] == '1'))
-			{
-				reverse_step(&scale->x, &scale->y, cube, size);
-				break ;
-			}
-			if (last_x < div_x && last_y > div_y && (cube->map->map[div_y + 1][div_x] == '1' || cube->map->map[div_y][div_x - 1] == '1'))
-			{
-				reverse_step(&scale->x, &scale->y, cube, size);
-				break ;
-			}
-			if (last_x < div_x && last_y < div_y && (cube->map->map[div_y - 1][div_x] == '1' || cube->map->map[div_y][div_x - 1] == '1'))
-			{
-				reverse_step(&scale->x, &scale->y, cube, size);
-				break ;
-			}
-			if (last_x > div_x && last_y < div_y && (cube->map->map[div_y - 1][div_x] == '1' || cube->map->map[div_y][div_x + 1] == '1'))
-			{
-				reverse_step(&scale->x, &scale->y, cube, size);
-				break ;
-			}
-		}
-		step(&scale->x, &scale->y, cube, size);
+		scale->size /= 2;
+		ft_send(scale, cube);
 	}
-	if (size > 0.01)
-		ft_send(scale, cube, size / 2);
 }
 
 void	calculate_step(float rotation, t_cube *c)

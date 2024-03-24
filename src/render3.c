@@ -24,8 +24,8 @@ void	put_radicle(t_cube *cube)
 {
 	cube->pointer_tex = mlx_load_png("./png/radicle.png");
 	cube->pointer = mlx_texture_to_image(cube->mlx, cube->pointer_tex);
-	mlx_image_to_window(cube->mlx, cube->pointer, cube->mlx->width / 2 - 16,
-		cube->mlx->height / 2 - 16);
+	mlx_image_to_window(cube->mlx, cube->pointer, cube->width_div - 16,
+		cube->height_div - 16);
 }
 
 void	ft_image(t_cube *cube)
@@ -49,8 +49,8 @@ void	ft_image(t_cube *cube)
 			mlx_delete_image(cube->mlx, cube->render);
 		cube->render = mlx_new_image(cube->mlx, cube->mlx->width,
 				cube->mlx->height);
-		cube->pointer->instances[0].x = cube->mlx->width / 2 - 16;
-		cube->pointer->instances[0].y = cube->mlx->height / 2 - 16;
+		cube->pointer->instances[0].x = cube->width_div - 16;
+		cube->pointer->instances[0].y = cube->height_div - 16;
 		mlx_image_to_window(cube->mlx, cube->render, 0, 0);
 		mlx_set_instance_depth(&cube->render->instances[0], 0);
 	}
@@ -59,9 +59,9 @@ void	ft_image(t_cube *cube)
 
 void	ft_render_loop(t_cube *cube, int x, int *i)
 {
-	float		*val;
-	float		val_div;
-	float		y;
+	float	*val;
+	float	val_div;
+	int		y;
 
 	val = ft_getscale(*cube, x, i);
 	if (!val)

@@ -51,6 +51,7 @@ typedef struct s_scale
 	float	angle;
 	float	hypo;
 	float	oppo;
+	float	size;
 	float	teta;
 	float	x;
 	float	y;
@@ -114,7 +115,7 @@ typedef struct s_cube
 	int				is_light_active;
 }				t_cube;
 
-void	ft_send(t_scale *scale, t_cube *cube, float size);
+void	ft_send(t_scale *scale, t_cube *cube);
 void	ft_mouse(t_cube *c);
 void	ft_movement(bool running, t_cube *cube);
 int		force_exit(t_cube *cube);
