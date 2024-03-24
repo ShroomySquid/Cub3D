@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/22 15:25:04 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/24 10:18:18 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ int	check_color_len(char *line)
 	len = 0;
 	if (line[0] == ',')
 		len++;
-	while (line[len] && line[len] != ',')
+	while (line[len] && ft_isdigit(line[len]) && len < 4)
 		len++;
+	if (!ft_isdigit(line[len]) && line[len] != ',')
+		return (0);
 	return (len);
 }
 
@@ -49,7 +51,7 @@ int	extra_color(char *color, int *a)
 		*a += 1;
 	if (color[*a])
 		*a += 1;
-	if (color[*a] && ft_isdigit(color[*a]))
+	if (color[*a])
 		return (*a);
 	else
 	{
@@ -82,6 +84,8 @@ int	parse_rgba(char **data, int *i, int *rgb)
 		if (data[*i] && data[*i][0] && data[*i][0] == ',' && !data[*i][1])
 			*i += 1;
 	}
+	if (rgb_len < 3)
+		return (error_map("Invalid amount of color for map"));
 	return (0);
 }
 
