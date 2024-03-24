@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/22 19:24:37 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/24 08:19:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,6 @@ void	ft_image(t_cube *cube);
 void	ft_render_loop(t_cube *cube, int x, int *i);
 int		ft_getside(float x, float y, t_cube *c);
 int32_t	get_color_mini(t_minimap *mini, t_cube *c);
+void	draw_los(float los, t_cube *cube);
 
 #endif
