@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/24 10:26:35 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/24 10:42:49 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ typedef struct s_cube
 	int				is_mini_active;
 	int				is_light_active;
 	bool			first;
+	int32_t			height_img;
+	int32_t			width_img;
 }				t_cube;
 
 void	ft_send(t_scale *scale, t_cube *cube);

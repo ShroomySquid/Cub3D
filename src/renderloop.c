@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 16:25:28 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/24 10:26:37 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/24 10:49:29 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,31 +29,35 @@ void	put_radicle(t_cube *cube)
 	cube->first = false;
 }
 
-void	ft_image(t_cube *cube)
+void	ft_image(t_cube *c)
 {
-	static int32_t	height;
-	static int32_t	width;
-
-	if (cube->first)
-		put_radicle(cube);
-	if (height != cube->mlx->height || width != cube->mlx->width)
+	if (c->first)
+		put_radicle(c);
+	if (c->height_img != c->mlx->height || c->width_img != c->mlx->width)
 	{
-		cube->height_div = cube->mlx->height / 2;
-		cube->width_div = cube->mlx->width / 2;
-		cube->draw_map = true;
-		cube->draw_player = true;
-		cube->draw_screen = true;
-		height = cube->mlx->height;
-		width = cube->mlx->width;
-		if (!cube->first)
-			mlx_delete_image(cube->mlx, cube->render);
-		cube->render = mlx_new_image(cube->mlx, cube->mlx->width,
-				cube->mlx->height);
-		cube->pointer->instances[0].x = cube->width_div - 16;
-		cube->pointer->instances[0].y = cube->height_div - 16;
-		mlx_image_to_window(cube->mlx, cube->render, 0, 0);
-		mlx_set_instance_depth(&cube->render->instances[0], 0);
+		c->height_div = c->mlx->height / 2;
+		c->width_div = c->mlx->width / 2;
+		c->draw_map = true;
+		c->draw_player = true;
+		c->draw_screen = true;
+		c->height_img = c->mlx->height;
+		c->width_img = c->mlx->width;
+		if (!c->first)
+			mlx_delete_image(c->mlx, c->render);
+		c->render = mlx_new_image(c->mlx, c->mlx->width,
+				c->mlx->height);
+		c->pointer->instances[0].x = c->width_div - 16;
+		c->pointer->instances[0].y = c->height_div - 16;
+		mlx_image_to_window(c->mlx, c->render, 0, 0);
+		mlx_set_instance_depth(&c->render->instances[0], 0);
 	}
+}
+
+static int32_t	long_pixel(t_cube *cube, float *val, int *i, int y)
+{
+	return (get_pixel(cube->map->walls[(int)val[1]][i[(int)val[1]]], val[2],
+		cube->map->walls[(int)val[1]][i[(int)val[1]]]->height
+		/ val[0] * (y - (cube->mlx->height - val[0]) / 2)));
 }
 
 void	ft_render_loop(t_cube *cube, int x, int *i)
@@ -79,10 +83,7 @@ void	ft_render_loop(t_cube *cube, int x, int *i)
 				mlx_put_pixel(cube->render, x, y, cube->map->floor);
 		}
 		else
-			mlx_put_pixel(cube->render, x, y,
-				get_pixel(cube->map->walls[(int)val[1]][i[(int)val[1]]], val[2],
-					cube->map->walls[(int)val[1]][i[(int)val[1]]]->height
-					/ val[0] * (y - (cube->mlx->height - val[0]) / 2)));
+			mlx_put_pixel(cube->render, x, y, long_pixel(cube, val, i, y));
 	}
 	free(val);
 }
