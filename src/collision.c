@@ -23,10 +23,10 @@ static bool	ft_collision(char **map, int x, int y)
 		return (true);
 	if (map[y_div][x_div] == 'D')
 	{
-		if (map[y_div][x_div - 1] == '1' || map[y_div][x_div + 1] == '1')
+		if (map[y_div][x_div - 1] == '1' && map[y_div][x_div + 1] == '1')
 			return (y % SIZE > size_div - size_div2
 				&& y % SIZE < size_div + size_div2);
-		if (map[y_div - 1][x_div] == '1' || map[y_div + 1][x_div] == '1')
+		if (map[y_div - 1][x_div] == '1' && map[y_div + 1][x_div] == '1')
 			return (x % SIZE > size_div - size_div2
 				&& x % SIZE < size_div + size_div2);
 		return (true);
