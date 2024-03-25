@@ -81,7 +81,10 @@ int	check_map(char **map, t_cube *cube, int x, int y)
 				return (1);
 			else if ((map[y][x] == '0' || map[y][x] == 'D')
 				&& check_valid_floor(map, x, y))
+			{
+				printf("%d, %d\n", x, y);
 				return (error_map("Invalid floor location"));
+			}
 			x++;
 		}
 		y++;

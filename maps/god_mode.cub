@@ -1,8 +1,8 @@
-NO ./png/releasio.png
-SO ./png/releasio.png
-EA ./png/releasio.png
-WE ./png/releasio.png
-DO ./png/releasio.png
+NO png/releasio.png
+SO png/releasio.png
+EA png/releasio.png
+WE png/releasio.png
+DO png/releasio.png
 
 F 250,216,175
 C 250,216,175
