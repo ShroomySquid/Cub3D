@@ -25,51 +25,46 @@ void	innit_scale(t_scale *scale, t_cube c, int screenx)
 	scale->y = c.playery;
 }
 
-float	*getscale_next(t_cube c, int *i, t_scale scale, float *r)
+t_wall	getscale_next(t_cube c, int *i, t_scale scale, t_wall w)
 {
-	float	wall_width;
-
-	r[0] = SIZE * c.mlx->width / scale.oppo;
-	if (c.map->map[scale.y_div][scale.x_div] != 'D')
-		wall_width = c.map->walls[(int)r[1]][i[(int)r[1]]]->width;
-	else
-		wall_width = c.map->walls[4][i[4]]->width;
-	if (!r[1])
-		r[2] = wall_width / SIZE * fmodf(scale.x, SIZE);
-	else if (r[1] == 1)
-		r[2] = wall_width - wall_width / SIZE * fmodf(scale.x, SIZE);
-	else if (r[1] == 2)
-		r[2] = wall_width - wall_width / SIZE * fmodf(scale.y, SIZE);
-	else
-		r[2] = wall_width / SIZE * fmodf(scale.y, SIZE);
 	if (c.map->map[scale.y_div][scale.x_div] == 'D')
-		r[1] = 4;
-	return (r);
+		w.img = c.map->walls[4][i[4]];
+	else if (c.map->map[scale.y_div][scale.x_div] == '!')
+		w.img = c.map->grey_brick_1;
+	else
+		w.img = c.map->walls[w.side][i[w.side]];
+	if (!w.side)
+		w.x = (float)w.img->width / SIZE * fmodf(scale.x, SIZE);
+	else if (w.side == 1)
+		w.x = w.img->width - (float)w.img->width / SIZE * fmodf(scale.x, SIZE);
+	else if (w.side == 2)
+		w.x = w.img->width - (float)w.img->width / SIZE * fmodf(scale.y, SIZE);
+	else
+		w.x = (float)w.img->width / SIZE * fmodf(scale.y, SIZE);
+	return (w);
 }
 
-float	*ft_getscale(t_cube c, int screenx, int *i)
+t_wall	ft_getscale(t_cube c, int screenx, int *i)
 {
-	float	*r;
+	t_wall	w;
 	t_scale	scale;
 
-	r = malloc(sizeof(float) * 4);
-	if (!r)
-		return (NULL);
 	innit_scale(&scale, c, screenx);
 	calculate_step(scale.angle, &c);
 	ft_send(&scale, &c);
 	scale.x_div = scale.x / SIZE;
 	scale.y_div = scale.y / SIZE;
-	r[1] = ft_getside(scale.x, scale.y, &c);
+	w.side = ft_getside(scale.x, scale.y, &c);
 	if (!c.draw_screen && c.map->map[scale.y_div][scale.x_div] == 'D'
-		&& !i[4] && !c.map->walls[(int)r[1]][i[4] + 1])
-		return (free(r), NULL);
-	if (!c.draw_screen && !i[(int)r[1]]
-		&& !c.map->walls[(int)r[1]][i[(int)r[1]] + 1])
-		return (free(r), NULL);
+		&& !i[4] && !c.map->walls[4][i[4] + 1])
+		return (w.draw = 0, w);
+	if (!c.draw_screen && !i[w.side]
+		&& !c.map->walls[w.side][i[w.side] + 1])
+		return (w.draw = 0, w);
 	scale.hypo = hypotf(c.playery - scale.y, c.playerx - scale.x);
 	scale.teta = (float)FOV / c.mlx->width * screenx - c.precalc2;
 	scale.oppo = cosf(scale.teta * c.precalc) * scale.hypo;
-	r[0] = SIZE * c.mlx->width / scale.oppo;
-	return (getscale_next(c, i, scale, r));
+	w.scale = SIZE * c.mlx->width / scale.oppo;
+	w.draw = 1;
+	return (getscale_next(c, i, scale, w));
 }

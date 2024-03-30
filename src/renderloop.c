@@ -44,8 +44,7 @@ void	ft_image(t_cube *c)
 		c->width_img = c->mlx->width;
 		if (!c->first)
 			mlx_delete_image(c->mlx, c->render);
-		c->render = mlx_new_image(c->mlx, c->mlx->width,
-				c->mlx->height);
+		c->render = mlx_new_image(c->mlx, c->mlx->width, c->mlx->height);
 		c->pointer->instances[0].x = c->width_div - 16;
 		c->pointer->instances[0].y = c->height_div - 16;
 		mlx_image_to_window(c->mlx, c->render, 0, 0);
@@ -53,23 +52,22 @@ void	ft_image(t_cube *c)
 	}
 }
 
-static int32_t	long_pixel(t_cube *cube, float *val, int *i, int y)
+static int32_t	long_pixel(t_cube *cube, t_wall w, int y)
 {
-	return (get_pixel(cube->map->walls[(int)val[1]][i[(int)val[1]]], val[2],
-		cube->map->walls[(int)val[1]][i[(int)val[1]]]->height
-		/ val[0] * (y - (cube->mlx->height - val[0]) / 2)));
+	return (get_pixel(w.img, w.x, w.img->height / w.scale * (y
+				- (cube->mlx->height - w.scale) / 2)));
 }
 
 void	ft_render_loop(t_cube *cube, int x, int *i)
 {
-	float	*val;
 	float	val_div;
+	t_wall	wall;
 	int		y;
 
-	val = ft_getscale(*cube, x, i);
-	if (!val)
+	wall = ft_getscale(*cube, x, i);
+	if (!wall.draw)
 		return ;
-	val_div = val[0] / 2;
+	val_div = wall.scale / 2;
 	y = -1;
 	while (++y < cube->mlx->height)
 	{
@@ -83,7 +81,6 @@ void	ft_render_loop(t_cube *cube, int x, int *i)
 				mlx_put_pixel(cube->render, x, y, cube->map->floor);
 		}
 		else
-			mlx_put_pixel(cube->render, x, y, long_pixel(cube, val, i, y));
+			mlx_put_pixel(cube->render, x, y, long_pixel(cube, wall, y));
 	}
-	free(val);
 }

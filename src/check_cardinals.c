@@ -12,24 +12,36 @@
 
 #include "../include/cube.h"
 
-int	check_each_path(char **split_path, t_cube *c, int *i)
+static mlx_image_t	*load_img(t_cube *c, char *str)
 {
+	mlx_image_t		*img;
 	mlx_texture_t	*texture;
 
+	texture = mlx_load_png(str);
+	if (!texture)
+		return (error_func("mlx_load_png"), NULL);
+	img = mlx_texture_to_image(c->mlx, texture);
+	if (!img)
+		return (error_func("mlx_texture_to_image"), NULL);
+	mlx_delete_texture(texture);
+	return (img);
+}
+
+int	check_each_path(char **split_path, t_cube *c, int *i)
+{
 	if (!split_path[*i])
 		return (error_map("No texture file for element"));
 	while (split_path[*i])
 	{
-		texture = mlx_load_png(split_path[*i]);
-		if (!texture)
-			return (error_func("mlx_load_png"));
-		c->map->walls[c->map->car][*i] = mlx_texture_to_image(c->mlx, texture);
+		c->map->walls[c->map->car][*i] = load_img(c, split_path[*i]);
 		if (!c->map->walls[c->map->car][*i])
-			return (error_func("mlx_texture_to_image"));
-		mlx_delete_texture(texture);
+			return (1);
 		*i += 1;
 	}
 	c->map->walls[c->map->car][*i] = 0;
+	c->map->grey_brick_1 = load_img(c, "png/grey_brick_1.png");
+	if (!c->map->grey_brick_1)
+		return (1);
 	return (0);
 }
 

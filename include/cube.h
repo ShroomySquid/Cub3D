@@ -71,6 +71,7 @@ typedef struct s_minimap
 typedef struct s_map
 {
 	int			fd;
+	mlx_image_t	*grey_brick_1;
 	int			nbr_line;
 	mlx_image_t	***walls;
 	int32_t		floor;
@@ -78,6 +79,15 @@ typedef struct s_map
 	char		**map;
 	int			car;
 }				t_map;
+
+typedef struct s_wall
+{
+	bool		draw;
+	mlx_image_t	*img;
+	float		scale;
+	int			side;
+	int			x;
+}				t_wall;
 
 typedef struct s_cube
 {
@@ -127,7 +137,7 @@ int		is_cardinal(char *str, t_cube *cube);
 int		check_cardinals(char *paths, t_cube *c);
 int		array_len(char **array);
 void	step_collision(float rotation, t_cube *cube, float speed);
-float	*ft_getscale(t_cube c, int screenx, int *i);
+t_wall	ft_getscale(t_cube c, int screenx, int *i);
 void	step(float *x, float *y, t_cube *c, float distance);
 void	reverse_step(float *x, float *y, t_cube *c, float distance);
 char	*whitespace_array(void);
