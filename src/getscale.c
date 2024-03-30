@@ -29,8 +29,6 @@ t_wall	getscale_next(t_cube c, int *i, t_scale scale, t_wall w)
 {
 	if (c.map->map[scale.y_div][scale.x_div] == 'D')
 		w.img = c.map->walls[4][i[4]];
-	else if (c.map->map[scale.y_div][scale.x_div] == '!')
-		w.img = c.map->grey_brick_1;
 	else
 		w.img = c.map->walls[w.side][i[w.side]];
 	if (!w.side)

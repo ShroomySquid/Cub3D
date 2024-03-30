@@ -34,20 +34,20 @@ static int	check_corners(t_scale *scale, t_cube *cube, int last_x, int last_y)
 	if (div_x != last_x && div_y != last_y)
 	{
 		if (last_x > div_x && last_y > div_y
-			&& (ft_strchr("1D!", cube->map->map[div_y + 1][div_x])
-			|| ft_strchr("1D!", cube->map->map[div_y][div_x + 1])))
+			&& (ft_strchr("1D", cube->map->map[div_y + 1][div_x])
+			|| ft_strchr("1D", cube->map->map[div_y][div_x + 1])))
 			return (reverse_step(&scale->x, &scale->y, cube, scale->size), 1);
 		if (last_x < div_x && last_y > div_y
-			&& (ft_strchr("1D!", cube->map->map[div_y + 1][div_x])
-			|| ft_strchr("1D!", cube->map->map[div_y][div_x - 1])))
+			&& (ft_strchr("1D", cube->map->map[div_y + 1][div_x])
+			|| ft_strchr("1D", cube->map->map[div_y][div_x - 1])))
 			return (reverse_step(&scale->x, &scale->y, cube, scale->size), 1);
 		if (last_x < div_x && last_y < div_y
-			&& (ft_strchr("1D!", cube->map->map[div_y - 1][div_x])
-			|| ft_strchr("1D!", cube->map->map[div_y][div_x - 1])))
+			&& (ft_strchr("1D", cube->map->map[div_y - 1][div_x])
+			|| ft_strchr("1D", cube->map->map[div_y][div_x - 1])))
 			return (reverse_step(&scale->x, &scale->y, cube, scale->size), 1);
 		if (last_x > div_x && last_y < div_y
-			&& (ft_strchr("1D!", cube->map->map[div_y - 1][div_x])
-			|| ft_strchr("1D!", cube->map->map[div_y][div_x + 1])))
+			&& (ft_strchr("1D", cube->map->map[div_y - 1][div_x])
+			|| ft_strchr("1D", cube->map->map[div_y][div_x + 1])))
 			return (reverse_step(&scale->x, &scale->y, cube, scale->size), 1);
 	}
 	return (step(&scale->x, &scale->y, cube, scale->size), 0);

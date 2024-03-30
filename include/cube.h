@@ -71,7 +71,6 @@ typedef struct s_minimap
 typedef struct s_map
 {
 	int			fd;
-	mlx_image_t	*grey_brick_1;
 	int			nbr_line;
 	mlx_image_t	***walls;
 	int32_t		floor;

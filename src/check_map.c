@@ -37,7 +37,7 @@ int	check_valid_floor(char **map, int x, int y)
 
 int	is_valid_symbol(char **map, int y, int x)
 {
-	if (ft_strchr("\n NSWE0D1!", map[y][x]))
+	if (ft_strchr("\n NSWE0D1", map[y][x]))
 		return (0);
 	return (1);
 }

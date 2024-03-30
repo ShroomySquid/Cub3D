@@ -19,16 +19,14 @@ static bool	ft_collision(char **map, int x, int y)
 	const int	size_div = SIZE / 2;
 	const int	size_div2 = SIZE / 8;
 
-	if (ft_strchr("1!", map[y_div][x_div]))
+	if (map[y_div][x_div] == '1')
 		return (true);
 	if (map[y_div][x_div] == 'D')
 	{
-		if (ft_strchr("1!", map[y_div][x_div - 1]) && ft_strchr("1!",
-				map[y_div][x_div + 1]))
+		if (map[y_div][x_div - 1] == '1' && map[y_div][x_div + 1] == '1')
 			return (y % SIZE > size_div - size_div2 && y % SIZE < size_div
 				+ size_div2);
-		if (ft_strchr("1!", map[y_div - 1][x_div]) && ft_strchr("1!", map[y_div
-				+ 1][x_div]))
+		if (map[y_div - 1][x_div] == '1' && map[y_div + 1][x_div] == '1')
 			return (x % SIZE > size_div - size_div2 && x % SIZE < size_div
 				+ size_div2);
 		return (true);

@@ -12,22 +12,22 @@
 
 #include "../include/cube.h"
 
-static int	is_door(t_cube *c, int *coord, float y, float x)
+static int	is_door(t_cube *c, int *coord, int y, int x)
 {
 	if (c->map->map[coord[0]][coord[1] - 1] == '1'
 		&& c->map->map[coord[0]][coord[1] + 1] == '1')
 	{
-		if ((int)y % 32 == 19)
+		if (y % 32 == 19)
 			return (0);
-		if ((int)y % 32 == 13)
+		if (y % 32 == 13)
 			return (1);
 	}
 	if (c->map->map[coord[0] - 1][coord[1]] == '1' && c->map->map[coord[0]
 		+ 1][coord[1]] == '1')
 	{
-		if ((int)x % 32 == 19)
+		if (x % 32 == 19)
 			return (2);
-		if ((int)x % 32 == 13)
+		if (x % 32 == 13)
 			return (3);
 	}
 	return (-1);
@@ -35,13 +35,15 @@ static int	is_door(t_cube *c, int *coord, float y, float x)
 
 int	innit_getside(float x, float y, t_cube *c, t_side *s)
 {
+	int	ret;
+
 	s->last_x = x;
 	s->last_y = y;
 	s->coord[0] = y / 32;
 	s->coord[1] = x / 32;
-	if (c->map->map[s->coord[0]][s->coord[1]] == 'D' && is_door(c, s->coord, y,
-			x) != -1)
-		return (is_door(c, s->coord, y, x));
+	ret = is_door(c, s->coord, y, x);
+	if (c->map->map[s->coord[0]][s->coord[1]] == 'D' && ret != -1)
+		return (ret);
 	reverse_step(&s->last_x, &s->last_y, c, 0.1);
 	s->last_coord[0] = s->last_y / 32;
 	s->last_coord[1] = s->last_x / 32;

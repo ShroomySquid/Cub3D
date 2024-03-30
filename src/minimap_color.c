@@ -36,15 +36,13 @@ int32_t	get_color_mini(t_minimap *mini, t_cube *c)
 	mini->coord = c->map->map[div_y][div_x];
 	if (is_whitespace(mini->coord))
 		return (get_rgba(32, 32, 32, 255));
-	if (ft_strchr("1!", mini->coord))
+	if (mini->coord == '1')
 		img = c->wall_img;
 	else if (mini->coord == 'D')
 	{
-		if (ft_strchr("1!", c->map->map[div_y][div_x - 1])
-			&& ft_strchr("1!", c->map->map[div_y][div_x + 1]))
+		if (c->map->map[div_y][div_x - 1] == '1' && c->map->map[div_y][div_x + 1] == '1')
 			img = c->lockh_img;
-		else if (ft_strchr("1!", c->map->map[div_y - 1][div_x])
-			&& ft_strchr("1!", c->map->map[div_y + 1][div_x]))
+		else if (c->map->map[div_y - 1][div_x] == '1' && c->map->map[div_y + 1][div_x] == '1')
 			img = c->lockv_img;
 		else
 			img = c->wall_img;
