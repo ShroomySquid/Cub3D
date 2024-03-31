@@ -30,7 +30,7 @@ static int	is_door(t_cube *c, int *coord, float y, float x)
 		if ((int)x % 32 == 13)
 			return (3);
 	}
-	return (0);
+	return (-1);
 }
 
 int	innit_getside(float x, float y, t_cube *c, t_side *s)
@@ -39,7 +39,7 @@ int	innit_getside(float x, float y, t_cube *c, t_side *s)
 	s->last_y = y;
 	s->coord[0] = y / 32;
 	s->coord[1] = x / 32;
-	if (c->map->map[s->coord[0]][s->coord[1]] == 'D')
+	if (c->map->map[s->coord[0]][s->coord[1]] == 'D' && is_door(c, s->coord, y, x) != -1)
 		return (is_door(c, s->coord, y, x));
 	reverse_step(&s->last_x, &s->last_y, c, 0.1);
 	s->last_coord[0] = s->last_y / 32;
