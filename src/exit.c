@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 16:13:43 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/22 16:14:23 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/31 15:42:12 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ int	force_exit(t_cube *cube)
 		mlx_delete_texture(cube->lockv_tex);
 	if (cube->pointer_tex)
 		mlx_delete_texture(cube->pointer_tex);
-	mlx_terminate(cube->mlx);
 	if (cube->map && cube->map->walls)
 		free_walls(cube->map->walls);
 	if (cube->map && cube->map->map)
 		free_all(cube->map->map);
+	mlx_terminate(cube->mlx);
 	if (cube->map)
 		free(cube->map);
 	free(cube);
