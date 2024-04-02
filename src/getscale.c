@@ -14,7 +14,7 @@
 
 void	innit_scale(t_scale *scale, t_cube c, int screenx)
 {
-	scale->angle = c.rotation - c.precalc2;
+	scale->angle = c.rotation - c.half_fov;
 	scale->angle += (float)FOV / c.mlx->width * screenx;
 	if (scale->angle < 0)
 		scale->angle += 360;
@@ -60,8 +60,8 @@ t_wall	ft_getscale(t_cube c, int screenx, int *i)
 		&& !c.map->walls[w.side][i[w.side] + 1])
 		return (w.draw = 0, w);
 	scale.hypo = hypotf(c.playery - scale.y, c.playerx - scale.x);
-	scale.teta = (float)FOV / c.mlx->width * screenx - c.precalc2;
-	scale.oppo = cosf(scale.teta * c.precalc) * scale.hypo;
+	scale.teta = (float)FOV / c.mlx->width * screenx - c.half_fov;
+	scale.oppo = cosf(scale.teta * c.radian) * scale.hypo;
 	w.scale = SIZE * c.mlx->width / scale.oppo;
 	w.draw = 1;
 	return (getscale_next(c, i, scale, w));

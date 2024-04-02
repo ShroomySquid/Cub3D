@@ -44,7 +44,7 @@ int	check_map_len(t_cube *cube, char **argv)
 		return (error_func("malloc"), -1);
 	cube->map->fd = open(argv[1], O_RDONLY);
 	if (cube->map->fd == -1)
-		return (error_map("Failed to open map file"), -1);
+		return (error_map_file("Failed to open map file"), -1);
 	read_ret_val = read(cube->map->fd, buff, buff_size);
 	while (read_ret_val == buff_size)
 	{
@@ -55,7 +55,7 @@ int	check_map_len(t_cube *cube, char **argv)
 	map_len += count_lines(buff);
 	close(cube->map->fd);
 	if (map_len == 0)
-		return (free(buff), error_map("Map is empty"), -1);
+		return (free(buff), error_map_file("Map is empty"), -1);
 	return (free(buff), map_len);
 }
 
@@ -85,7 +85,7 @@ char	**parsing_map(t_cube *c, char **argv)
 		return (NULL);
 	c->map->fd = open(argv[1], O_RDONLY);
 	if (c->map->fd == -1)
-		return (error_map("Failed to open map file"), NULL);
+		return (error_map_file("Failed to open map file"), NULL);
 	if (check_textures(c))
 		return (close(c->map->fd), NULL);
 	map = malloc((c->map->nbr_line + 1) * sizeof(char *));

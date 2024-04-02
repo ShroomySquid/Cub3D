@@ -50,8 +50,8 @@ void	innit_cube(t_cube *cube)
 	cube->lockv_tex = NULL;
 	cube->wall_tex = NULL;
 	cube->pointer_tex = NULL;
-	cube->precalc = M_PI / 180;
-	cube->precalc2 = FOV / 2.0;
+	cube->radian = M_PI / 180;
+	cube->half_fov = FOV / 2.0;
 	cube->first = true;
 	cube->width_img = 0;
 	cube->height_img = 0;
@@ -64,7 +64,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (error_argc());
 	if (check_extension(argv))
-		return (error_map("Invalid extension"));
+		return (error_map_file("Invalid extension"));
 	cube = malloc(sizeof(t_cube));
 	if (!cube)
 		return (error_func("malloc"));

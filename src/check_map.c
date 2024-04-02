@@ -54,7 +54,7 @@ int	check_valid_door(char **map, int x, int y)
 
 int	is_valid_symbol(char **map, int y, int x)
 {
-	if (ft_strchr("\n NSWE0D1", map[y][x]))
+	if (is_whitespace(map[y][x]) || ft_strchr("NSWE0D1", map[y][x]))
 		return (0);
 	return (1);
 }
@@ -72,12 +72,12 @@ int	check_player(int *player, t_cube *cube, int y, int x)
 	if (cube->map->map[y][x] == 'W')
 		cube->rotation = 270;
 	if (*player)
-		return (error_map("More than 1 player"));
+		return (error_map("More than 1 player", x, y, cube->map->map[x][y]));
 	*player = 1;
 	cube->playerx = (SIZE * x) + 5;
 	cube->playery = (SIZE * y) + 5;
 	if (check_valid_floor(cube->map->map, x, y))
-		return (error_map("Invalid player location"));
+		return (error_map("Invalid player location", x, y, cube->map->map[x][y]));
 	return (0);
 }
 
@@ -85,26 +85,27 @@ int	check_map(char **map, t_cube *cube, int x, int y)
 {
 	int	player;
 
-	y = -1;
+	y = 0;
 	player = 0;
-	while (map[++y])
+	while (map[y])
 	{
-		x = -1;
-		while (map[y][++x])
+		x = 0;
+		while (map[y][x])
 		{
 			if (is_valid_symbol(map, y, x))
-				return (error_map("Invalid symbol on map"));
+				return (error_map("Invalid symbol on map", x, y, cube->map->map[x][y]));
 			else if (check_player(&player, cube, y, x))
 				return (1);
 			else if (map[y][x] == '0' && check_valid_floor(map, x, y))
-				return (error_map("Invalid floor location"));
+				return (error_map("Invalid floor location", x, y, cube->map->map[x][y]));
 			else if (map[y][x] == 'D' && check_valid_door(map, x, y))
-				return (error_map("Invalid door location"));
+				return (error_map("Invalid door location", x, y, cube->map->map[x][y]));
 			x++;
 		}
+		y++;
 	}
 	cube->last_line = (y - 1);
 	if (!player)
-		return (error_map("Invalid player location"));
+		return (error_map("Invalid player location", x, y, cube->map->map[x][y]));
 	return (0);
 }

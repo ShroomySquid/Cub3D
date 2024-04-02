@@ -98,7 +98,7 @@ int	check_textures(t_cube *cube)
 		data_type = check_data_type(temp_line, &valid_map, cube);
 		free(temp_line);
 		if (data_type && !valid_map)
-			return (close(cube->map->fd), error_map("Invalid data"));
+			return (close(cube->map->fd), error_map_file("Invalid data"));
 	}
 	return (0);
 }

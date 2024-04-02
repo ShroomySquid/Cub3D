@@ -79,25 +79,25 @@ void	calculate_step(float rotation, t_cube *c)
 	rotation = fmodf(rotation, 360) + (rotation < 0) * 360;
 	if (rotation < 90)
 	{
-		c->step_y = -1 * cosf(rotation * c->precalc);
-		c->step_x = sinf(rotation * c->precalc);
+		c->step_y = -1 * cosf(rotation * c->radian);
+		c->step_x = sinf(rotation * c->radian);
 	}
 	else if (rotation < 180)
 	{
 		rotation -= 90;
-		c->step_x = cosf(rotation * c->precalc);
-		c->step_y = sinf(rotation * c->precalc);
+		c->step_x = cosf(rotation * c->radian);
+		c->step_y = sinf(rotation * c->radian);
 	}
 	else if (rotation < 270)
 	{
 		rotation -= 180;
-		c->step_y = cosf(rotation * c->precalc);
-		c->step_x = -1 * sinf(rotation * c->precalc);
+		c->step_y = cosf(rotation * c->radian);
+		c->step_x = -1 * sinf(rotation * c->radian);
 	}
 	else
 	{
 		rotation -= 270;
-		c->step_x = -1 * cosf(rotation * c->precalc);
-		c->step_y = -1 * sinf(rotation * c->precalc);
+		c->step_x = -1 * cosf(rotation * c->radian);
+		c->step_y = -1 * sinf(rotation * c->radian);
 	}
 }

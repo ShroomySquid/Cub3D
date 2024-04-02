@@ -21,11 +21,11 @@ int	get_color(int len, char *color)
 	if (!temp_color)
 		return (error_func("ft_substr"), -1);
 	if (!is_digit_str(temp_color))
-		return (free(temp_color), error_map("Invalid color for rgb"), -1);
+		return (free(temp_color), error_map_file("Invalid color for rgb"), -1);
 	color_int = ft_atoi(temp_color);
 	free(temp_color);
 	if (color_int > 255 || color_int < 0)
-		return (error_map("Invalid color for rgb"), -1);
+		return (error_map_file("Invalid color for rgb"), -1);
 	return (color_int);
 }
 
@@ -72,7 +72,7 @@ int	parse_rgba(char **data, int *i, int *rgb)
 			a++;
 		len = check_color_len(&data[*i][a]);
 		if (len > 3 || len < 1)
-			return (error_map("Invalid color for rgb"));
+			return (error_map_file("Invalid color for rgb"));
 		rgb[rgb_len] = get_color(len, &data[*i][a]);
 		if (rgb[rgb_len] == -1)
 			return (1);
@@ -83,7 +83,7 @@ int	parse_rgba(char **data, int *i, int *rgb)
 			*i += 1;
 	}
 	if (rgb_len < 3)
-		return (error_map("Invalid amount of color for map"));
+		return (error_map_file("Invalid amount of color for map"));
 	return (0);
 }
 
@@ -96,14 +96,14 @@ int	check_fc(int *i, char **data, t_cube *cube)
 	if (ft_strnstr(data[*i - 1], "C", 2))
 		fc = 1;
 	if ((fc && cube->map->roof != -1) || (!fc && cube->map->floor != -1))
-		return (error_map("Multiple color provided for same element"));
+		return (error_map_file("Multiple color provided for same element"));
 	if (!data[*i])
-		return (error_map("No color provided for element"));
+		return (error_map_file("No color provided for element"));
 	rgb = malloc(sizeof(int) * 4);
 	if (!rgb)
 		return (error_func("malloc"));
 	if (!ft_isdigit(data[*i][0]))
-		return (free(rgb), error_map("Invalid color provided for element"));
+		return (free(rgb), error_map_file("Invalid color provided for element"));
 	if (parse_rgba(data, i, rgb))
 		return (free(rgb), 1);
 	if (fc)

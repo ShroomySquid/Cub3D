@@ -24,7 +24,13 @@ int	error_argc(void)
 	return (1);
 }
 
-int	error_map(char *str)
+int	error_map(char *str, int x, int y, char c)
+{
+	printf("Invalid map: %s at x %d, y %d (%d, %c)\n", str, x, y, c, c);
+	return (1);
+}
+
+int	error_map_file(char *str)
 {
 	printf("Invalid map: %s\n", str);
 	return (1);

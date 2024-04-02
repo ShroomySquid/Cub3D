@@ -14,15 +14,16 @@
 
 static int	is_door(t_cube *c, int *coord, int y, int x)
 {
-	if (c->map->map[coord[0]][coord[1] - 1] == '1'
-		&& c->map->map[coord[0]][coord[1] + 1] == '1')
+	if (c->map->map[coord[0]] && c->map->map[coord[0]][coord[1] - 1] == '1'
+		&& c->map->map[coord[0]] && c->map->map[coord[0]][coord[1] + 1] == '1')
 	{
 		if (y % 32 == 19)
 			return (0);
 		if (y % 32 == 13)
 			return (1);
 	}
-	if (c->map->map[coord[0] - 1][coord[1]] == '1' && c->map->map[coord[0]
+	if (c->map->map[coord[0] - 1] && c->map->map[coord[0] - 1][coord[1]] == '1'
+		&& c->map->map[coord[0] + 1] && c->map->map[coord[0]
 		+ 1][coord[1]] == '1')
 	{
 		if (x % 32 == 19)
