@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 19:23:37 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/24 09:55:27 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/04/02 10:04:37 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@ int32_t	get_color_mini(t_minimap *mini, t_cube *c)
 		img = c->wall_img;
 	else if (mini->coord == 'D')
 	{
-		if (c->map->map[div_y][div_x - 1] == '1' && c->map->map[div_y][div_x + 1] == '1')
+		if (c->map->map[div_y][div_x - 1] == '1'
+			&& c->map->map[div_y][div_x + 1] == '1')
 			img = c->lockh_img;
-		else if (c->map->map[div_y - 1][div_x] == '1' && c->map->map[div_y + 1][div_x] == '1')
+		else if (c->map->map[div_y - 1][div_x] == '1'
+			&& c->map->map[div_y + 1][div_x] == '1')
 			img = c->lockv_img;
 		else
 			img = c->wall_img;

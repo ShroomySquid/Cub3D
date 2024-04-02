@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:12:02 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/07 10:16:59 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/04/02 10:03:00 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int	error_argc(void)
 	return (1);
 }
 
-int	error_map(char *str, int x, int y, char c)
+int	error_map(char *str, int x, int y)
 {
-	printf("Invalid map: %s at x %d, y %d (%d, %c)\n", str, x, y, c, c);
+	printf("Invalid map: %s at x: %d, y: %d\n", str, x, y);
 	return (1);
 }
 

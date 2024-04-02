@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 09:16:48 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/31 15:43:19 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/04/02 10:02:08 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void	render_minimap(void *param);
 int		check_map(char **map, t_cube *cube, int x, int y);
 int		error_func(char *failed_func);
 int		error_argc(void);
-int		error_map(char *str, int x, int y, char c);
+int		error_map(char *str, int x, int y);
 int		error_map_file(char *str);
 int		check_textures(t_cube *cube);
 int		is_whitespace(char c);

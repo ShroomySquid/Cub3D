@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/25 15:59:09 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/04/02 10:03:33 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ int	check_valid_floor(char **map, int x, int y)
 {
 	if (y == 0 || x == 0)
 		return (1);
-	if (is_whitespace(map[y - 1][x]))
+	if (x > (int)ft_strlen(map[y - 1]) || is_whitespace(map[y - 1][x]))
 		return (1);
-	if (!map[y + 1] || is_whitespace(map[y + 1][x]))
+	if (!map[y + 1] || x > (int)ft_strlen(map[y + 1])
+		|| is_whitespace(map[y + 1][x]))
 		return (1);
 	if (is_whitespace(map[y][x - 1]))
 		return (1);
@@ -72,12 +73,12 @@ int	check_player(int *player, t_cube *cube, int y, int x)
 	if (cube->map->map[y][x] == 'W')
 		cube->rotation = 270;
 	if (*player)
-		return (error_map("More than 1 player", x, y, cube->map->map[x][y]));
+		return (error_map("More than 1 player", x, y));
 	*player = 1;
 	cube->playerx = (SIZE * x) + 5;
 	cube->playery = (SIZE * y) + 5;
 	if (check_valid_floor(cube->map->map, x, y))
-		return (error_map("Invalid player location", x, y, cube->map->map[x][y]));
+		return (error_map("Invalid player location", x, y));
 	return (0);
 }
 
@@ -93,19 +94,19 @@ int	check_map(char **map, t_cube *cube, int x, int y)
 		while (map[y][x])
 		{
 			if (is_valid_symbol(map, y, x))
-				return (error_map("Invalid symbol on map", x, y, cube->map->map[x][y]));
+				return (error_map("Invalid symbol on map", x, y));
 			else if (check_player(&player, cube, y, x))
 				return (1);
 			else if (map[y][x] == '0' && check_valid_floor(map, x, y))
-				return (error_map("Invalid floor location", x, y, cube->map->map[x][y]));
+				return (error_map("Invalid floor location", x, y));
 			else if (map[y][x] == 'D' && check_valid_door(map, x, y))
-				return (error_map("Invalid door location", x, y, cube->map->map[x][y]));
+				return (error_map("Invalid door location", x, y));
 			x++;
 		}
 		y++;
 	}
 	cube->last_line = (y - 1);
 	if (!player)
-		return (error_map("Invalid player location", x, y, cube->map->map[x][y]));
+		return (error_map("Invalid player location", x, y));
 	return (0);
 }

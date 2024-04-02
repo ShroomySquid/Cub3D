@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:50:21 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/03/24 10:33:10 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/04/02 09:58:52 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,14 @@ int	check_color_len(char *line)
 	return (len);
 }
 
-int	extra_color(char *color, int *a)
+int	extra_color(char *color, int *a, int *coma_last)
 {
-	if (color[*a] == ',')
-		*a += 1;
 	while (color[*a] && color[*a] != ',')
 		*a += 1;
+	if (color[*a] && color[*a] == ',')
+		*coma_last = 1;
+	else
+		*coma_last = 0;
 	if (color[*a])
 		*a += 1;
 	if (color[*a])
@@ -63,24 +65,24 @@ int	parse_rgba(char **data, int *i, int *rgb)
 	int	a;
 	int	len;
 	int	rgb_len;
+	int	coma_last;
 
 	a = 0;
 	rgb_len = 0;
+	coma_last = 0;
 	while (data[*i] && rgb_len < 3)
 	{
-		if (data[*i][a] && data[*i][a] == ',')
-			a++;
+		if (data[*i][a] && data[*i][a] == ',' && coma_last)
+			return (error_map_file("Invalid color for rgb"));
+		a += (data[*i][a] && data[*i][a] == ',');
 		len = check_color_len(&data[*i][a]);
 		if (len > 3 || len < 1)
 			return (error_map_file("Invalid color for rgb"));
 		rgb[rgb_len] = get_color(len, &data[*i][a]);
-		if (rgb[rgb_len] == -1)
+		if (rgb[rgb_len++] == -1)
 			return (1);
-		rgb_len++;
-		if (!extra_color(data[*i], &a))
-			*i += 1;
-		if (data[*i] && data[*i][0] && data[*i][0] == ',' && !data[*i][1])
-			*i += 1;
+		*i += (!extra_color(data[*i], &a, &coma_last));
+		*i += (data[*i] && data[*i][0] && data[*i][0] == ',' && !data[*i][1]);
 	}
 	if (rgb_len < 3)
 		return (error_map_file("Invalid amount of color for map"));
@@ -103,7 +105,7 @@ int	check_fc(int *i, char **data, t_cube *cube)
 	if (!rgb)
 		return (error_func("malloc"));
 	if (!ft_isdigit(data[*i][0]))
-		return (free(rgb), error_map_file("Invalid color provided for element"));
+		return (free(rgb), error_map_file("Invalid color for element"));
 	if (parse_rgba(data, i, rgb))
 		return (free(rgb), 1);
 	if (fc)
