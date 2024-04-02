@@ -41,7 +41,7 @@ int	innit_getside(float x, float y, t_cube *c, t_side *s)
 	s->last_y = y;
 	s->coord[0] = y / 32;
 	s->coord[1] = x / 32;
-	ret = is_door(c, s->coord, y, x);
+	ret = is_door(c, s->coord, (int)y, (int)x);
 	if (c->map->map[s->coord[0]][s->coord[1]] == 'D' && ret != -1)
 		return (ret);
 	reverse_step(&s->last_x, &s->last_y, c, 0.1);

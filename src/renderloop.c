@@ -67,7 +67,7 @@ void	ft_render_loop(t_cube *cube, int x, int *i)
 	wall = ft_getscale(*cube, x, i);
 	if (!wall.draw)
 		return ;
-	val_div = wall.scale / 2;
+	val_div = wall.scale / 2.0;
 	y = -1;
 	while (++y < cube->mlx->height)
 	{
