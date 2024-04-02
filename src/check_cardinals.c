@@ -17,7 +17,7 @@ int	check_each_path(char **split_path, t_cube *c, int *i)
 	mlx_texture_t	*texture;
 
 	if (!split_path[*i])
-		return (error_map("No texture file for element", 0, 0, 0));
+		return (error_map_file("No texture file for element"));
 	while (split_path[*i])
 	{
 		texture = mlx_load_png(split_path[*i]);
@@ -40,7 +40,7 @@ int	check_cardinals(char *paths, t_cube *c)
 
 	i = 0;
 	if (c->map->walls[c->map->car])
-		return (error_map("Multiple textures files for same element", 0, 0, 0));
+		return (error_map_file("Multiple textures files for same element"));
 	split_path = ft_split(paths, ";");
 	if (!split_path)
 		return (error_func("ft_split"));
