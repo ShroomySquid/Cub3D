@@ -6,7 +6,7 @@
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:34:09 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/03/18 08:35:15 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/03/25 15:59:09 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,38 @@ int	check_valid_floor(char **map, int x, int y)
 		return (1);
 	if (is_whitespace(map[y - 1][x]))
 		return (1);
-	if (!map[y - 1][x - 1] || is_whitespace(map[y - 1][x - 1]))
-		return (1);
-	if (!map[y - 1][x + 1] || is_whitespace(map[y - 1][x + 1]))
-		return (1);
 	if (!map[y + 1] || is_whitespace(map[y + 1][x]))
-		return (1);
-	if (!map[y + 1][x - 1] || is_whitespace(map[y + 1][x - 1]))
-		return (1);
-	if (!map[y + 1][x + 1] || is_whitespace(map[y + 1][x + 1]))
 		return (1);
 	if (is_whitespace(map[y][x - 1]))
 		return (1);
 	if (!map[y][x + 1] || is_whitespace(map[y][x + 1]))
 		return (1);
 	return (0);
+}
+
+int	check_valid_door(char **map, int x, int y)
+{
+	if (check_valid_floor(map, x, y))
+		return (1);
+	if (map[y - 1][x] == '1')
+	{
+		if (map[y + 1][x] != '1' || map[y][x + 1] == '1'
+			|| map[y][x + 1] == 'D' || map[y][x - 1] == '1'
+			|| map[y][x - 1] == 'D')
+			return (1);
+		else
+			return (0);
+	}
+	else if (map[y][x - 1] == '1')
+	{
+		if (map[y][x + 1] != '1' || map[y - 1][x] == '1'
+			|| map[y - 1][x] == 'D' || map[y + 1][x] == '1'
+			|| map[y - 1][x] == 'D')
+			return (1);
+		else
+			return (0);
+	}
+	return (1);
 }
 
 int	is_valid_symbol(char **map, int y, int x)
@@ -79,12 +96,11 @@ int	check_map(char **map, t_cube *cube, int x, int y)
 				return (error_map("Invalid symbol on map"));
 			else if (check_player(&player, cube, y, x))
 				return (1);
-			else if ((map[y][x] == '0' || map[y][x] == 'D')
-				&& check_valid_floor(map, x, y))
-			{
-				printf("%d, %d\n", x, y);
+			else if (map[y][x] == '0' && check_valid_floor(map, x, y))
 				return (error_map("Invalid floor location"));
-			}
+			else if (map[y][x] == 'D' && check_valid_door(map, x, y))
+				return (error_map("Invalid door location"));
+			x++;
 		}
 	}
 	cube->last_line = (y - 1);
