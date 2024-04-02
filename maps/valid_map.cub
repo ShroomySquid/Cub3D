@@ -1,7 +1,7 @@
-F 200 ,4      , 		200
-C 200 , 00 , 200 
 NO png/motif.png;
 SO png/planks.png
+F 200 ,4      , 		200
+C 200 , 00 , 200 
 WE png/wolfenstein_bricks.png
 EA png/brick_wall.png
 DO png/door.png
