@@ -23,28 +23,33 @@ git@github.com:ShroomySquid/Cub3D.git
 
 - Run the command "make" in the folder to compile the program.
 
-- NOTE: This program use the mlx library from Codam. It is only design to compile on MacOs.
+- NOTE: This program use the mlx library from Codam. It will install the mlx library. It is only design to compile on MacOs.
 
-# Minishell -- Français
+# Cub3d -- Français
 
-Ce programme est un shell avec des fonctions limitées. Ce projet fait partie du cursus de 42 Québec.
+Ce programme est un petit jeu dans le style de Doom. Il utilise du Ray-Casting pour afficher des graphiques 3D. Ce projet fait partie du cursus de 42 Québec
+et à été fait avec la coopération de [lcouturi](https://github.com/lcouturi).
 
-Pour lancer minishell, faites la commande suivante:
+Pour lancer Cub3D, il faudra procurer au programme une carte valide avec l'extension .cub. Vous pouvez trouver quelques cartes dans le fichier maps du répertoire.
+Example:
 ```bash
-./minishell
+./cube3d maps/valid_map.cub
 ```
 
-Pour quitter minishell, faites la commande "exit".
+Utilisez les commandes WASD ou les flèches pour vous déplacer. Utilisez la souris pour changer l'angle de la caméra. Pesez le bouton gauche de la souris pour ouvrir les
+portes. Pesez sur M pour afficher/masquer la carte.
+
+Pour quitter le programme, pesez sur la touche esc.
 
 ## Installation
 
 - Cloner le répertoire dans un dossier de votre choix.
 
 ```bash
-git@github.com:ShroomySquid/Minishell.git
+git@github.com:ShroomySquid/Cub3D.git
 ```
 
 - Faites la commande "make" dans le dossier afin de compiler le program.
 
-- NOTE: L'installation va également installer brew et la library readline si celles-ci ne sont pas déjà présentes.
+- NOTE: L'installation va également installer la librarie MLX de codam. Ce programme ne peut rouler que sur MacOs.
 
